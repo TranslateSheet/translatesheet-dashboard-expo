@@ -1,4 +1,4 @@
-import '../../global.css';
+import "../../global.css";
 
 import {
   DarkTheme,
@@ -13,6 +13,7 @@ import { useEffect } from "react";
 import "react-native-reanimated";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Drawer } from "expo-router/drawer";
+import { HeroUIProvider } from "@heroui/react";
 
 import { useColorScheme } from "@/hooks/useColorScheme";
 import { useWindowDimensions } from "react-native";
@@ -40,27 +41,29 @@ export default function RootLayout() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-        <Drawer
-          screenOptions={{
-            drawerType: dimensions.width >= 768 ? "permanent" : "front",
-          }}
-        >
-          <Drawer.Screen
-            name="index" // This is the name of the page and must match the url from root
-            options={{
-              drawerLabel: "Home",
-              title: "overview",
+        <HeroUIProvider style={{ flex: 1 }}>
+          <Drawer
+            screenOptions={{
+              drawerType: dimensions.width >= 768 ? "permanent" : "front",
             }}
-          />
-          <Drawer.Screen
-            name="explore" // This is the name of the page and must match the url from root
-            options={{
-              drawerLabel: "Explore",
-              title: "Explore",
-            }}
-          />
-        </Drawer>
-        <StatusBar style="auto" />
+          >
+            <Drawer.Screen
+              name="index" // This is the name of the page and must match the url from root
+              options={{
+                drawerLabel: "Home",
+                title: "overview",
+              }}
+            />
+            <Drawer.Screen
+              name="explore" // This is the name of the page and must match the url from root
+              options={{
+                drawerLabel: "Explore",
+                title: "Explore",
+              }}
+            />
+          </Drawer>
+          <StatusBar style="auto" />
+        </HeroUIProvider>
       </ThemeProvider>
     </GestureHandlerRootView>
   );
