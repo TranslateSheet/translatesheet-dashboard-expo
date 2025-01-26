@@ -1,3 +1,5 @@
+import '../../global.css';
+
 import {
   DarkTheme,
   DefaultTheme,
@@ -36,28 +38,30 @@ export default function RootLayout() {
   }
 
   return (
-    <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-      <Drawer
-        screenOptions={{
-          drawerType: dimensions.width >= 768 ? "permanent" : "front",
-        }}
-      >
-        <Drawer.Screen
-          name="index" // This is the name of the page and must match the url from root
-          options={{
-            drawerLabel: "Home",
-            title: "overview",
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+        <Drawer
+          screenOptions={{
+            drawerType: dimensions.width >= 768 ? "permanent" : "front",
           }}
-        />
-        <Drawer.Screen
-          name="explore" // This is the name of the page and must match the url from root
-          options={{
-            drawerLabel: "Explore",
-            title: "Explore",
-          }}
-        />
-      </Drawer>
-      <StatusBar style="auto" />
-    </ThemeProvider>
+        >
+          <Drawer.Screen
+            name="index" // This is the name of the page and must match the url from root
+            options={{
+              drawerLabel: "Home",
+              title: "overview",
+            }}
+          />
+          <Drawer.Screen
+            name="explore" // This is the name of the page and must match the url from root
+            options={{
+              drawerLabel: "Explore",
+              title: "Explore",
+            }}
+          />
+        </Drawer>
+        <StatusBar style="auto" />
+      </ThemeProvider>
+    </GestureHandlerRootView>
   );
 }
