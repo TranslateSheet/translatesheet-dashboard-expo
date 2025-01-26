@@ -14,9 +14,17 @@ import {
 } from "@heroui/react";
 import { Icon } from "@iconify/react";
 import { useSession } from "@/providers/AuthContext";
+import { useIsDesktop } from "@/hooks/useIsDesktop";
+import { Pressable } from "react-native";
+import { useNavigation } from "expo-router";
+import { useDrawerStatus } from "@react-navigation/drawer";
+import { DrawerNavigationProp } from "@react-navigation/drawer";
+import { ParamListBase } from "@react-navigation/native";
 
 export const TopNavigationBar = () => {
+  const isDesktop = useIsDesktop();
   const { signOut } = useSession();
+
   return (
     <Navbar
       classNames={{
@@ -27,6 +35,12 @@ export const TopNavigationBar = () => {
       height="64px"
       maxWidth="full"
     >
+      {!isDesktop && (
+        <Pressable>
+          <Icon icon="solar:hamburger-menu-linear" width={24} color="white" />
+        </Pressable>
+      )}
+
       <NavbarBrand>
         {/* <NavbarMenuToggle className="mr-2 h-6 sm:hidden" /> */}
         {/* <TranslateSheetIcon /> */}

@@ -1,10 +1,10 @@
 import { View, Text } from "react-native";
 import React from "react";
 
-export const BillingPage = () => {
+export default function BillingScreen() {
   return (
     <View>
       <Text>THIS IS THE BILLING PAGE</Text>
     </View>
   );
-};
+}

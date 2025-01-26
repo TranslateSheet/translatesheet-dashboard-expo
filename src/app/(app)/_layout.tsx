@@ -16,18 +16,18 @@ import { Drawer } from "expo-router/drawer";
 import { Text } from "react-native";
 
 import { useColorScheme } from "@/hooks/useColorScheme";
-import { useWindowDimensions } from "react-native";
 import { TopNavigationBar } from "@/components/navigation/TopNavigationBar";
 import { CustomDrawerContent } from "@/components/navigation/CustomDrawerContent";
 import { useSession } from "@/providers/AuthContext";
 import { Redirect } from "expo-router";
+import { useIsDesktop } from "@/hooks/useIsDesktop";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
-  const dimensions = useWindowDimensions();
+  const isDesktop = useIsDesktop();
   const [loaded] = useFonts({
     SpaceMono: require("@/assets/fonts/SpaceMono-Regular.ttf"),
   });
@@ -59,7 +59,12 @@ export default function RootLayout() {
       <TopNavigationBar />
       <Drawer
         screenOptions={{
-          drawerType: dimensions.width >= 768 ? "permanent" : "front",
+          drawerType: isDesktop ? "permanent" : "front",
+          headerShown: false,
+          drawerStyle: {
+            width: 290,
+            padding: 16,
+          },
         }}
         drawerContent={(props) => <CustomDrawerContent {...props} />}
       >
@@ -67,24 +72,18 @@ export default function RootLayout() {
           name="index" // This is the name of the page and must match the url from root
           options={{
             drawerLabel: "Home",
-            title: "overview",
-            headerShown: false,
-          }}
-        />
-        <Drawer.Screen
-          name="billing"
-          options={{
-            drawerLabel: "Billing",
-            title: "Billing",
-            headerShown: false,
           }}
         />
         <Drawer.Screen
           name="api-keys" // This is the name of the page and must match the url from root
           options={{
             drawerLabel: "API Keys",
-            title: "Explore",
-            headerShown: false,
+          }}
+        />
+        <Drawer.Screen
+          name="billing"
+          options={{
+            drawerLabel: "Billing",
           }}
         />
       </Drawer>

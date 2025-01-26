@@ -27,7 +27,7 @@ export default function ProjectSelectionDropdown() {
   };
 
   return (
-    <>
+    <View style={{ paddingBottom: 16 }}>
       <Dropdown>
         <DropdownTrigger>
           <View style={styles.container}>
@@ -68,7 +68,7 @@ export default function ProjectSelectionDropdown() {
           </DropdownSection>
         </DropdownMenu>
       </Dropdown>
-    </>
+    </View>
   );
 }
 
