@@ -12,13 +12,15 @@ import { usePathname, useRouter } from "expo-router";
 const getIconForRoute = (routeName: string): string => {
   switch (routeName) {
     case "index":
-      return "solar:home-2-linear";
+      return "solar:home-smile-linear";
     case "api-keys":
       return "solar:key-outline";
     case "billing":
       return "solar:checklist-minimalistic-outline";
-    case "projects":
+    case "project":
+      return "solar:text-field-focus-line-duotone";
     case "project-members":
+      return "solar:users-group-two-rounded-line-duotone";
     default:
       return "solar:question-circle-outline";
   }

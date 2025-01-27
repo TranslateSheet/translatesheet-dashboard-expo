@@ -64,7 +64,7 @@ export default function ProjectLayout() {
         <Drawer.Screen
           name="index"
           options={{
-            drawerLabel: "Home",
+            drawerLabel: "Translations",
           }}
         />
         <Drawer.Screen
