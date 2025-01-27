@@ -15,64 +15,45 @@ import {
 import { Icon } from "@iconify/react";
 import { useSession } from "@/providers/AuthContext";
 import { useIsDesktop } from "@/hooks/useIsDesktop";
-import { Pressable } from "react-native";
-import { useNavigation } from "expo-router";
-import { useDrawerStatus } from "@react-navigation/drawer";
-import { DrawerNavigationProp } from "@react-navigation/drawer";
-import { ParamListBase } from "@react-navigation/native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 
 export const TopNavigationBar = () => {
   const isDesktop = useIsDesktop();
   const { signOut } = useSession();
 
   return (
-    <Navbar
-      classNames={{
-        base: "bg-primary-500 dark:bg-primary-400",
-        wrapper: "px-4 sm:px-6",
-        item: "data-[active=true]:text-primary",
-      }}
-      height="64px"
-      maxWidth="full"
-    >
+    <Navbar style={styles.navbar} height="64px" maxWidth="full">
       {!isDesktop && (
-        <Pressable>
+        <Pressable style={styles.menuButton}>
           <Icon icon="solar:hamburger-menu-linear" width={24} color="white" />
         </Pressable>
       )}
 
       <NavbarBrand>
-        {/* <NavbarMenuToggle className="mr-2 h-6 sm:hidden" /> */}
-        {/* <TranslateSheetIcon /> */}
-        <p className="font-bold text-inherit text-white">TranslateSheet</p>
+        <Text style={styles.brandText}>TranslateSheet</Text>
       </NavbarBrand>
 
       {/* Right Menu */}
-      <NavbarContent
-        className="ml-auto h-12 max-w-fit items-center gap-0"
-        justify="end"
-      >
+      <NavbarContent style={styles.rightContent}>
         {/* Theme change */}
-        <NavbarItem className="hidden lg:flex">
+        <NavbarItem style={styles.navbarItem}>
           <Button isIconOnly radius="full" variant="light">
             <Icon icon="solar:sun-linear" width={24} color="white" />
           </Button>
         </NavbarItem>
         {/* Settings */}
-        <NavbarItem className="hidden lg:flex">
+        <NavbarItem style={styles.navbarItem}>
           <Button isIconOnly radius="full" variant="light">
             <Icon icon="solar:settings-linear" width={24} color="white" />
           </Button>
         </NavbarItem>
         {/* User Menu */}
-        <NavbarItem className="px-2">
+        <NavbarItem style={styles.userMenuItem}>
           <Dropdown placement="bottom-end">
             <DropdownTrigger>
-              <button className="mt-1 h-8 w-8 transition-transform">
+              <Pressable style={styles.avatarButton}>
                 <Badge
-                  classNames={{
-                    badge: "border-primary",
-                  }}
+                  style={styles.badge}
                   color="success"
                   content=""
                   placement="bottom-right"
@@ -80,12 +61,14 @@ export const TopNavigationBar = () => {
                 >
                   <Avatar size="sm" src="" />
                 </Badge>
-              </button>
+              </Pressable>
             </DropdownTrigger>
             <DropdownMenu aria-label="Profile Actions" variant="flat">
-              <DropdownItem key="profile" className="h-14 gap-2">
-                <p className="font-semibold">Signed in as</p>
-                <p className="font-semibold">TODO:</p>
+              <DropdownItem key="profile">
+                <View style={styles.profileDropdownItem}>
+                  <Text style={styles.dropdownLabelBold}>Signed in as</Text>
+                  <Text style={styles.dropdownLabelBold}>TODO:</Text>
+                </View>
               </DropdownItem>
               <DropdownItem key="settings">My Settings</DropdownItem>
               <DropdownItem key="team_settings">Team Settings</DropdownItem>
@@ -105,3 +88,48 @@ export const TopNavigationBar = () => {
     </Navbar>
   );
 };
+
+const styles = StyleSheet.create({
+  navbar: {
+    backgroundColor: "#6366f1",
+    height: 64,
+  },
+  menuButton: {
+    padding: 8,
+  },
+  brandText: {
+    color: "#ffffff",
+    fontWeight: "bold",
+  },
+  rightContent: {
+    marginLeft: "auto",
+    height: 48,
+    maxWidth: "auto",
+    alignItems: "center",
+    justifyContent: "flex-end",
+    gap: 0,
+  },
+  navbarItem: {
+    display: "flex", // lg:flex
+  },
+  userMenuItem: {
+    paddingLeft: 8,
+  },
+  avatarButton: {
+    marginTop: 4,
+    height: 32,
+    width: 32,
+    transform: [{ scale: 1 }],
+  },
+  badge: {
+    borderColor: "#6366f1",
+  },
+  profileDropdownItem: {
+    height: 56,
+    gap: 8,
+    justifyContent: "center",
+  },
+  dropdownLabelBold: {
+    fontWeight: "600",
+  },
+});
