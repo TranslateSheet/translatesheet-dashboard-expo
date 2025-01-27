@@ -1,11 +1,11 @@
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, ScrollView } from "react-native";
 import React, { ReactNode } from "react";
 
 export function PageContainer({ children }: { children: ReactNode }) {
   return (
-    <View style={styles.container}>
+    <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.contentWrapper}>{children}</View>
-    </View>
+    </ScrollView>
   );
 }
 
