@@ -16,10 +16,13 @@ import { Icon } from "@iconify/react";
 import { useSession } from "@/providers/AuthContext";
 import { useIsDesktop } from "@/hooks/useIsDesktop";
 import { Pressable, StyleSheet, Text, View } from "react-native";
+import { usePathname } from "expo-router";
+import ProjectSelectionDropdown from "../ProjectSelectionDropdown";
 
 export const TopNavigationBar = () => {
   const isDesktop = useIsDesktop();
   const { signOut } = useSession();
+  const pathname = usePathname();
 
   return (
     <Navbar style={styles.navbar} height="64px" maxWidth="full">
@@ -29,10 +32,13 @@ export const TopNavigationBar = () => {
         </Pressable>
       )}
 
-      <NavbarBrand>
-        <Text style={styles.brandText}>TranslateSheet</Text>
-      </NavbarBrand>
-
+      {pathname.includes("project") ? (
+        <ProjectSelectionDropdown />
+      ) : (
+        <NavbarBrand>
+          <Text style={styles.brandText}>TranslateSheet</Text>
+        </NavbarBrand>
+      )}
       {/* Right Menu */}
       <NavbarContent style={styles.rightContent}>
         {/* Theme change */}

@@ -3,10 +3,11 @@ import {
   DrawerContentScrollView,
   DrawerItem,
 } from "@react-navigation/drawer";
-import { StyleSheet, View, Text } from "react-native";
-import ProjectSelectionDropdown from "../ProjectSelectionDropdown";
+import { StyleSheet, View, Text, Pressable } from "react-native";
+
 import { Icon } from "@iconify/react";
 import { useSession } from "@/providers/AuthContext";
+import { usePathname, useRouter } from "expo-router";
 
 const getIconForRoute = (routeName: string): string => {
   switch (routeName) {
@@ -16,6 +17,8 @@ const getIconForRoute = (routeName: string): string => {
       return "solar:key-outline";
     case "billing":
       return "solar:checklist-minimalistic-outline";
+    case "projects":
+    case "project-members":
     default:
       return "solar:question-circle-outline";
   }
@@ -24,6 +27,8 @@ const getIconForRoute = (routeName: string): string => {
 export const CustomDrawerContent = (props: DrawerContentComponentProps) => {
   const { state, descriptors } = props;
   const { signOut } = useSession();
+  const pathname = usePathname();
+  const router = useRouter();
 
   const renderLabel = (focused: boolean, route: any) => {
     const { options } = descriptors[route.key];
@@ -41,7 +46,15 @@ export const CustomDrawerContent = (props: DrawerContentComponentProps) => {
   return (
     <View style={{ flex: 1 }}>
       <DrawerContentScrollView {...props}>
-        <ProjectSelectionDropdown />
+        {pathname.includes("project") && (
+          <Pressable
+            style={{ flexDirection: "row", gap: 4, paddingBottom: 12 }}
+            onPress={() => router.push("/(app)/(home)")}
+          >
+            <Icon icon="solar:arrow-left-linear" width={16} />
+            <Text style={{ color: "#777", fontSize: 12 }}>Dashboard</Text>
+          </Pressable>
+        )}
         <View style={{ gap: 4 }}>
           {state.routes.map((route) => (
             <DrawerItem

@@ -11,7 +11,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { StyleSheet, View, Text } from "react-native";
 
 export default function ProjectSelectionDropdown() {
-  const [selectedKeys, setSelectedKeys] = useState<string | null>("TESTINGGGG");
+  const [selectedKeys, setSelectedKeys] = useState<string | null>("Select a project");
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
 
   const handleSelectionChange = (keys: any) => {
@@ -27,14 +27,14 @@ export default function ProjectSelectionDropdown() {
   };
 
   return (
-    <View style={{ paddingBottom: 16 }}>
+    <View style={{ }}>
       <Dropdown placement="bottom-start">
         <DropdownTrigger>
           <View style={styles.container}>
             <Text numberOfLines={1} style={styles.dropdownText}>
-              Select a Project
+              {selectedKeys}
             </Text>
-            <Ionicons name="chevron-expand-outline" size={12} color="black" />
+            <Ionicons name="chevron-expand-outline" size={16} color="white" />
           </View>
         </DropdownTrigger>
         <DropdownMenu
@@ -76,11 +76,12 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
     alignItems: "center",
+    justifyContent:"center",
     gap: 4,
   },
   dropdownText: {
     fontSize: 14,
-    fontWeight: "500",
-    color: "#666",
+    fontWeight: "600",
+    color: "#fff",
   },
 });

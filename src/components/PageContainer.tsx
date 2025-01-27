@@ -10,8 +10,18 @@ export function PageContainer({ children }: { children: ReactNode }) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 42, alignItems: "center" },
-  contentWrapper: { flex: 1, maxWidth: 1024, width: "100%" },
+  container: {
+    flex: 1,
+    padding: 42,
+    alignItems: "center",
+    backgroundColor: "#fff",
+  },
+  contentWrapper: {
+    flex: 1,
+    maxWidth: 1024,
+    width: "100%",
+    backgroundColor: "#fff",
+  },
 });
 
 export default PageContainer;

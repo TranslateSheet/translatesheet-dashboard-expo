@@ -1,5 +1,3 @@
-import "../../../global.css";
-
 import {
   DarkTheme,
   DefaultTheme,
@@ -15,16 +13,15 @@ import { Drawer } from "expo-router/drawer";
 import { Text } from "react-native";
 
 import { useColorScheme } from "@/hooks/useColorScheme";
-import { TopNavigationBar } from "@/components/navigation/TopNavigationBar";
 import { CustomDrawerContent } from "@/components/navigation/CustomDrawerContent";
 import { useSession } from "@/providers/AuthContext";
-import { Redirect, Slot } from "expo-router";
+import { Redirect } from "expo-router";
 import { useIsDesktop } from "@/hooks/useIsDesktop";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
-export default function RootLayout() {
+export default function ProjectLayout() {
   const colorScheme = useColorScheme();
   const isDesktop = useIsDesktop();
   const [loaded] = useFonts({
@@ -53,8 +50,36 @@ export default function RootLayout() {
 
   return (
     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-      <TopNavigationBar />
-      <Slot />
+      <Drawer
+        screenOptions={{
+          drawerType: isDesktop ? "permanent" : "front",
+          headerShown: false,
+          drawerStyle: {
+            width: 290,
+            padding: 16,
+          },
+        }}
+        drawerContent={(props) => <CustomDrawerContent {...props} />}
+      >
+        <Drawer.Screen
+          name="index"
+          options={{
+            drawerLabel: "Home",
+          }}
+        />
+        <Drawer.Screen
+          name="api-keys"
+          options={{
+            drawerLabel: "API Keys",
+          }}
+        />
+        <Drawer.Screen
+          name="project-members"
+          options={{
+            drawerLabel: "Project Members",
+          }}
+        />
+      </Drawer>
       <StatusBar style="auto" />
     </ThemeProvider>
   );
