@@ -1,3 +1,5 @@
+// https://www.heroui.pro/components/marketing/pricing
+
 import type { Frequency, Tier } from "./types";
 
 import { FrequencyEnum, TiersEnum } from "./types";

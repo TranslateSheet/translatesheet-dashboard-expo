@@ -1,4 +1,4 @@
-"use client";
+// https://www.heroui.pro/components/marketing/pricing
 
 import React from "react";
 import { Icon } from "@iconify/react";
