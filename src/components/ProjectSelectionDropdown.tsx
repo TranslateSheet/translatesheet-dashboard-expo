@@ -28,7 +28,7 @@ export default function ProjectSelectionDropdown() {
 
   return (
     <View style={{ paddingBottom: 16 }}>
-      <Dropdown>
+      <Dropdown placement="bottom-start">
         <DropdownTrigger>
           <View style={styles.container}>
             <Text numberOfLines={1} style={styles.dropdownText}>

@@ -10,7 +10,6 @@ import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
 import "react-native-reanimated";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Drawer } from "expo-router/drawer";
 // import { HeroUIProvider } from "@heroui/react";
 import { Text } from "react-native";
@@ -54,8 +53,6 @@ export default function RootLayout() {
 
   return (
     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-      {/* https://www.heroui.com/docs/guide/installation#provider-setup */}
-      {/* <HeroUIProvider style={{ flex: 1 }}> */}
       <TopNavigationBar />
       <Drawer
         screenOptions={{
@@ -69,13 +66,13 @@ export default function RootLayout() {
         drawerContent={(props) => <CustomDrawerContent {...props} />}
       >
         <Drawer.Screen
-          name="index" // This is the name of the page and must match the url from root
+          name="index"
           options={{
             drawerLabel: "Home",
           }}
         />
         <Drawer.Screen
-          name="api-keys" // This is the name of the page and must match the url from root
+          name="api-keys"
           options={{
             drawerLabel: "API Keys",
           }}
@@ -88,7 +85,6 @@ export default function RootLayout() {
         />
       </Drawer>
       <StatusBar style="auto" />
-      {/* </HeroUIProvider> */}
     </ThemeProvider>
   );
 }
