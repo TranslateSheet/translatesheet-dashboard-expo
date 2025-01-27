@@ -7,11 +7,11 @@ import { View } from "react-native";
 export function PageHeader({
   heading,
   subHeading,
-  headerButton,
+  headerRight,
 }: {
   heading: string;
   subHeading: string;
-  headerButton?: ReactNode;
+  headerRight?: ReactNode;
 }) {
   return (
     <View style={styles.header}>
@@ -19,15 +19,14 @@ export function PageHeader({
         <ThemedText type="title">{heading}</ThemedText>
         <ThemedText lightColor="#777777">{subHeading}</ThemedText>
       </View>
-      {headerButton && headerButton}
+      {headerRight && headerRight}
     </View>
   );
 }
 
 const styles = {
   header: {
-    marginBottom: 24,
-    display: "flex",
+    flexDirection: "row",
     width: "100%",
     justifyContent: "space-between",
   },

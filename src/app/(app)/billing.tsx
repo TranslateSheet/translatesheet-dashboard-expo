@@ -1,18 +1,14 @@
-import { View, StyleSheet } from "react-native";
 import React from "react";
 import PageHeader from "@/components/PageHeader";
+import PageContainer from "@/components/PageContainer";
 
 export default function BillingScreen() {
   return (
-    <View style={styles.container}>
+    <PageContainer>
       <PageHeader
         heading="Billing"
         subHeading="Add or update your billing information"
       />
-    </View>
+    </PageContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: { flex: 1, padding: 42 },
-});
