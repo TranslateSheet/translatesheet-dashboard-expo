@@ -25,7 +25,7 @@ export const TopNavigationBar = () => {
   const pathname = usePathname();
 
   return (
-    <Navbar style={styles.navbar} height="64px" maxWidth="full">
+    <Navbar  style={styles.navbar} height="64px" maxWidth="full">
       {!isDesktop && (
         <Pressable style={styles.menuButton}>
           <Icon icon="solar:hamburger-menu-linear" width={24} color="white" />
@@ -97,7 +97,7 @@ export const TopNavigationBar = () => {
 
 const styles = StyleSheet.create({
   navbar: {
-    backgroundColor: "#6366f1",
+    backgroundColor: "#488BF2",
     height: 64,
   },
   menuButton: {
@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
     transform: [{ scale: 1 }],
   },
   badge: {
-    borderColor: "#6366f1",
+    borderColor: "#488BF2",
   },
   profileDropdownItem: {
     height: 56,

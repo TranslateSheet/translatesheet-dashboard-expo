@@ -74,7 +74,7 @@ export default function Component(props: CardProps) {
 
   return (
     <Card className="w-full" {...props}>
-      <CardHeader className="justify-center px-6 pb-0 pt-6">
+      {/* <CardHeader className="justify-center px-6 pb-0 pt-6">
         <div className="flex flex-col items-center">
           <AvatarGroup isBordered size="sm">
             <Avatar src="https://i.pravatar.cc/150?u=a042581f4e29026024d" />
@@ -87,59 +87,8 @@ export default function Component(props: CardProps) {
             Invite a new member to your organization.
           </p>
         </div>
-      </CardHeader>
+      </CardHeader> */}
       <CardBody>
-        <div className="flex items-end gap-2">
-          <Form
-            className="w-full flex-row flex-nowrap items-end"
-            validationBehavior="native"
-            onSubmit={handleSubmit}
-          >
-            <Input
-              isRequired
-              classNames={{
-                helperWrapper: "absolute -bottom-6",
-              }}
-              endContent={
-                <Dropdown>
-                  <DropdownTrigger>
-                    <Button
-                      className="text-default-500"
-                      endContent={
-                        <span className="hidden sm:flex">
-                          <Icon icon="solar:alt-arrow-down-linear" />
-                        </span>
-                      }
-                      size="sm"
-                      variant="light"
-                    >
-                      {Array.from(selectedKeys)
-                        .map((key) => permissionLabels[key])
-                        .join(", ")}
-                    </Button>
-                  </DropdownTrigger>
-                  <DropdownMenu
-                    selectedKeys={selectedKeys}
-                    selectionMode="single"
-                    onSelectionChange={setSelectedKeys}
-                  >
-                    <DropdownItem key="can-view">Can view</DropdownItem>
-                    <DropdownItem key="can-edit">Can edit</DropdownItem>
-                  </DropdownMenu>
-                </Dropdown>
-              }
-              label="Email Address"
-              labelPlacement="outside"
-              name="email"
-              placeholder="Email comma separated"
-              type="email"
-            />
-            <Button color="primary" size="md" type="submit">
-              Invite
-            </Button>
-          </Form>
-        </div>
-        <Spacer y={4} />
         {userList}
       </CardBody>
       <CardFooter className="justify-end gap-2">

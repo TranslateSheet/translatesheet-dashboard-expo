@@ -1,12 +1,17 @@
+// https://www.heroui.pro/components/application/cards
+
 import React, { useState } from "react";
 import {
   Button,
+  Card,
+  CardBody,
+  CardHeader,
+  Divider,
+  Form,
   Input,
   Modal,
-  ModalBody,
   ModalContent,
-  ModalFooter,
-  ModalHeader,
+  Spacer,
   useDisclosure,
 } from "@heroui/react";
 import { Icon } from "@iconify/react";
@@ -15,7 +20,7 @@ import { ThemedText } from "../ThemedText";
 
 const NewProjectModal = () => {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
-  const [apiKeyName, setApiKeyName] = useState<string>("");
+  const [projectName, setProjectName] = useState<string>("");
   return (
     <>
       <Button
@@ -31,31 +36,60 @@ const NewProjectModal = () => {
         <ModalContent>
           {() => (
             <>
-              <ModalHeader style={styles.header}>
-                Create a new project
-              </ModalHeader>
-              <ModalBody>
-                <ThemedText>Enter a name for your project</ThemedText>
-                <Input
-                  value={apiKeyName}
-                  onChange={(e) => setApiKeyName(e.target.value)}
-                  variant="bordered"
-                  label="Project name"
-                />
-              </ModalBody>
-              <ModalFooter>
-                <Button
-                  color="danger"
-                  variant="flat"
-                  onPress={onClose}
-                  style={styles.cancelButton}
-                >
-                  Cancel
-                </Button>
-                <Button color="primary" onPress={() => {}}>
-                  Create new project
-                </Button>
-              </ModalFooter>
+              <Card className="w-full max-w-[500px]">
+                <CardHeader className="px-6 pb-0 pt-6">
+                  <div className="flex flex-col items-start">
+                    <h4 className="text-large">Project Name</h4>
+                    <p className="text-small text-default-500">
+                      Add a name to your project
+                    </p>
+                  </div>
+                </CardHeader>
+                <Spacer y={2} />
+                <CardBody className="px-4">
+                  <Form
+                    className="gap-0"
+                    validationBehavior="native"
+                    // onSubmit={handleSubmit}
+                  >
+                    <Input
+                      isClearable
+                      isRequired
+                      // errorMessage={() => (
+                      //   <ul>
+                      //     {errors.map((error, i) => (
+                      //       <li key={i}>{error}</li>
+                      //     ))}
+                      //   </ul>
+                      // )}
+                      // isInvalid={errors.length > 0}
+                      label="Project Name"
+                      maxLength={20}
+                      name="orgName"
+                      value={projectName}
+                      onValueChange={setProjectName}
+                    />
+                    <Spacer y={6} />
+                    <Divider />
+                    <div className="flex w-full flex-wrap-reverse items-center justify-between gap-2 px-4 pt-4 md:flex-wrap">
+                      <p className="text-small text-default-400">
+                        Max. 20 characters.{" "}
+                        <span className="text-default-500">
+                          {projectName.length}/20
+                        </span>
+                      </p>
+                      <div className="flex items-center gap-2">
+                        <Button type="reset" variant="bordered">
+                          Cancel
+                        </Button>
+                        <Button color="primary" type="submit">
+                          Save Changes
+                        </Button>
+                      </div>
+                    </div>
+                  </Form>
+                </CardBody>
+              </Card>
             </>
           )}
         </ModalContent>
