@@ -8,7 +8,7 @@ export function UpdateTranslationsButton() {
     <Tooltip
       content={
         <div className="px-1 py-2 w-60">
-          <div className="text-small font-bold">Force push your changes?</div>
+          <div className="text-small font-bold">Force push your changes</div>
           <div className="text-tiny">
             Translations automatically get merged to your main branch once every
             24 hours.

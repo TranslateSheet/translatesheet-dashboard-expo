@@ -11,7 +11,9 @@ import { Ionicons } from "@expo/vector-icons";
 import { StyleSheet, View, Text } from "react-native";
 
 export default function ProjectSelectionDropdown() {
-  const [selectedKeys, setSelectedKeys] = useState<string | null>("Select a project");
+  const [selectedKeys, setSelectedKeys] = useState<string | null>(
+    "Select a project"
+  );
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
 
   const handleSelectionChange = (keys: any) => {
@@ -27,7 +29,7 @@ export default function ProjectSelectionDropdown() {
   };
 
   return (
-    <View style={{ }}>
+    <View style={{}}>
       <Dropdown placement="bottom-start">
         <DropdownTrigger>
           <View style={styles.container}>
@@ -51,7 +53,7 @@ export default function ProjectSelectionDropdown() {
           }}
         >
           <DropdownSection showDivider title="Your projects">
-            {["testing123", "this is a mf test"].map((project) => (
+            {["Know App", "PlaySpot", "NTWRK"].map((project) => (
               <DropdownItem key={project} textValue={project}>
                 {project}
               </DropdownItem>
@@ -76,7 +78,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent:"center",
+    justifyContent: "center",
     gap: 4,
   },
   dropdownText: {
