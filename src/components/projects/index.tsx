@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet } from "react-native";
 import React from "react";
-import ProjectCard from "./ProjectCard";
+import { ProjectCard } from "./ProjectCard";
 
 const dummyProjects = [
   { title: "PlaySpot" },
@@ -37,5 +37,3 @@ const styles = StyleSheet.create({
     padding: 8, // Add some spacing between cards
   },
 });
-
-export default Projects;

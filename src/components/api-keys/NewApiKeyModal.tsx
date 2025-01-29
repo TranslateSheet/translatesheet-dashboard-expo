@@ -13,7 +13,7 @@ import { Icon } from "@iconify/react";
 import { StyleSheet } from "react-native";
 import { ThemedText } from "../ThemedText";
 
-const NewApiKeyModal = () => {
+export function NewApiKeyModal() {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
   const [apiKeyName, setApiKeyName] = useState<string>("");
   return (
@@ -62,7 +62,7 @@ const NewApiKeyModal = () => {
       </Modal>
     </>
   );
-};
+}
 
 const styles = StyleSheet.create({
   icon: {
@@ -81,5 +81,3 @@ const styles = StyleSheet.create({
     marginRight: 8,
   },
 });
-
-export default NewApiKeyModal;

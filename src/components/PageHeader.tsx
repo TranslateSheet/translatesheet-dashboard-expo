@@ -24,6 +24,7 @@ export function PageHeader({
   );
 }
 
+// TODO: use StyleSheet
 const styles = {
   header: {
     flexDirection: "row",
@@ -43,5 +44,3 @@ const styles = {
     color: "#a3a3a3",
   },
 } as const;
-
-export default PageHeader;

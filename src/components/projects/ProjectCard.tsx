@@ -2,7 +2,7 @@ import React from "react";
 import { Card, CardBody } from "@heroui/react";
 import { useRouter } from "expo-router";
 
-const ProjectCard = ({ title }: { title: string }) => {
+export function ProjectCard({ title }: { title: string }) {
   const router = useRouter();
   return (
     <Card
@@ -18,6 +18,5 @@ const ProjectCard = ({ title }: { title: string }) => {
       </CardBody>
     </Card>
   );
-};
+}
 
-export default ProjectCard;

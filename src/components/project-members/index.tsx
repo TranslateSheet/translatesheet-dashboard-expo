@@ -5,26 +5,15 @@ import type { CardProps, Selection } from "@heroui/react";
 import React from "react";
 import {
   Card,
-  CardHeader,
   CardBody,
   Button,
-  Input,
   CardFooter,
-  Spacer,
   Divider,
-  AvatarGroup,
-  Avatar,
-  Form,
-  Dropdown,
-  DropdownTrigger,
-  DropdownMenu,
-  DropdownItem,
 } from "@heroui/react";
-import { Icon } from "@iconify/react";
 
 import { UserCell } from "./UserCell";
 
-export default function Component(props: CardProps) {
+export function ProjectMembers(props: CardProps) {
   const [selectedKeys, setSelectedKeys] = React.useState<Selection>(
     new Set(["can-view"])
   );
@@ -74,20 +63,6 @@ export default function Component(props: CardProps) {
 
   return (
     <Card className="w-full" {...props}>
-      {/* <CardHeader className="justify-center px-6 pb-0 pt-6">
-        <div className="flex flex-col items-center">
-          <AvatarGroup isBordered size="sm">
-            <Avatar src="https://i.pravatar.cc/150?u=a042581f4e29026024d" />
-            <Avatar src="https://i.pravatar.cc/150?u=a04258a2462d826712d" />
-            <Avatar src="https://i.pravatar.cc/150?u=a042581f4e29026704d" />
-          </AvatarGroup>
-          <Spacer y={2} />
-          <h4 className="text-large">Invite Member</h4>
-          <p className="text-center text-small text-default-500">
-            Invite a new member to your organization.
-          </p>
-        </div>
-      </CardHeader> */}
       <CardBody>
         {userList}
       </CardBody>

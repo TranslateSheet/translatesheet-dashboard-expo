@@ -17,7 +17,7 @@ import { useSession } from "@/providers/AuthContext";
 import { useIsDesktop } from "@/hooks/useIsDesktop";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import { usePathname } from "expo-router";
-import ProjectSelectionDropdown from "../ProjectSelectionDropdown";
+import { ProjectSelectionDropdown } from "../projects/ProjectSelectionDropdown";
 
 export const TopNavigationBar = () => {
   const isDesktop = useIsDesktop();
@@ -25,7 +25,7 @@ export const TopNavigationBar = () => {
   const pathname = usePathname();
 
   return (
-    <Navbar  style={styles.navbar} height="64px" maxWidth="full">
+    <Navbar style={styles.navbar} height="64px" maxWidth="full">
       {!isDesktop && (
         <Pressable style={styles.menuButton}>
           <Icon icon="solar:hamburger-menu-linear" width={24} color="white" />

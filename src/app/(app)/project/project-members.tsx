@@ -1,8 +1,8 @@
 import React from "react";
-import PageContainer from "@/components/PageContainer";
-import PageHeader from "@/components/PageHeader";
+import { PageContainer } from "@/components/PageContainer";
+import { PageHeader } from "@/components/PageHeader";
 import { Spacer } from "@heroui/react";
-import ProjectMembers from "@/components/project-members";
+import { ProjectMembers } from "@/components/project-members";
 import { NewProjectMemberModal } from "@/components/project-members/NewProjectMemberModal";
 
 const ProjectMembersScreen = () => {

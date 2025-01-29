@@ -10,7 +10,7 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import { StyleSheet, View, Text } from "react-native";
 
-export default function ProjectSelectionDropdown() {
+export function ProjectSelectionDropdown() {
   const [selectedKeys, setSelectedKeys] = useState<string | null>(
     "Select a project"
   );

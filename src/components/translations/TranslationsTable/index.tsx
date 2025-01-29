@@ -26,11 +26,9 @@ import {
 import { SearchIcon } from "@heroui/shared-icons";
 import React, { useMemo, useCallback, useState } from "react";
 import { Icon } from "@iconify/react";
-import { ArrowUpIcon, ArrowDownIcon } from "lucide-react";
 import { cn } from "@heroui/react";
 
 import {
-  ColumnsKey,
   INITIAL_VISIBLE_COLUMNS,
   Translation,
   columns,

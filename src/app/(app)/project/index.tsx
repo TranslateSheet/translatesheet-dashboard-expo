@@ -1,6 +1,6 @@
 import React from "react";
-import PageHeader from "@/components/PageHeader";
-import PageContainer from "@/components/PageContainer";
+import { PageHeader } from "@/components/PageHeader";
+import { PageContainer } from "@/components/PageContainer";
 import { TranslationsTable } from "@/components/translations/TranslationsTable";
 import { Spacer } from "@heroui/react";
 import { UpdateTranslationsButton } from "@/components/translations/UpdateTranslationsButton";

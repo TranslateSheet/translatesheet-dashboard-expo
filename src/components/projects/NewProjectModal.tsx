@@ -16,9 +16,8 @@ import {
 } from "@heroui/react";
 import { Icon } from "@iconify/react";
 import { StyleSheet } from "react-native";
-import { ThemedText } from "../ThemedText";
 
-const NewProjectModal = () => {
+export function NewProjectModal() {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
   const [projectName, setProjectName] = useState<string>("");
   return (
@@ -115,5 +114,3 @@ const styles = StyleSheet.create({
     marginRight: 8,
   },
 });
-
-export default NewProjectModal;
