@@ -1,15 +1,21 @@
-// https://docs.expo.dev/router/reference/authentication/
-
-import { useContext, createContext, type PropsWithChildren } from "react";
+import {
+  useContext,
+  createContext,
+  type PropsWithChildren,
+  useEffect,
+} from "react";
 import { useStorageState } from "@/hooks/useStorageState";
 
+import { supabase } from "../../lib/supabase";
+import { Session } from "@supabase/supabase-js";
+
 const AuthContext = createContext<{
-  signIn: () => void;
+  signIn: () => Promise<void>;
   signOut: () => void;
-  session?: string | null;
+  session?: Session | null;
   isLoading: boolean;
 }>({
-  signIn: () => null,
+  signIn: async () => {},
   signOut: () => null,
   session: null,
   isLoading: false,
@@ -23,23 +29,62 @@ export function useSession() {
       throw new Error("useSession must be wrapped in a <SessionProvider />");
     }
   }
-
   return value;
 }
 
 export function SessionProvider({ children }: PropsWithChildren) {
-  const [[isLoading, session], setSession] = useStorageState("session");
+  const [[isLoading, session], setSession] = useStorageState<Session | null>(
+    "session"
+  );
+
+  const signIn = async () => {
+    console.log(process.env.NODE_ENV);
+    try {
+      const redirectUrl =
+        process.env.NODE_ENV === "development"
+          ? "http://localhost:8081/" // This should match your Expo dev server port
+          : "https://app.translatesheet.co/";
+
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: "github",
+        options: {
+          redirectTo: redirectUrl,
+        },
+      });
+
+      if (error) throw error;
+      console.log("Redirecting to GitHub...");
+    } catch (error) {
+      console.error("Error signing in with GitHub:", error);
+    }
+  };
+
+  // Sign out and clear the session
+  const signOut = () => {
+    supabase.auth.signOut().then(() => setSession(null));
+  };
+
+  useEffect(() => {
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === "SIGNED_IN") {
+        setSession(session); // Store the full session object
+      } else if (event === "SIGNED_OUT") {
+        setSession(null);
+      }
+    });
+
+    return () => {
+      subscription?.unsubscribe?.();
+    };
+  }, []);
 
   return (
     <AuthContext.Provider
       value={{
-        signIn: () => {
-          // Perform sign-in logic here
-          setSession("xxx");
-        },
-        signOut: () => {
-          setSession(null);
-        },
+        signIn,
+        signOut,
         session,
         isLoading,
       }}

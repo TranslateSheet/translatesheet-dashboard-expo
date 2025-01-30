@@ -1,6 +1,3 @@
-// https://docs.expo.dev/router/reference/authentication/
-// example uses expo-secure-storage but it's not available in the browser
-
 import { useEffect, useCallback, useReducer } from "react";
 
 type UseStateHook<T> = [[boolean, T | null], (value: T | null) => void];
@@ -72,10 +69,10 @@ function useAsyncState<T>(
   initialValue: [boolean, T | null] = [true, null]
 ): UseStateHook<T> {
   return useReducer(
-    (
-      state: [boolean, T | null],
-      action: T | null = null
-    ): [boolean, T | null] => [false, action],
+    (state: [boolean, T | null], action: T | null): [boolean, T | null] => [
+      false,
+      action,
+    ],
     initialValue
   ) as UseStateHook<T>;
 }
@@ -93,33 +90,41 @@ export async function setStorageItemAsync(key: string, value: string | null) {
   }
 }
 
-export function useStorageState(key: string): UseStateHook<string> {
-  const [state, setState] = useAsyncState<string>();
+export function useStorageState<T>(key: string): UseStateHook<T> {
+  const [state, setState] = useAsyncState<T>();
 
   useEffect(() => {
-    try {
-      const fetchData = async () => {
+    const fetchData = async () => {
+      try {
         const encryptedValue = localStorage.getItem(key);
         if (encryptedValue) {
           const decryptedValue = await decryptData(encryptedValue);
-          setState(decryptedValue);
+
+          try {
+            setState(JSON.parse(decryptedValue));  // Parse JSON if possible
+          } catch {
+            setState(decryptedValue as unknown as T);  // Handle plain strings
+          }
         } else {
           setState(null);
         }
-      };
-      fetchData();
-    } catch (e) {
-      console.error("Storage error:", e);
-    }
+      } catch (e) {
+        console.error("Storage error:", e);
+      }
+    };
+
+    fetchData();
   }, [key]);
 
   const setValue = useCallback(
-    (value: string | null) => {
+    (value: T | null) => {
       setState(value);
-      setStorageItemAsync(key, value);
+      const serializedValue = value !== null ? JSON.stringify(value) : null;
+      setStorageItemAsync(key, serializedValue);
     },
     [key]
   );
 
   return [state, setValue];
 }
+
