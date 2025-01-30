@@ -1,15 +1,14 @@
 import { useState, useEffect } from "react";
 import apiFetch from "./utils/apiFetch";
 import { Database } from "../../lib/supabase/database.types";
-import { useLocalSearchParams } from "expo-router";
+import { useGlobalSearchParams, useLocalSearchParams } from "expo-router";
 
 export type ApiKey = Database["public"]["Tables"]["api_keys"]["Row"];
 
 type ApiKeyResponse = { message: string; data: ApiKey };
 
 const useGetProjectApiKey = () => {
-  const { id: projectId } = useLocalSearchParams();
-
+  const { projectId } = useGlobalSearchParams<{ projectId: string }>();
   const [apiKey, setApiKey] = useState<ApiKey | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);

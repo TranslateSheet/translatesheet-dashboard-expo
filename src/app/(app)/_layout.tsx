@@ -10,8 +10,6 @@ import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
 import "react-native-reanimated";
-import { Drawer } from "expo-router/drawer";
-// import { HeroUIProvider } from "@heroui/react";
 import { Text } from "react-native";
 
 import { useColorScheme } from "@/hooks/useColorScheme";

@@ -11,9 +11,9 @@ export function ProjectCard({ project }: { project: Project }) {
     <Card isPressable className={"border-small"} shadow="sm">
       <CardBody
         onClick={() =>
-          router.navigate({
-            pathname: "/project/[id]",
-            params: { id: project.id },
+          router.push({
+            pathname: "/project/[projectId]",
+            params: { projectId: project.id },
           })
         }
         className="flex h-20 flex-row items-start gap-3 p-4"
@@ -22,7 +22,6 @@ export function ProjectCard({ project }: { project: Project }) {
           <p className="text-medium">{project.name}</p>
         </div>
       </CardBody>
-
     </Card>
   );
 }
