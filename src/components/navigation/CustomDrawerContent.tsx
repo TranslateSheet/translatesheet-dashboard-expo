@@ -17,7 +17,7 @@ const getIconForRoute = (routeName: string): string => {
       return "solar:key-outline";
     case "billing":
       return "solar:checklist-minimalistic-outline";
-    case "project":
+    case "[id]":
       return "solar:text-field-focus-line-duotone";
     case "project-members":
       return "solar:users-group-two-rounded-line-duotone";

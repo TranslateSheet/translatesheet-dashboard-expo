@@ -48,7 +48,9 @@ export function SessionProvider({ children }: PropsWithChildren) {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: "github",
         options: {
-          redirectTo: redirectUrl,
+          queryParams: {
+            prompt: "login",
+          }
         },
       });
 

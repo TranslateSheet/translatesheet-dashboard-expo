@@ -1,6 +1,7 @@
 import { View, Text, StyleSheet } from "react-native";
 import React from "react";
 import { ProjectCard } from "./ProjectCard";
+import useGetUserProjects from "@/api/useGetUserProjects";
 
 const dummyProjects = [
   { title: "PlaySpot" },
@@ -10,12 +11,13 @@ const dummyProjects = [
 ];
 
 export function Projects() {
+  const { projects } = useGetUserProjects();
   return (
     <View style={styles.container}>
       <View style={styles.cardContainer}>
-        {dummyProjects.map((project) => (
-          <View key={project.title} style={styles.cardWrapper}>
-            <ProjectCard title={project.title} />
+        {projects?.map((project) => (
+          <View key={project.name} style={styles.cardWrapper}>
+            <ProjectCard project={project} />
           </View>
         ))}
       </View>

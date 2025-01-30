@@ -21,7 +21,7 @@ import { ProjectSelectionDropdown } from "../projects/ProjectSelectionDropdown";
 
 export const TopNavigationBar = () => {
   const isDesktop = useIsDesktop();
-  const { signOut } = useSession();
+  const { signOut, session } = useSession();
   const pathname = usePathname();
 
   return (
@@ -65,7 +65,7 @@ export const TopNavigationBar = () => {
                   placement="bottom-right"
                   shape="circle"
                 >
-                  <Avatar size="sm" src="" />
+                  <Avatar size="sm" src={session?.user.user_metadata.avatar_url} />
                 </Badge>
               </Pressable>
             </DropdownTrigger>
@@ -73,7 +73,7 @@ export const TopNavigationBar = () => {
               <DropdownItem key="profile">
                 <View style={styles.profileDropdownItem}>
                   <Text style={styles.dropdownLabelBold}>Signed in as</Text>
-                  <Text style={styles.dropdownLabelBold}>TODO:</Text>
+                  <Text style={styles.dropdownLabelBold}>{session?.user.user_metadata.full_name}</Text>
                 </View>
               </DropdownItem>
               <DropdownItem key="settings">My Settings</DropdownItem>

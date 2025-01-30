@@ -1,3 +1,4 @@
+import useGetProjectApiKey from "@/api/useGetProjectApiKey";
 import {
   Button,
   Chip,
@@ -15,7 +16,7 @@ import {
 //   import useGetProjectApiKey from 'api/useGetProjectApiKey';
 import { format } from "date-fns";
 import { MoreVertical } from "lucide-react";
-import React from "react";
+import React, { useEffect } from "react";
 import { StyleSheet, View } from "react-native";
 
 export const columns = [
@@ -34,64 +35,70 @@ const statusColorMap = {
 };
 
 export function ApiKeysTable() {
-  // const { apiKey, loading: apiKeyLoading, error } = useGetProjectApiKey();
+  const { apiKey, loading: apiKeysLoading, error } = useGetProjectApiKey();
 
-  const dummyToken = [
-    {
-      name: "Dummy API Key",
-      id: 1,
-      secretKey: "sk-e68e0bae-7eb2-4b6b-9f74-fb544b46f018",
-      created: format(new Date(), "MMM d, yyyy"),
-      lastUsed: "-",
-      status: "active",
+  // TODO: this will eventually come from the hook^ when we have multiple keys per project
+  const realTokens = [
+    apiKey && {
+      name: apiKey.name,
+      id: apiKey.id,
+      secretKey: apiKey.key,
+      created: format(new Date(apiKey.created_at), "MMM d, yyyy"),
+      lastUsed: apiKey.last_used_at
+        ? format(new Date(apiKey.last_used_at), "MMM d, yyyy")
+        : "-",
+      status: apiKey.is_active ? "active" : "disabled",
     },
   ];
 
-  const renderCell = React.useCallback((token: any, columnKey: any) => {
-    const cellValue = token[columnKey];
+  const renderCell = React.useCallback(
+    ({ token, columnKey }: { token: any; columnKey: any }) => {
+      const cellValue = token[columnKey];
 
-    switch (columnKey) {
-      case "name":
-        return <p className="text-bold text-sm capitalize">{cellValue}</p>;
-      case "secretKey":
-        return <p className="text-bold text-sm capitalize">{cellValue}</p>;
-      case "lastUsed":
-        return <p className="text-bold text-sm capitalize">{cellValue}</p>;
-      case "created":
-        return <p className="text-bold text-sm capitalize">{cellValue}</p>;
-      case "status":
-        return (
-          <Chip
-            className="capitalize"
-            // @ts-ignore
-            color={statusColorMap[token.status]}
-            size="sm"
-            variant="flat"
-          >
-            {cellValue}
-          </Chip>
-        );
-      case "actions":
-        return (
-          <View style={styles.actionsContainer}>
-            <Dropdown>
-              <DropdownTrigger>
-                <Button isIconOnly size="sm" variant="light">
-                  <MoreVertical className="text-default-300" />
-                </Button>
-              </DropdownTrigger>
-              <DropdownMenu>
-                <DropdownItem key="view">View</DropdownItem>
-                <DropdownItem key="edit">Edit</DropdownItem>
-                <DropdownItem key="delete">Delete</DropdownItem>
-              </DropdownMenu>
-            </Dropdown>
-          </View>
-        );
-      default:
-        return cellValue;
-    }
-  }, []);
+      switch (columnKey) {
+        case "name":
+          return <p className="text-bold text-sm capitalize">{cellValue}</p>;
+        case "secretKey":
+          return <p className="text-bold text-sm capitalize">{cellValue}</p>;
+        case "lastUsed":
+          return <p className="text-bold text-sm capitalize">{cellValue}</p>;
+        case "created":
+          return <p className="text-bold text-sm capitalize">{cellValue}</p>;
+        case "status":
+          return (
+            <Chip
+              className="capitalize"
+              // @ts-ignore
+              color={statusColorMap[token.status]}
+              size="sm"
+              variant="flat"
+            >
+              {cellValue}
+            </Chip>
+          );
+        case "actions":
+          return (
+            <View style={styles.actionsContainer}>
+              <Dropdown>
+                <DropdownTrigger>
+                  <Button isIconOnly size="sm" variant="light">
+                    <MoreVertical className="text-default-300" />
+                  </Button>
+                </DropdownTrigger>
+                <DropdownMenu>
+                  <DropdownItem key="view">View</DropdownItem>
+                  <DropdownItem key="edit">Edit</DropdownItem>
+                  <DropdownItem key="delete">Delete</DropdownItem>
+                </DropdownMenu>
+              </Dropdown>
+            </View>
+          );
+        default:
+          return cellValue;
+      }
+    },
+    []
+  );
 
   return (
     <Table aria-label="Example table with custom cells">
@@ -105,11 +112,14 @@ export function ApiKeysTable() {
           </TableColumn>
         )}
       </TableHeader>
-      <TableBody emptyContent="No rows to display." items={dummyToken}>
+      <TableBody
+        emptyContent={apiKeysLoading ? "loading..." : "No rows to display."}
+        items={realTokens}
+      >
         {(item) => (
           <TableRow key={item?.id}>
             {(columnKey) => (
-              <TableCell>{renderCell(item, columnKey)}</TableCell>
+              <TableCell>{renderCell({ token: item, columnKey })}</TableCell>
             )}
           </TableRow>
         )}
