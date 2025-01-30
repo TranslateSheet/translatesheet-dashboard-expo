@@ -108,7 +108,8 @@ export function TranslationsTable() {
       filteredTranslations = filteredTranslations.filter(
         (item) =>
           item.key.toLowerCase().includes(filterValue.toLowerCase()) ||
-          item.value.toLowerCase().includes(filterValue.toLowerCase())
+          item.value.toLowerCase().includes(filterValue.toLowerCase()) ||
+          item.namespace.toLowerCase().includes(filterValue.toLowerCase())
       );
     }
 
@@ -239,7 +240,7 @@ export function TranslationsTable() {
         <div className="flex items-center justify-between gap-3">
           <Input
             className="w-full max-w-[400px]"
-            placeholder="Search by key or value..."
+            placeholder="Search by key, value or namespace..."
             startContent={<SearchIcon className="text-default-300" />}
             value={filterValue}
             onValueChange={setFilterValue}

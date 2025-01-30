@@ -15,7 +15,8 @@ import {
   useDisclosure,
 } from "@heroui/react";
 import { Icon } from "@iconify/react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, View } from "react-native";
+import { ThemedText } from "../ThemedText";
 
 export function NewProjectModal() {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
@@ -31,73 +32,86 @@ export function NewProjectModal() {
       >
         Create new project
       </Button>
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement="top-center">
-        <ModalContent>
+      <Modal
+        isOpen={isOpen}
+        onClose={() => console.log("eu˝")}
+        onOpenChange={onOpenChange}
+        placement="top-center"
+      >
+        <ModalContent style={{ maxWidth: 550 }}>
           {() => (
-            <>
-              <Card className="w-full max-w-[500px]">
-                <CardHeader className="px-6 pb-0 pt-6">
-                  <div className="flex flex-col items-start">
-                    <h4 className="text-large">Project Name</h4>
-                    <p className="text-small text-default-500">
-                      Add a name to your project
-                    </p>
-                  </div>
-                </CardHeader>
-                <Spacer y={2} />
-                <CardBody className="px-4">
-                  <Form
-                    className="gap-0"
-                    validationBehavior="native"
-                    // onSubmit={handleSubmit}
-                  >
-                    <Input
-                      isClearable
-                      isRequired
-                      // errorMessage={() => (
-                      //   <ul>
-                      //     {errors.map((error, i) => (
-                      //       <li key={i}>{error}</li>
-                      //     ))}
-                      //   </ul>
-                      // )}
-                      // isInvalid={errors.length > 0}
-                      label="Project Name"
-                      maxLength={20}
-                      name="orgName"
-                      value={projectName}
-                      onValueChange={setProjectName}
-                    />
-                    <Spacer y={6} />
-                    <Divider />
-                    <div className="flex w-full flex-wrap-reverse items-center justify-between gap-2 px-4 pt-4 md:flex-wrap">
-                      <p className="text-small text-default-400">
-                        Max. 20 characters.{" "}
-                        <span className="text-default-500">
-                          {projectName.length}/20
-                        </span>
-                      </p>
-                      <div className="flex items-center gap-2">
-                        <Button type="reset" variant="bordered">
-                          Cancel
-                        </Button>
-                        <Button color="primary" type="submit">
-                          Save Changes
-                        </Button>
-                      </div>
-                    </div>
-                  </Form>
-                </CardBody>
-              </Card>
-            </>
+            <View style={styles.modalContainer}>
+              <View style={styles.headerWrap}>
+                <ThemedText fontWeight="500" type="subtitle">
+                  Project Name
+                </ThemedText>
+                <ThemedText lightColor="#9a9a9a" type="small">
+                  Projects organize your services to make app development
+                  easier.
+                </ThemedText>
+              </View>
+              <View style={styles.formContainer}>
+                <Form
+                  className="gap-0"
+                  validationBehavior="native"
+                  // onSubmit={handleSubmit}
+                >
+                  <Input
+                    isClearable
+                    isRequired
+                    // errorMessage={() => (
+                    //   <ul>
+                    //     {errors.map((error, i) => (
+                    //       <li key={i}>{error}</li>
+                    //     ))}
+                    //   </ul>
+                    // )}
+                    // isInvalid={errors.length > 0}
+                    label="Project Name"
+                    maxLength={20}
+                    name="orgName"
+                    value={projectName}
+                    onValueChange={setProjectName}
+                  />
+                  <Spacer y={2} />
+                  <ThemedText type="small">
+                    Max. 20 characters.{" "}
+                    <ThemedText type="small">
+                      {projectName.length}/20
+                    </ThemedText>
+                  </ThemedText>
+                  <Spacer y={2} />
+                  <Divider />
+                  <View style={styles.buttonWrap}>
+                    <Button type="reset" variant="bordered">
+                      Cancel
+                    </Button>
+                    <Button color="primary" type="submit">
+                      Create a project
+                    </Button>
+                  </View>
+                </Form>
+              </View>
+            </View>
           )}
         </ModalContent>
       </Modal>
     </>
   );
-};
+}
 
 const styles = StyleSheet.create({
+  modalContainer: {
+    padding: 24,
+    maxWidth: 800,
+    gap: 24,
+  },
+  headerWrap: {
+    gap: 8,
+  },
+  formContainer: {
+    // paddingTop: 16,
+  },
   icon: {
     flexShrink: 0,
     color: "currentColor",
@@ -112,5 +126,12 @@ const styles = StyleSheet.create({
   },
   cancelButton: {
     marginRight: 8,
+  },
+  buttonWrap: {
+    flexDirection: "row",
+    width: "100%",
+    justifyContent: "flex-end",
+    gap: 8,
+    paddingTop: 24,
   },
 });

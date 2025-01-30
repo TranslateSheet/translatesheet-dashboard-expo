@@ -6,7 +6,25 @@ import { useIsDesktop } from "@/hooks/useIsDesktop";
 export type ThemedTextProps = TextProps & {
   lightColor?: string;
   darkColor?: string;
-  type?: "default" | "title" | "defaultSemiBold" | "subtitle" | "link";
+  type?:
+    | "default"
+    | "title"
+    | "defaultSemiBold"
+    | "subtitle"
+    | "link"
+    | "small";
+  fontWeight?:
+    | "normal"
+    | "bold"
+    | "100"
+    | "200"
+    | "300"
+    | "400"
+    | "500"
+    | "600"
+    | "700"
+    | "800"
+    | "900";
 };
 
 export function ThemedText({
@@ -14,6 +32,7 @@ export function ThemedText({
   lightColor,
   darkColor,
   type = "default",
+  fontWeight,
   ...rest
 }: ThemedTextProps) {
   const isDesktop = useIsDesktop();
@@ -32,6 +51,7 @@ export function ThemedText({
         type === "defaultSemiBold" ? styles.defaultSemiBold : undefined,
         type === "subtitle" ? styles.subtitle : undefined,
         type === "link" ? styles.link : undefined,
+        fontWeight ? { fontWeight } : undefined,
         style,
       ]}
       {...rest}
@@ -61,6 +81,10 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     fontSize: 20,
+    fontWeight: "bold",
+  },
+  small: {
+    fontSize: 16,
     fontWeight: "bold",
   },
   link: {

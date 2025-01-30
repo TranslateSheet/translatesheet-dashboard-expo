@@ -18,6 +18,7 @@ import {
   CardBody,
   CardHeader,
   Spacer,
+  ModalHeader,
 } from "@heroui/react";
 import { Icon } from "@iconify/react";
 import { StyleSheet } from "react-native";
@@ -48,14 +49,14 @@ export function NewProjectMemberModal() {
           {() => (
             <>
               <Card className="w-full max-w-[800px]">
-                <CardHeader className="px-6 pb-0 pt-6">
+                <ModalHeader className="px-6 pb-0 pt-6">
                   <div className="flex flex-col items-start">
                     <h4 className="text-large">Invite Members</h4>
                     <p className="text-small text-default-500">
                       Invite new members to your project
                     </p>
                   </div>
-                </CardHeader>
+                </ModalHeader>
                 <Spacer y={2} />
                 <CardBody className="px-6 py-6">
                   <Form
