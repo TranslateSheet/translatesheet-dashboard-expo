@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Dropdown,
   DropdownTrigger,
@@ -8,36 +8,85 @@ import {
   useDisclosure,
 } from "@heroui/react";
 import { Ionicons } from "@expo/vector-icons";
-import { StyleSheet, View, Text } from "react-native";
-import { useRouter } from "expo-router";
+import { StyleSheet, View, Text, ActivityIndicator } from "react-native";
+import { useGlobalSearchParams, useRouter } from "expo-router";
+import useGetUserProjects from "@/api/useGetUserProjects";
 
 export function ProjectSelectionDropdown() {
-  const [selectedKeys, setSelectedKeys] = useState<string | null>(
-    "Select a project"
-  );
+  const { projectId } = useGlobalSearchParams();
+  const { projects, loading: projectsLoading, error } = useGetUserProjects();
+  const [selectedProject, setSelectedProject] = useState<string | null>();
   const router = useRouter();
-  const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
+  const { isOpen, onOpen } = useDisclosure();
+
+  useEffect(() => {
+    if (projects && projects.length > 0) {
+      // Find the project matching the projectId or default to the first project
+      const matchingProject = projectId
+        ? projects.find((project) => project.id === projectId)
+        : projects[0];
+
+      if (matchingProject) {
+        setSelectedProject(matchingProject.name);
+        if (!projectId) {
+          router.setParams({ projectId: matchingProject.id }); // Set default projectId if not provided
+        }
+      }
+    }
+  }, [projects, projectId, router]);
 
   const handleSelectionChange = (keys: any) => {
     let selectedId: string | null = null;
-    // TODO:
-    router.setParams({ projectId: "1234" });
+
     if (typeof keys === "string") {
       selectedId = keys;
     } else if (keys && typeof keys === "object" && "currentKey" in keys) {
       selectedId = keys.currentKey || null;
     }
 
-    setSelectedKeys(selectedId);
+    if (selectedId) {
+      const selectedProject = projects?.find(
+        (project) => project.id === selectedId
+      );
+      if (selectedProject) {
+        setSelectedProject(selectedProject.name);
+        router.setParams({ projectId: selectedId });
+      }
+    }
   };
 
+  if (projectsLoading) {
+    return (
+      <View style={styles.loaderContainer}>
+        <ActivityIndicator size="small" color="#fff" />
+        <Text style={styles.loadingText}>Loading projects...</Text>
+      </View>
+    );
+  }
+
+  if (error) {
+    return (
+      <View style={styles.errorContainer}>
+        <Text style={styles.errorText}>Error loading projects: {error}</Text>
+      </View>
+    );
+  }
+
+  if (!projects || projects.length === 0) {
+    return (
+      <View style={styles.noProjectsContainer}>
+        <Text style={styles.noProjectsText}>No projects available.</Text>
+      </View>
+    );
+  }
+
   return (
-    <View style={{}}>
+    <View>
       <Dropdown placement="bottom-start">
         <DropdownTrigger>
           <View style={styles.container}>
             <Text numberOfLines={1} style={styles.dropdownText}>
-              {selectedKeys}
+              {selectedProject}
             </Text>
             <Ionicons name="chevron-expand-outline" size={16} color="white" />
           </View>
@@ -45,7 +94,7 @@ export function ProjectSelectionDropdown() {
         <DropdownMenu
           disallowEmptySelection
           aria-label="Select a Project"
-          selectedKeys={new Set(selectedKeys ? [selectedKeys] : [])}
+          selectedKeys={new Set(selectedProject ? [selectedProject] : [])}
           selectionMode="single"
           variant="flat"
           onSelectionChange={(keys) => {
@@ -56,9 +105,9 @@ export function ProjectSelectionDropdown() {
           }}
         >
           <DropdownSection showDivider title="Your projects">
-            {["Know App", "PlaySpot", "NTWRK"].map((project) => (
-              <DropdownItem key={project} textValue={project}>
-                {project}
+            {projects.map((project) => (
+              <DropdownItem key={project.id} textValue={project.name}>
+                {project.name}
               </DropdownItem>
             ))}
           </DropdownSection>
@@ -88,5 +137,29 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "600",
     color: "#fff",
+  },
+  loaderContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    padding: 10,
+  },
+  loadingText: {
+    marginLeft: 8,
+    color: "#fff",
+    fontSize: 14,
+  },
+  errorContainer: {
+    padding: 10,
+  },
+  errorText: {
+    color: "red",
+    fontSize: 14,
+  },
+  noProjectsContainer: {
+    padding: 10,
+  },
+  noProjectsText: {
+    color: "#fff",
+    fontSize: 14,
   },
 });
