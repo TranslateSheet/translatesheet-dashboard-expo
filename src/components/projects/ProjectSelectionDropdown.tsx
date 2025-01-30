@@ -9,16 +9,19 @@ import {
 } from "@heroui/react";
 import { Ionicons } from "@expo/vector-icons";
 import { StyleSheet, View, Text } from "react-native";
+import { useRouter } from "expo-router";
 
 export function ProjectSelectionDropdown() {
   const [selectedKeys, setSelectedKeys] = useState<string | null>(
     "Select a project"
   );
+  const router = useRouter();
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
 
   const handleSelectionChange = (keys: any) => {
     let selectedId: string | null = null;
-
+    // TODO:
+    router.setParams({ projectId: "1234" });
     if (typeof keys === "string") {
       selectedId = keys;
     } else if (keys && typeof keys === "object" && "currentKey" in keys) {
