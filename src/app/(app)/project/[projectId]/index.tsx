@@ -11,7 +11,7 @@ export default function ProjectHome() {
       <PageHeader
         heading="Translation Dashboard"
         subHeading="Manage your apps translations"
-        headerRight={<UpdateTranslationsButton />}
+        // headerRight={<UpdateTranslationsButton />}
       />
       <Spacer y={4} />
       <TranslationsTable />

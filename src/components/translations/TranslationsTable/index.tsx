@@ -24,16 +24,14 @@ import {
   Radio,
 } from "@heroui/react";
 import { SearchIcon } from "@heroui/shared-icons";
-import React, { useMemo, useCallback, useState } from "react";
+import React, { useMemo, useCallback, useState, useEffect } from "react";
 import { Icon } from "@iconify/react";
 import { cn } from "@heroui/react";
 
-import {
-  INITIAL_VISIBLE_COLUMNS,
-  Translation,
-  columns,
-  translations,
-} from "./Data";
+import { INITIAL_VISIBLE_COLUMNS, Translation, columns } from "./Data";
+import { useGetTranslations } from "@/api/useGetTranslations";
+import { useGlobalSearchParams } from "expo-router";
+import { getFlagEmoji } from "./helpers/getFlagEmoji";
 
 export function TranslationsTable() {
   const [filterValue, setFilterValue] = useState("");
@@ -47,6 +45,15 @@ export function TranslationsTable() {
     column: "key",
     direction: "ascending",
   });
+
+  const { projectId } = useGlobalSearchParams<{ projectId: string }>();
+  const { data: translationData, isLoading } = useGetTranslations({
+    projectId,
+  });
+
+  useEffect(() => {
+    console.log({ translationData });
+  }, [translationData]);
 
   // TODO: can save default language filter to last seen in users local storage
   const [languageFilter, setLanguageFilter] = useState("es");
@@ -102,7 +109,7 @@ export function TranslationsTable() {
   );
 
   const filteredItems = useMemo(() => {
-    let filteredTranslations = [...translations];
+    let filteredTranslations = translationData ? [...translationData] : [];
 
     if (filterValue) {
       filteredTranslations = filteredTranslations.filter(
@@ -116,7 +123,7 @@ export function TranslationsTable() {
     filteredTranslations = filteredTranslations.filter(itemFilter);
 
     return filteredTranslations;
-  }, [filterValue, itemFilter]);
+  }, [filterValue, itemFilter, translationData]);
 
   const pages = Math.ceil(filteredItems.length / rowsPerPage) || 1;
 
@@ -161,13 +168,6 @@ export function TranslationsTable() {
             </Chip>
           );
         case "language":
-          const languageFlags: Record<string, string> = {
-            en: "🇺🇸",
-            es: "🇪🇸",
-            zh: "🇨🇳",
-            ru: "🇷🇺",
-            de: "🇩🇪",
-          };
           return (
             <Chip
               className="uppercase"
@@ -175,7 +175,7 @@ export function TranslationsTable() {
               size="sm"
               variant="flat"
             >
-              {languageFlags[cellValue as string]} {cellValue}
+              {getFlagEmoji(cellValue)} {cellValue}
             </Chip>
           );
         case "confidenceScore":
@@ -183,18 +183,20 @@ export function TranslationsTable() {
             <div className="flex items-center gap-2">
               <div
                 className={cn("h-2 w-2 rounded-full", {
-                  "bg-success": cellValue >= 9,
-                  "bg-warning": cellValue >= 7 && cellValue < 9,
-                  "bg-danger": cellValue < 7,
+                  "bg-blue-500": cellValue === null || cellValue === undefined, // Primary language case
+                  "bg-success": cellValue !== null && cellValue >= 9, // Ensure it’s a valid score
+                  "bg-warning":
+                    cellValue !== null && cellValue >= 7 && cellValue < 9,
+                  "bg-danger": cellValue !== null && cellValue < 7,
                 })}
               />
-              <span>{cellValue.toFixed(1)}</span>
+              <span>{cellValue ?? "-"}</span>
             </div>
           );
         case "createdAt":
         case "lastUpdatedAt":
           return cellValue ? (
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-1 w-500">
               <Icon
                 className="h-4 w-4 text-default-400"
                 icon="solar:calendar-minimalistic-linear"
@@ -388,7 +390,12 @@ export function TranslationsTable() {
           </TableColumn>
         )}
       </TableHeader>
-      <TableBody emptyContent="No translations found" items={sortedItems}>
+      <TableBody
+        emptyContent={
+          isLoading ? "Loading translation data" : "No translations found"
+        }
+        items={sortedItems}
+      >
         {(item) => (
           <TableRow key={item.id}>
             {(columnKey) => (
