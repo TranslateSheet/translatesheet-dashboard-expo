@@ -16,11 +16,21 @@ export const useGetTranslations = ({ projectId }: { projectId: string }) => {
   return useQuery({
     queryKey: ["translations", projectId],
     queryFn: async (): Promise<Translation[]> => {
+      // Join translation_keys and translations to get the required data
       const { data, error } = await supabase
-        .from("aggregated_translations_flat_again")
-        .select(
-          "namespace, key, language, translation, created_at, last_updated_at, confidence_score"
-        )
+        .from("translation_keys")
+        .select(`
+          id,
+          namespace,
+          key_name,
+          translations (
+            language,
+            value,
+            created_at,
+            last_updated_at,
+            confidence_score
+          )
+        `)
         .eq("project_id", projectId);
 
       if (error) {
@@ -28,17 +38,19 @@ export const useGetTranslations = ({ projectId }: { projectId: string }) => {
         throw new Error("Failed to fetch translations.");
       }
 
-      // Transform data to match the Translation type
-      const flattenedTranslations: Translation[] = data.map((item, index) => ({
-        id: index + 1, // Generate sequential IDs
-        namespace: item.namespace as string,
-        key: item.key as string,
-        language: item.language as string,
-        value: item.translation as string,
-        createdAt: new Date(item.created_at),
-        lastUpdatedAt: item.last_updated_at ? new Date(item.last_updated_at) : null,
-        confidenceScore: item.confidence_score || null,
-      }));
+      // Flatten the nested structure to match the Translation type
+      const flattenedTranslations: Translation[] = data.flatMap((keyItem) => 
+        keyItem.translations.map((translation, index) => ({
+          id: keyItem.id + index, // Use a combination of translation key and index for uniqueness
+          namespace: keyItem.namespace as string,
+          key: keyItem.key_name as string,
+          language: translation.language as string,
+          value: translation.value as string,
+          createdAt: new Date(translation.created_at),
+          lastUpdatedAt: translation.last_updated_at ? new Date(translation.last_updated_at) : null,
+          confidenceScore: translation.confidence_score || null,
+        }))
+      );
 
       return flattenedTranslations;
     },

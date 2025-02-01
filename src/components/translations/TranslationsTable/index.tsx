@@ -28,10 +28,10 @@ import React, { useMemo, useCallback, useState, useEffect } from "react";
 import { Icon } from "@iconify/react";
 import { cn } from "@heroui/react";
 
-import { INITIAL_VISIBLE_COLUMNS, Translation, columns } from "./Data";
-import { useGetTranslations } from "@/api/useGetTranslations";
+import { Translation, useGetTranslations } from "@/api/useGetTranslations";
 import { useGlobalSearchParams } from "expo-router";
 import { getFlagEmoji } from "./helpers/getFlagEmoji";
+import { INITIAL_VISIBLE_COLUMNS, columns } from "./constants/columns";
 
 export function TranslationsTable() {
   const [filterValue, setFilterValue] = useState("");

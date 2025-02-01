@@ -192,42 +192,111 @@ export type Database = {
           },
         ]
       }
+      translation_history: {
+        Row: {
+          changed_at: string | null
+          changed_by: string | null
+          id: number
+          new_value: string | null
+          old_value: string | null
+          translation_id: number | null
+        }
+        Insert: {
+          changed_at?: string | null
+          changed_by?: string | null
+          id?: number
+          new_value?: string | null
+          old_value?: string | null
+          translation_id?: number | null
+        }
+        Update: {
+          changed_at?: string | null
+          changed_by?: string | null
+          id?: number
+          new_value?: string | null
+          old_value?: string | null
+          translation_id?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "translation_history_translation_id_fkey"
+            columns: ["translation_id"]
+            isOneToOne: false
+            referencedRelation: "translations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      translation_keys: {
+        Row: {
+          id: number
+          key_name: string
+          namespace: string
+          project_id: string | null
+        }
+        Insert: {
+          id?: number
+          key_name: string
+          namespace: string
+          project_id?: string | null
+        }
+        Update: {
+          id?: number
+          key_name?: string
+          namespace?: string
+          project_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "translation_keys_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      translations: {
+        Row: {
+          confidence_score: number | null
+          created_at: string | null
+          id: number
+          key_id: number | null
+          language: string
+          last_updated_at: string | null
+          value: string
+        }
+        Insert: {
+          confidence_score?: number | null
+          created_at?: string | null
+          id?: number
+          key_id?: number | null
+          language: string
+          last_updated_at?: string | null
+          value: string
+        }
+        Update: {
+          confidence_score?: number | null
+          created_at?: string | null
+          id?: number
+          key_id?: number | null
+          language?: string
+          last_updated_at?: string | null
+          value?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "translations_key_id_fkey"
+            columns: ["key_id"]
+            isOneToOne: false
+            referencedRelation: "translation_keys"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       aggregated_translations: {
-        Row: {
-          aggregated_content: Json | null
-          project_id: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "translation_files_project_id_fkey"
-            columns: ["project_id"]
-            isOneToOne: false
-            referencedRelation: "projects"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      aggregated_translations_flat: {
-        Row: {
-          key: string | null
-          language: string | null
-          namespace: string | null
-          project_id: string | null
-          value: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "translation_files_project_id_fkey"
-            columns: ["project_id"]
-            isOneToOne: false
-            referencedRelation: "projects"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      aggregated_translations_flat_again: {
         Row: {
           confidence_score: number | null
           created_at: string | null
@@ -263,28 +332,6 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "project_members_project_id_fkey"
-            columns: ["project_id"]
-            isOneToOne: false
-            referencedRelation: "projects"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      flattened_translations: {
-        Row: {
-          confidence_score: number | null
-          created_at: string | null
-          id: number | null
-          key: string | null
-          language: string | null
-          last_updated_at: string | null
-          namespace: string | null
-          project_id: string | null
-          value: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "translation_files_project_id_fkey"
             columns: ["project_id"]
             isOneToOne: false
             referencedRelation: "projects"
