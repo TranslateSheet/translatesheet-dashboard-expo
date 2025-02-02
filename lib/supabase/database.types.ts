@@ -129,68 +129,24 @@ export type Database = {
           created_at: string
           id: string
           name: string
+          primary_language: string | null
           updated_at: string | null
         }
         Insert: {
           created_at?: string
           id?: string
           name: string
+          primary_language?: string | null
           updated_at?: string | null
         }
         Update: {
           created_at?: string
           id?: string
           name?: string
+          primary_language?: string | null
           updated_at?: string | null
         }
         Relationships: []
-      }
-      translation_files: {
-        Row: {
-          content_cache: Json | null
-          created_at: string | null
-          hash_signatures: Json
-          id: string
-          is_active: boolean | null
-          languages: Json | null
-          last_updated_at: string | null
-          namespace: string
-          project_id: string
-          storage_paths: Json | null
-        }
-        Insert: {
-          content_cache?: Json | null
-          created_at?: string | null
-          hash_signatures: Json
-          id?: string
-          is_active?: boolean | null
-          languages?: Json | null
-          last_updated_at?: string | null
-          namespace: string
-          project_id: string
-          storage_paths?: Json | null
-        }
-        Update: {
-          content_cache?: Json | null
-          created_at?: string | null
-          hash_signatures?: Json
-          id?: string
-          is_active?: boolean | null
-          languages?: Json | null
-          last_updated_at?: string | null
-          namespace?: string
-          project_id?: string
-          storage_paths?: Json | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "translation_files_project_id_fkey"
-            columns: ["project_id"]
-            isOneToOne: false
-            referencedRelation: "projects"
-            referencedColumns: ["id"]
-          },
-        ]
       }
       translation_history: {
         Row: {
@@ -296,27 +252,6 @@ export type Database = {
       }
     }
     Views: {
-      aggregated_translations: {
-        Row: {
-          confidence_score: number | null
-          created_at: string | null
-          key: string | null
-          language: string | null
-          last_updated_at: string | null
-          namespace: string | null
-          project_id: string | null
-          translation: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "translation_files_project_id_fkey"
-            columns: ["project_id"]
-            isOneToOne: false
-            referencedRelation: "projects"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       combined_project_members: {
         Row: {
           avatar_url: string | null

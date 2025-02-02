@@ -32,6 +32,7 @@ import { Translation, useGetTranslations } from "@/api/useGetTranslations";
 import { useGlobalSearchParams } from "expo-router";
 import { getFlagEmoji } from "./helpers/getFlagEmoji";
 import { INITIAL_VISIBLE_COLUMNS, columns } from "./constants/columns";
+import { useGetProjectSupportedLanguages } from "@/api/useGetProjectSupportedLanguages";
 
 export function TranslationsTable() {
   const [filterValue, setFilterValue] = useState("");
@@ -47,13 +48,10 @@ export function TranslationsTable() {
   });
 
   const { projectId } = useGlobalSearchParams<{ projectId: string }>();
+  const { languages } = useGetProjectSupportedLanguages();
   const { data: translationData, isLoading } = useGetTranslations({
     projectId,
   });
-
-  useEffect(() => {
-    console.log({ translationData });
-  }, [translationData]);
 
   // TODO: can save default language filter to last seen in users local storage
   const [languageFilter, setLanguageFilter] = useState("es");
@@ -214,9 +212,19 @@ export function TranslationsTable() {
           );
         case "value":
           return (
-            <div className="max-w-md overflow-hidden text-ellipsis whitespace-nowrap">
-              {cellValue}
-            </div>
+            <Tooltip
+              content={
+                <div className="px-1 py-2 w-60">
+                  <div className="text-small font-bold">
+                    Original value: {translation.originalValue}
+                  </div>
+                </div>
+              }
+            >
+              <div className="max-w-md overflow-hidden text-ellipsis whitespace-nowrap">
+                {cellValue}
+              </div>
+            </Tooltip>
           );
         case "actions":
           return (
@@ -248,7 +256,7 @@ export function TranslationsTable() {
             onValueChange={setFilterValue}
           />
           <div className="flex gap-3">
-            <Dropdown>
+            <Dropdown aria-label="Column selection">
               <DropdownTrigger>
                 <Button
                   endContent={
@@ -278,7 +286,7 @@ export function TranslationsTable() {
               </DropdownMenu>
             </Dropdown>
             <Popover placement="bottom-end">
-              <PopoverTrigger>
+              <PopoverTrigger aria-label="Open language filter">
                 <Button
                   endContent={
                     <Icon className="text-small" icon="solar:global-outline" />
@@ -295,18 +303,19 @@ export function TranslationsTable() {
                     value={languageFilter}
                     onValueChange={setLanguageFilter}
                   >
-                    <Radio value="all">All Languages</Radio>
-                    <Radio value="en">English 🇺🇸</Radio>
-                    <Radio value="es">Spanish 🇪🇸</Radio>
-                    <Radio value="zh">Chinese 🇨🇳</Radio>
-                    <Radio value="ru">Russian 🇷🇺</Radio>
-                    <Radio value="de">German 🇩🇪</Radio>
+                    {languages.map((language) => {
+                      return (
+                        <Radio key={language.code} value={language.code}>
+                          {language.name} {language.flag}
+                        </Radio>
+                      );
+                    })}
                   </RadioGroup>
                 </div>
               </PopoverContent>
             </Popover>
             <Popover placement="bottom-end">
-              <PopoverTrigger>
+              <PopoverTrigger aria-label="Open filters">
                 <Button
                   endContent={
                     <Icon className="text-small" icon="solar:filter-linear" />
@@ -335,7 +344,13 @@ export function TranslationsTable() {
         </div>
       </div>
     );
-  }, [filterValue, visibleColumns, languageFilter, confidenceFilter]);
+  }, [
+    filterValue,
+    visibleColumns,
+    languageFilter,
+    confidenceFilter,
+    languages,
+  ]);
 
   const bottomContent = useMemo(() => {
     return (
@@ -348,6 +363,7 @@ export function TranslationsTable() {
           </span>
         </div>
         <Pagination
+          aria-label="Translation table pagination"
           showControls
           classNames={{
             cursor: "bg-foreground text-background",
@@ -365,6 +381,7 @@ export function TranslationsTable() {
 
   return (
     <Table
+      aria-label="Project Translations Table"
       isHeaderSticky
       bottomContent={bottomContent}
       bottomContentPlacement="outside"
@@ -397,7 +414,7 @@ export function TranslationsTable() {
         items={sortedItems}
       >
         {(item) => (
-          <TableRow key={item.id}>
+          <TableRow key={item.value}>
             {(columnKey) => (
               <TableCell>{renderCell(item, columnKey)}</TableCell>
             )}
