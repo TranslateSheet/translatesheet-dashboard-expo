@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
   },
   contentWrapper: {
     flex: 1,
-    maxWidth: 1280,
+
     width: "100%",
     backgroundColor: "#fff",
   },

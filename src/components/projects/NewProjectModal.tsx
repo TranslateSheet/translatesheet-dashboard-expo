@@ -17,10 +17,36 @@ import {
 import { Icon } from "@iconify/react";
 import { StyleSheet, View } from "react-native";
 import { ThemedText } from "../ThemedText";
+import useCreateProject from "@/api/useCreateProject";
+import { useSession } from "@/providers/AuthContext";
 
 export function NewProjectModal() {
+  const { session } = useSession();
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
+  const { createProject, loading, error } = useCreateProject();
   const [projectName, setProjectName] = useState<string>("");
+
+  const handleCreateProject = async () => {
+    if (!projectName.trim()) {
+      alert("Please enter a project name.");
+      return;
+    }
+
+    if (!session?.user?.id) {
+      alert("User must be signed in");
+      return;
+    }
+
+    const result = await createProject({
+      name: projectName,
+      userId: session.user?.id,
+    });
+
+    if (result) {
+      alert("Project created successfully!");
+      onClose();
+    }
+  };
   return (
     <>
       <Button
@@ -86,7 +112,11 @@ export function NewProjectModal() {
                     <Button type="reset" variant="bordered">
                       Cancel
                     </Button>
-                    <Button color="primary" type="submit">
+                    <Button
+                      onPress={handleCreateProject}
+                      color="primary"
+                      type="submit"
+                    >
                       Create a project
                     </Button>
                   </View>

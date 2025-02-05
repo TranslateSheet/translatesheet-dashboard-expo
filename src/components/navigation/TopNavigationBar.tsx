@@ -70,21 +70,21 @@ export const TopNavigationBar = () => {
               </Pressable>
             </DropdownTrigger>
             <DropdownMenu aria-label="Profile Actions" variant="flat">
-              <DropdownItem key="profile">
+              <DropdownItem textValue="profile" key="profile">
                 <View style={styles.profileDropdownItem}>
                   <Text style={styles.dropdownLabelBold}>Signed in as</Text>
                   <Text style={styles.dropdownLabelBold}>{session?.user.user_metadata.full_name}</Text>
                 </View>
               </DropdownItem>
-              <DropdownItem key="settings">My Settings</DropdownItem>
-              <DropdownItem key="team_settings">Team Settings</DropdownItem>
-              <DropdownItem key="analytics">Analytics</DropdownItem>
-              <DropdownItem key="system">System</DropdownItem>
-              <DropdownItem key="configurations">Configurations</DropdownItem>
-              <DropdownItem key="help_and_feedback">
+              <DropdownItem textValue="My Settings" key="settings">My Settings</DropdownItem>
+              <DropdownItem textValue="Team Settings" key="team_settings">Team Settings</DropdownItem>
+              <DropdownItem textValue="Analytics" key="analytics">Analytics</DropdownItem>
+              <DropdownItem textValue="System" key="system">System</DropdownItem>
+              <DropdownItem textValue="Configurations" key="configurations">Configurations</DropdownItem>
+              <DropdownItem textValue="Help & Feedback" key="help_and_feedback">
                 Help & Feedback
               </DropdownItem>
-              <DropdownItem onPress={signOut} key="logout" color="danger">
+              <DropdownItem textValue="Log Out" onPress={signOut} key="logout" color="danger">
                 Log Out
               </DropdownItem>
             </DropdownMenu>

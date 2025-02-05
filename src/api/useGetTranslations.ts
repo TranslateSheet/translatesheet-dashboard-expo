@@ -1,23 +1,36 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "../../lib/supabase";
+import { Database } from "../../lib/supabase/database.types";
 
-export type Translation = {
+// A single row from "translation_keys"
+export type TranslationKeyRow =
+  Database["public"]["Tables"]["translation_keys"]["Row"];
+
+// A single row from "translations"
+export type TranslationRow = Database["public"]["Tables"]["translations"]["Row"];
+
+// If you want a truly custom flattened shape, define it explicitly:
+export interface FlattenedTranslation {
+  // from translations table
   id: number;
-  namespace: string;
-  key: string;
+  // Instead of storing as string, we’ll convert to Date
   createdAt: Date;
   lastUpdatedAt: Date | null;
   language: string;
   value: string;
   confidenceScore: number | null;
-  originalValue?: string; // <-- new
-};
+  // The translation_keys info
+  key: string;       // was "keyItem.key_name"
+  namespace: string;
+  // Additional custom field
+  originalValue?: string;
+}
 
 export const useGetTranslations = ({ projectId }: { projectId: string }) => {
   return useQuery({
     queryKey: ["translations", projectId],
-    queryFn: async (): Promise<Translation[]> => {
-      // 1) Get the primary language
+    queryFn: async (): Promise<FlattenedTranslation[]> => {
+      // 1) Fetch the project's primary_language
       const { data: projectData, error: projectError } = await supabase
         .from("projects")
         .select("primary_language")
@@ -25,80 +38,81 @@ export const useGetTranslations = ({ projectId }: { projectId: string }) => {
         .single();
 
       if (projectError) {
-        console.error("Error fetching project info:", projectError);
-        throw new Error("Failed to fetch project info.");
+        throw new Error("Failed to fetch project info");
       }
 
-      const primaryLanguage = projectData?.primary_language;
-      if (!primaryLanguage) {
-        console.warn("No primary_language set on this project.");
-      }
+      const primaryLanguage = projectData?.primary_language ?? null;
 
-      // 2) Get all translation_keys with their translations
-      const { data: translationKeysData, error: translationKeysError } = await supabase
-        .from("translation_keys")
-        .select(`
-          id,
-          namespace,
-          key_name,
-          translations (
-            language,
-            value,
-            created_at,
-            last_updated_at,
-            confidence_score
-          )
-        `)
-        .eq("project_id", projectId);
+      // 2) Fetch translation_keys and their related translations
+      const { data: translationKeysData, error: translationKeysError } =
+        await supabase
+          .from("translation_keys")
+          .select(`
+            id,
+            namespace,
+            key_name,
+            translations (
+              id,
+              key_id,
+              language,
+              value,
+              created_at,
+              last_updated_at,
+              confidence_score
+            )
+          `)
+          .eq("project_id", projectId);
 
       if (translationKeysError) {
-        console.error("Error fetching translations:", translationKeysError);
-        throw new Error("Failed to fetch translations.");
+        throw new Error("Failed to fetch translation keys");
       }
 
-      // 3) Build a map of originalValue for each key, using the primary language
-      let primaryLanguageMap = new Map<number, string>();
+      // 3) Build a map of originalValue for each key (the primary language string)
+      const primaryLanguageMap = new Map<number, string>();
+
       if (primaryLanguage) {
-        // fetch only translations that match the primary language
-        const { data: primaryLangData, error: primaryLangError } = await supabase
-          .from("translations")
-          .select("key_id, value")
-          .in(
-            "key_id",
-            translationKeysData.map((k) => k.id)
-          )
-          .eq("language", primaryLanguage);
+        const { data: primaryLangData, error: primaryLangError } =
+          await supabase
+            .from("translations")
+            .select("id, key_id, value")
+            .in("key_id", translationKeysData.map((k) => k.id))
+            .eq("language", primaryLanguage);
 
         if (primaryLangError) {
-          console.error("Error fetching primary language translations:", primaryLangError);
-          throw new Error("Failed to fetch primary language translations.");
+          throw new Error("Failed to fetch primary language translations");
         }
 
-        // create a map: keyId => originalValue
         primaryLangData?.forEach((row) => {
-          primaryLanguageMap.set(row.key_id, row.value);
+          if (row.key_id) {
+            primaryLanguageMap.set(row.key_id, row.value);
+          }
         });
       }
 
-      // 4) Flatten the nested translations structure
-      //    and attach originalValue from our map
-      const flattenedTranslations: Translation[] = translationKeysData.flatMap((keyItem) =>
-        keyItem.translations.map((translation, index) => ({
-          id: keyItem.id + index, // a pseudo ID
-          namespace: keyItem.namespace as string,
-          key: keyItem.key_name as string,
-          language: translation.language as string,
-          value: translation.value as string,
-          createdAt: new Date(translation.created_at),
-          lastUpdatedAt: translation.last_updated_at
-            ? new Date(translation.last_updated_at)
-            : null,
-          confidenceScore: translation.confidence_score || null,
-          originalValue: primaryLanguageMap.get(keyItem.id), // attach the original
-        }))
+      // 4) Flatten everything into your custom FlattenedTranslation
+      const flattened: FlattenedTranslation[] = translationKeysData.flatMap(
+        (keyItem) => {
+          return keyItem.translations.map((t) => {
+            return {
+              id: t.id,
+              // Convert string to Date
+              createdAt: t.created_at ? new Date(t.created_at) : new Date(),
+              lastUpdatedAt: t.last_updated_at
+                ? new Date(t.last_updated_at)
+                : null,
+              language: t.language,
+              value: t.value,
+              confidenceScore: t.confidence_score ?? null,
+              // from translation_keys
+              key: keyItem.key_name,
+              namespace: keyItem.namespace,
+              originalValue: primaryLanguageMap.get(keyItem.id),
+            };
+          });
+        }
       );
 
-      return flattenedTranslations;
+      return flattened;
     },
     enabled: !!projectId,
   });

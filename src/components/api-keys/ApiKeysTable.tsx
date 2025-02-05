@@ -18,6 +18,7 @@ import { format } from "date-fns";
 import { MoreVertical } from "lucide-react";
 import React, { useEffect } from "react";
 import { StyleSheet, View } from "react-native";
+import ColumnLabelTooltip from "../translations/TranslationsTable/ColumnLabelTooltip";
 
 export const columns = [
   { name: "NAME", uid: "name" },
@@ -108,7 +109,9 @@ export function ApiKeysTable() {
             key={column.uid}
             align={column.uid === "actions" ? "center" : "start"}
           >
-            {column.name}
+            <ColumnLabelTooltip description="testinggg">
+              {column.name}
+            </ColumnLabelTooltip>
           </TableColumn>
         )}
       </TableHeader>

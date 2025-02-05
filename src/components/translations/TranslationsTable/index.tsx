@@ -28,11 +28,14 @@ import React, { useMemo, useCallback, useState, useEffect } from "react";
 import { Icon } from "@iconify/react";
 import { cn } from "@heroui/react";
 
-import { Translation, useGetTranslations } from "@/api/useGetTranslations";
+import { FlattenedTranslation, useGetTranslations } from "@/api/useGetTranslations";
 import { useGlobalSearchParams } from "expo-router";
 import { getFlagEmoji } from "./helpers/getFlagEmoji";
 import { INITIAL_VISIBLE_COLUMNS, columns } from "./constants/columns";
 import { useGetProjectSupportedLanguages } from "@/api/useGetProjectSupportedLanguages";
+import { Pressable, View } from "react-native";
+import ColumnLabelTooltip from "./ColumnLabelTooltip";
+import { EditTranslationModal } from "../EditTranslationModal";
 
 export function TranslationsTable() {
   const [filterValue, setFilterValue] = useState("");
@@ -133,8 +136,8 @@ export function TranslationsTable() {
   }, [page, filteredItems, rowsPerPage]);
 
   const sortedItems = useMemo(() => {
-    return [...items].sort((a: Translation, b: Translation) => {
-      const col = sortDescriptor.column as keyof Translation;
+    return [...items].sort((a: FlattenedTranslation, b: FlattenedTranslation) => {
+      const col = sortDescriptor.column as keyof FlattenedTranslation;
       let first = a[col];
       let second = b[col];
 
@@ -150,8 +153,8 @@ export function TranslationsTable() {
   }, [sortDescriptor, items]);
 
   const renderCell = useCallback(
-    (translation: Translation, columnKey: React.Key) => {
-      const cellValue = translation[columnKey as keyof Translation];
+    (translation: FlattenedTranslation, columnKey: React.Key) => {
+      const cellValue = translation[columnKey as keyof FlattenedTranslation];
 
       switch (columnKey) {
         case "namespace":
@@ -164,6 +167,24 @@ export function TranslationsTable() {
             >
               {cellValue}
             </Chip>
+          );
+        case "key":
+          return (
+            <Tooltip
+              delay={500}
+              showArrow
+              placement="top-start"
+              content={<div className="text-small font-bold">{cellValue}</div>}
+            >
+              <Pressable
+                style={{ maxWidth: 220 }}
+                onPress={() => console.log("Á")}
+              >
+                <div className="max-w-sm overflow-hidden text-ellipsis whitespace-nowrap">
+                  {cellValue}
+                </div>
+              </Pressable>
+            </Tooltip>
           );
         case "language":
           return (
@@ -194,7 +215,7 @@ export function TranslationsTable() {
         case "createdAt":
         case "lastUpdatedAt":
           return cellValue ? (
-            <div className="flex items-center gap-1 w-500">
+            <div style={{ maxWidth: 120 }} className="flex items-center gap-1">
               <Icon
                 className="h-4 w-4 text-default-400"
                 icon="solar:calendar-minimalistic-linear"
@@ -213,25 +234,32 @@ export function TranslationsTable() {
         case "value":
           return (
             <Tooltip
+              delay={500}
+              showArrow
+              placement="top-start"
               content={
                 <div className="px-1 py-2 w-60">
+                  <div className="text-small">Original value:</div>
                   <div className="text-small font-bold">
-                    Original value: {translation.originalValue}
+                    {translation.originalValue}
                   </div>
                 </div>
               }
             >
-              <div className="max-w-md overflow-hidden text-ellipsis whitespace-nowrap">
-                {cellValue}
-              </div>
+              <Pressable
+                style={{ maxWidth: 220 }}
+                onPress={() => console.log("Á")}
+              >
+                <div className="max-w-sm overflow-hidden text-ellipsis whitespace-nowrap">
+                  {cellValue}
+                </div>
+              </Pressable>
             </Tooltip>
           );
         case "actions":
           return (
             <div className="flex items-center justify-end gap-2">
-              <Button isIconOnly size="sm" variant="light">
-                <Icon className="h-4 w-4" icon="solar:pen-2-linear" />
-              </Button>
+              <EditTranslationModal translation={translation} />
               <Button isIconOnly size="sm" variant="light">
                 <Icon className="h-4 w-4" icon="solar:trash-bin-trash-linear" />
               </Button>
@@ -402,6 +430,7 @@ export function TranslationsTable() {
             key={column.uid}
             align={column.uid === "actions" ? "center" : "start"}
             allowsSorting={column.sortable}
+            minWidth={800}
           >
             {column.name}
           </TableColumn>
@@ -414,7 +443,7 @@ export function TranslationsTable() {
         items={sortedItems}
       >
         {(item) => (
-          <TableRow key={item.value}>
+          <TableRow key={item.id}>
             {(columnKey) => (
               <TableCell>{renderCell(item, columnKey)}</TableCell>
             )}
