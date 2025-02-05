@@ -83,7 +83,6 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   icon: {
-    pointerEvents: "none",
     fontSize: 24,
     color: "#999",
   },
