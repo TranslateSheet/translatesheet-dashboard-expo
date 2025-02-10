@@ -9,18 +9,14 @@ import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
 import "react-native-reanimated";
 import { Drawer } from "expo-router/drawer";
-// import { HeroUIProvider } from "@heroui/react";
 import { Text } from "react-native";
 
 import { useColorScheme } from "@/hooks/useColorScheme";
-import { TopNavigationBar } from "@/components/navigation/TopNavigationBar";
 import { CustomDrawerContent } from "@/components/navigation/CustomDrawerContent";
 import { useSession } from "@/providers/AuthContext";
-import { Redirect } from "expo-router";
+import { Redirect, useGlobalSearchParams, usePathname } from "expo-router";
 import { useIsDesktop } from "@/hooks/useIsDesktop";
-
-// Prevent the splash screen from auto-hiding before asset loading is complete.
-SplashScreen.preventAutoHideAsync();
+import { TopNavigationBar } from "@/components/navigation/TopNavigationBar";
 
 export default function HomeLayout() {
   const colorScheme = useColorScheme();
@@ -29,6 +25,7 @@ export default function HomeLayout() {
     SpaceMono: require("@/assets/fonts/SpaceMono-Regular.ttf"),
   });
   const { session, isLoading: isSessionLoading } = useSession();
+  const pathname = usePathname();
 
   useEffect(() => {
     if (loaded) {
@@ -38,6 +35,11 @@ export default function HomeLayout() {
 
   // You can keep the splash screen open, or render a loading screen like we do here.
   if (isSessionLoading || !loaded) {
+    return <Text>Loading...</Text>;
+  }
+
+  if (typeof window === "undefined") {
+    // Server (static build) environment => skip session check
     return <Text>Loading...</Text>;
   }
 
@@ -51,6 +53,7 @@ export default function HomeLayout() {
 
   return (
     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+      <TopNavigationBar />
       <Drawer
         screenOptions={{
           drawerType: isDesktop ? "permanent" : "front",
@@ -58,6 +61,7 @@ export default function HomeLayout() {
           drawerStyle: {
             width: 290,
             padding: 16,
+            display: pathname.includes("project") ? "none" : "flex",
           },
         }}
         drawerContent={(props) => <CustomDrawerContent {...props} />}
@@ -74,8 +78,13 @@ export default function HomeLayout() {
             drawerLabel: "Billing",
           }}
         />
+        <Drawer.Screen
+          name="project"
+          options={{
+            drawerItemStyle: {display: "none"}
+          }}
+        />
       </Drawer>
-      <StatusBar style="auto" />
     </ThemeProvider>
   );
 }

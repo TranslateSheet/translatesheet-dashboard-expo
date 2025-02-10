@@ -58,20 +58,25 @@ export const CustomDrawerContent = (props: DrawerContentComponentProps) => {
           </Pressable>
         )}
         <View style={{ gap: 4 }}>
-          {state.routes.map((route) => (
-            <DrawerItem
-              //   activeTintColor="green"
-              activeBackgroundColor="rgba(0, 0, 0, 0.1)"
-              key={route.key}
-              label={({ focused }) => renderLabel(focused, route)}
-              onPress={() => props.navigation.navigate(route.name)}
-              focused={state.index === state.routes.indexOf(route)}
-              icon={() => (
-                <Icon icon={getIconForRoute(route.name)} style={styles.icon} />
-              )}
-              style={styles.drawerItem}
-            />
-          ))}
+          {state.routes
+            .filter((route) => route.name !== "project")
+            .map((route) => (
+              <DrawerItem
+                //   activeTintColor="green"
+                activeBackgroundColor="rgba(0, 0, 0, 0.1)"
+                key={route.key}
+                label={({ focused }) => renderLabel(focused, route)}
+                onPress={() => props.navigation.navigate(route.name)}
+                focused={state.index === state.routes.indexOf(route)}
+                icon={() => (
+                  <Icon
+                    icon={getIconForRoute(route.name)}
+                    style={styles.icon}
+                  />
+                )}
+                style={styles.drawerItem}
+              />
+            ))}
         </View>
       </DrawerContentScrollView>
       <DrawerItem

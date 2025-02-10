@@ -8,7 +8,6 @@ import { useSession } from "@/providers/AuthContext";
 import { Redirect } from "expo-router";
 
 export default function SignInScreen() {
-  const [isVisible, setIsVisible] = React.useState(false);
   const { signIn, isLoading, session } = useSession();
 
   if (!isLoading && session) {
