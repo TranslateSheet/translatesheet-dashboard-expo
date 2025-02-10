@@ -14,7 +14,22 @@ import { CustomDrawerContent } from "@/components/navigation/CustomDrawerContent
 import { useSession } from "@/providers/AuthContext";
 import { Redirect } from "expo-router";
 import { useIsDesktop } from "@/hooks/useIsDesktop";
+import { supabaseAdmin } from "../../../../../lib/supabase";
 
+export async function generateStaticParams() {
+  const { data: projects, error } = await supabaseAdmin
+    .from("projects")
+    .select("id");
+
+  if (error || !projects) {
+    console.warn("No projects found:", error);
+    return [];
+  }
+
+  return projects.map((p: { id: string }) => ({
+    projectId: p.id,
+  }));
+}
 
 export default function ProjectLayout() {
   const colorScheme = useColorScheme();
@@ -23,7 +38,6 @@ export default function ProjectLayout() {
     SpaceMono: require("@/assets/fonts/SpaceMono-Regular.ttf"),
   });
   const { session, isLoading: isSessionLoading } = useSession();
-
 
   // You can keep the splash screen open, or render a loading screen like we do here.
   if (isSessionLoading || !loaded) {
@@ -52,7 +66,7 @@ export default function ProjectLayout() {
         drawerContent={(props) => <CustomDrawerContent {...props} />}
       >
         <Drawer.Screen
-          name='index'
+          name="index"
           options={{
             drawerLabel: "Translations",
           }}

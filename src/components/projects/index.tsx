@@ -1,14 +1,8 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
 import React from "react";
 import { ProjectCard } from "./ProjectCard";
 import useGetUserProjects from "@/api/useGetUserProjects";
 
-const dummyProjects = [
-  { title: "PlaySpot" },
-  { title: "Know App" },
-  { title: "NTWRK" },
-  { title: "Your moms pussy" },
-];
 
 export function Projects() {
   const { projects } = useGetUserProjects();

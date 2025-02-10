@@ -5,6 +5,7 @@ import { TranslationsTable } from "@/components/translations/TranslationsTable";
 import { Spacer } from "@heroui/react";
 import { UpdateTranslationsButton } from "@/components/translations/UpdateTranslationsButton";
 
+
 export default function ProjectHome() {
   return (
     <PageContainer>
