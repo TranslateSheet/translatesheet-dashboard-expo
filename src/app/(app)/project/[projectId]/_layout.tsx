@@ -14,7 +14,6 @@ import { CustomDrawerContent } from "@/components/navigation/CustomDrawerContent
 import { useSession } from "@/providers/AuthContext";
 import { Redirect } from "expo-router";
 import { useIsDesktop } from "@/hooks/useIsDesktop";
-import useGetUserProjects from "@/api/useGetUserProjects";
 
 
 export default function ProjectLayout() {
