@@ -1,9 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "../../lib/supabase";
-import { Database } from "../../lib/supabase/database.types";
-
-type TranslationUpdate = Database["public"]["Tables"]["translations"]["Update"];
-type TranslationRow = Database["public"]["Tables"]["translations"]["Row"];
+import { TranslationRow, TranslationUpdate } from "./types";
 
 interface UpdateTranslationVars {
   translationId: number;

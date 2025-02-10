@@ -16,15 +16,16 @@ import {
   ModalContent,
   useDisclosure,
   CardBody,
-  CardHeader,
   Spacer,
   ModalHeader,
 } from "@heroui/react";
 import { Icon } from "@iconify/react";
 import { StyleSheet } from "react-native";
+import useAddProjectMember from "@/api/useAddProjectMember";
 
 export function NewProjectMemberModal() {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
+  const { addProjectMember } = useAddProjectMember();
   const [selectedKeys, setSelectedKeys] = React.useState<Selection>(
     new Set(["can-view"])
   );
@@ -33,6 +34,12 @@ export function NewProjectMemberModal() {
     "can-view": "Can View",
     "can-edit": "Can Edit",
   };
+
+  const handleAddNewMember = async () => {
+    // TODO: role needs to be conditional
+    await addProjectMember({ projectMemberRole: "owner" });
+  };
+
   return (
     <>
       <Button
@@ -100,7 +107,12 @@ export function NewProjectMemberModal() {
                       placeholder="Email comma separated"
                       type="email"
                     />
-                    <Button color="primary" size="md" type="submit">
+                    <Button
+                      onPress={handleAddNewMember}
+                      color="primary"
+                      size="md"
+                      type="submit"
+                    >
                       Invite
                     </Button>
                   </Form>

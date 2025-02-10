@@ -1,12 +1,10 @@
 import { useState, useEffect } from "react";
-import { Database } from "../../lib/supabase/database.types";
 import { supabase } from "../../lib/supabase";
 import { useSession } from "@/providers/AuthContext";
-
-type ProjectDetails = Database["public"]["Tables"]["projects"]["Row"];
+import { ProjectsRow } from "./types";
 
 const useGetUserProjects = () => {
-  const [projects, setProjects] = useState<ProjectDetails[] | null>(null);
+  const [projects, setProjects] = useState<ProjectsRow[] | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const { session } = useSession();
@@ -23,12 +21,11 @@ const useGetUserProjects = () => {
       setError(null);
 
       try {
-        // Fetch projects directly without project_id
         const { data, error: supabaseError } = await supabase
           .from("project_members")
           .select(
             `
-            projects (id, name, created_at, updated_at)
+            projects (id, name, created_at, updated_at, primary_language)
           `
           )
           .eq("user_id", session.user.id);
@@ -46,7 +43,6 @@ const useGetUserProjects = () => {
         // Extract the projects field directly
         const projectList = data.map((entry) => entry.projects);
         setProjects(projectList);
-
       } catch (err: any) {
         setError(err.message || "An unknown error occurred");
       } finally {

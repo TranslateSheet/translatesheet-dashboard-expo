@@ -1,12 +1,10 @@
 import { useEffect, useState } from "react";
-import { Database } from "../../lib/supabase/database.types";
 import { supabase } from "../../lib/supabase";
-
-type UserProfile = Database["public"]["Tables"]["profiles"]["Row"];
+import { UserProfileRow } from "./types";
 
 const useGetUserProfile = () => {
   const { user } = useAuth();
-  const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
+  const [userProfile, setUserProfile] = useState<UserProfileRow | null>(null);
 
   useEffect(() => {
     const getUserProfile = async () => {

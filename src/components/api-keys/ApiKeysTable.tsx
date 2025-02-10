@@ -1,4 +1,4 @@
-import useGetProjectApiKey from "@/api/useGetProjectApiKey";
+import useGetProjectApiKeys from "@/api/useGetProjectApiKeys";
 import {
   Button,
   Chip,
@@ -13,19 +13,17 @@ import {
   TableHeader,
   TableRow,
 } from "@heroui/react";
-//   import useGetProjectApiKey from 'api/useGetProjectApiKey';
-import { format } from "date-fns";
 import { MoreVertical } from "lucide-react";
-import React, { useEffect } from "react";
+import React from "react";
 import { StyleSheet, View } from "react-native";
 import ColumnLabelTooltip from "../translations/TranslationsTable/ColumnLabelTooltip";
 
 export const columns = [
   { name: "NAME", uid: "name" },
-  { name: "SECRET KEY", uid: "secretKey" },
-  { name: "CREATED", uid: "created" },
-  { name: "LAST USED", uid: "lastUsed" },
-  { name: "STATUS", uid: "status" },
+  { name: "KEY", uid: "key" },
+  { name: "CREATED AT", uid: "created_at" },
+  { name: "LAST USED AT", uid: "last_used_at" },
+  { name: "STATUS", uid: "is_active" },
   { name: "ACTIONS", uid: "actions" },
 ];
 
@@ -36,21 +34,21 @@ const statusColorMap = {
 };
 
 export function ApiKeysTable() {
-  const { apiKey, loading: apiKeysLoading, error } = useGetProjectApiKey();
+  const { apiKeys, loading: apiKeysLoading, error } = useGetProjectApiKeys();
 
   // TODO: this will eventually come from the hook^ when we have multiple keys per project
-  const realTokens = [
-    apiKey && {
-      name: apiKey.name,
-      id: apiKey.id,
-      secretKey: apiKey.key,
-      created: format(new Date(apiKey.created_at), "MMM d, yyyy"),
-      lastUsed: apiKey.last_used_at
-        ? format(new Date(apiKey.last_used_at), "MMM d, yyyy")
-        : "-",
-      status: apiKey.is_active ? "active" : "disabled",
-    },
-  ];
+  // const realTokens = [
+  //   apiKey && {
+  //     name: apiKey.name,
+  //     id: apiKey.id,
+  //     secretKey: apiKey.key,
+  //     created: format(new Date(apiKey.created_at), "MMM d, yyyy"),
+  //     lastUsed: apiKey.last_used_at
+  //       ? format(new Date(apiKey.last_used_at), "MMM d, yyyy")
+  //       : "-",
+  //     status: apiKey.is_active ? "active" : "disabled",
+  //   },
+  // ];
 
   const renderCell = React.useCallback(
     ({ token, columnKey }: { token: any; columnKey: any }) => {
@@ -59,11 +57,11 @@ export function ApiKeysTable() {
       switch (columnKey) {
         case "name":
           return <p className="text-bold text-sm capitalize">{cellValue}</p>;
-        case "secretKey":
+        case "key":
           return <p className="text-bold text-sm capitalize">{cellValue}</p>;
-        case "lastUsed":
+        case "last_used_at":
           return <p className="text-bold text-sm capitalize">{cellValue}</p>;
-        case "created":
+        case "created_at":
           return <p className="text-bold text-sm capitalize">{cellValue}</p>;
         case "status":
           return (
@@ -117,7 +115,7 @@ export function ApiKeysTable() {
       </TableHeader>
       <TableBody
         emptyContent={apiKeysLoading ? "loading..." : "No rows to display."}
-        items={realTokens}
+        items={apiKeys}
       >
         {(item) => (
           <TableRow key={item?.id}>

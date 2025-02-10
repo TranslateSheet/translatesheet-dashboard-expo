@@ -1,10 +1,13 @@
 import { supabase } from "../../../lib/supabase";
 
-
-const BASE_URL = "https://api.translatesheet.co/";
+const BASE_URL =
+  process.env.NODE_ENV === "development"
+    ? "http://localhost:3000/"
+    : "https://app.translatesheet.co/";
 
 const apiFetch = async (
-  endpoint: string, // The endpoint after the base URL (e.g., "/api-key/create")
+  // TODO: endpoints should be strictly typed
+  endpoint: string, // The endpoint after the base URL (e.g., "api-key/create")
   options: {
     method?: "GET" | "POST" | "PUT" | "DELETE";
     body?: Record<string, any>;
@@ -13,7 +16,9 @@ const apiFetch = async (
   const { method = "GET", body } = options;
 
   // Fetch the session and access token from Supabase
-  const { data: { session } } = await supabase.auth.getSession();
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
 
   if (!session) {
     throw new Error("User is not authenticated.");

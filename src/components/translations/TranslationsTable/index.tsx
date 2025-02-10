@@ -28,7 +28,10 @@ import React, { useMemo, useCallback, useState, useEffect } from "react";
 import { Icon } from "@iconify/react";
 import { cn } from "@heroui/react";
 
-import { FlattenedTranslation, useGetTranslations } from "@/api/useGetTranslations";
+import {
+  FlattenedTranslation,
+  useGetTranslations,
+} from "@/api/useGetTranslations";
 import { useGlobalSearchParams } from "expo-router";
 import { getFlagEmoji } from "./helpers/getFlagEmoji";
 import { INITIAL_VISIBLE_COLUMNS, columns } from "./constants/columns";
@@ -78,13 +81,13 @@ export function TranslationsTable() {
   }, [visibleColumns, sortDescriptor]);
 
   const itemFilter = useCallback(
-    (translation: Translation) => {
+    (translation: FlattenedTranslation) => {
       const allLanguages = languageFilter === "all";
       const allNamespaces = namespaceFilter === "all";
       const allConfidence = confidenceFilter === "all";
 
       let confidenceMatch = true;
-      if (!allConfidence) {
+      if (!allConfidence && translation.confidenceScore) {
         switch (confidenceFilter) {
           case "high":
             confidenceMatch = translation.confidenceScore >= 9;
@@ -110,7 +113,7 @@ export function TranslationsTable() {
   );
 
   const filteredItems = useMemo(() => {
-    let filteredTranslations = translationData ? [...translationData] : [];
+    let filteredTranslations = translationData ?? [];
 
     if (filterValue) {
       filteredTranslations = filteredTranslations.filter(
@@ -136,20 +139,22 @@ export function TranslationsTable() {
   }, [page, filteredItems, rowsPerPage]);
 
   const sortedItems = useMemo(() => {
-    return [...items].sort((a: FlattenedTranslation, b: FlattenedTranslation) => {
-      const col = sortDescriptor.column as keyof FlattenedTranslation;
-      let first = a[col];
-      let second = b[col];
+    return [...items].sort(
+      (a: FlattenedTranslation, b: FlattenedTranslation) => {
+        const col = sortDescriptor.column as keyof FlattenedTranslation;
+        let first = a[col];
+        let second = b[col];
 
-      if (col === "createdAt" || col === "lastUpdatedAt") {
-        first = first ? new Date(first).getTime() : 0;
-        second = second ? new Date(second).getTime() : 0;
+        if (col === "createdAt" || col === "lastUpdatedAt") {
+          first = first ? new Date(first).getTime() : 0;
+          second = second ? new Date(second).getTime() : 0;
+        }
+
+        const cmp = first < second ? -1 : first > second ? 1 : 0;
+
+        return sortDescriptor.direction === "descending" ? -cmp : cmp;
       }
-
-      const cmp = first < second ? -1 : first > second ? 1 : 0;
-
-      return sortDescriptor.direction === "descending" ? -cmp : cmp;
-    });
+    );
   }, [sortDescriptor, items]);
 
   const renderCell = useCallback(
@@ -220,13 +225,7 @@ export function TranslationsTable() {
                 className="h-4 w-4 text-default-400"
                 icon="solar:calendar-minimalistic-linear"
               />
-              <span>
-                {new Intl.DateTimeFormat("en-US", {
-                  month: "short",
-                  day: "numeric",
-                  year: "numeric",
-                }).format(new Date(cellValue))}
-              </span>
+              <span>{cellValue}</span>
             </div>
           ) : (
             <span className="text-default-400">-</span>

@@ -3,9 +3,6 @@
 import React, { useState } from "react";
 import {
   Button,
-  Card,
-  CardBody,
-  CardHeader,
   Divider,
   Form,
   Input,
@@ -17,13 +14,12 @@ import {
 import { Icon } from "@iconify/react";
 import { StyleSheet, View } from "react-native";
 import { ThemedText } from "../ThemedText";
-import useCreateProject from "@/api/useCreateProject";
 import { useSession } from "@/providers/AuthContext";
+import apiFetch from "@/api/utils/apiFetch";
 
 export function NewProjectModal() {
   const { session } = useSession();
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
-  const { createProject, loading, error } = useCreateProject();
   const [projectName, setProjectName] = useState<string>("");
 
   const handleCreateProject = async () => {
@@ -37,16 +33,17 @@ export function NewProjectModal() {
       return;
     }
 
-    const result = await createProject({
-      name: projectName,
-      userId: session.user?.id,
+    const res = await apiFetch("projects/create", {
+      method: "POST",
+      body: { name: projectName },
     });
 
-    if (result) {
+    if (res) {
       alert("Project created successfully!");
       onClose();
     }
   };
+
   return (
     <>
       <Button
@@ -112,11 +109,7 @@ export function NewProjectModal() {
                     <Button type="reset" variant="bordered">
                       Cancel
                     </Button>
-                    <Button
-                      onPress={handleCreateProject}
-                      color="primary"
-                      type="submit"
-                    >
+                    <Button onPress={handleCreateProject} color="primary">
                       Create a project
                     </Button>
                   </View>

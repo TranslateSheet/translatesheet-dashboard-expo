@@ -1,26 +1,18 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "../../lib/supabase";
-import { Database } from "../../lib/supabase/database.types";
-
-// A single row from "translation_keys"
-export type TranslationKeyRow =
-  Database["public"]["Tables"]["translation_keys"]["Row"];
-
-// A single row from "translations"
-export type TranslationRow = Database["public"]["Tables"]["translations"]["Row"];
 
 // If you want a truly custom flattened shape, define it explicitly:
 export interface FlattenedTranslation {
   // from translations table
   id: number;
   // Instead of storing as string, we’ll convert to Date
-  createdAt: Date;
-  lastUpdatedAt: Date | null;
+  createdAt: string;
+  lastUpdatedAt: string | null;
   language: string;
   value: string;
   confidenceScore: number | null;
   // The translation_keys info
-  key: string;       // was "keyItem.key_name"
+  key: string; // was "keyItem.key_name"
   namespace: string;
   // Additional custom field
   originalValue?: string;
@@ -47,7 +39,8 @@ export const useGetTranslations = ({ projectId }: { projectId: string }) => {
       const { data: translationKeysData, error: translationKeysError } =
         await supabase
           .from("translation_keys")
-          .select(`
+          .select(
+            `
             id,
             namespace,
             key_name,
@@ -60,7 +53,8 @@ export const useGetTranslations = ({ projectId }: { projectId: string }) => {
               last_updated_at,
               confidence_score
             )
-          `)
+          `
+          )
           .eq("project_id", projectId);
 
       if (translationKeysError) {
@@ -75,7 +69,10 @@ export const useGetTranslations = ({ projectId }: { projectId: string }) => {
           await supabase
             .from("translations")
             .select("id, key_id, value")
-            .in("key_id", translationKeysData.map((k) => k.id))
+            .in(
+              "key_id",
+              translationKeysData.map((k) => k.id)
+            )
             .eq("language", primaryLanguage);
 
         if (primaryLangError) {
@@ -89,6 +86,9 @@ export const useGetTranslations = ({ projectId }: { projectId: string }) => {
         });
       }
 
+      {
+      }
+
       // 4) Flatten everything into your custom FlattenedTranslation
       const flattened: FlattenedTranslation[] = translationKeysData.flatMap(
         (keyItem) => {
@@ -96,9 +96,23 @@ export const useGetTranslations = ({ projectId }: { projectId: string }) => {
             return {
               id: t.id,
               // Convert string to Date
-              createdAt: t.created_at ? new Date(t.created_at) : new Date(),
+              createdAt: t.created_at
+                ? new Intl.DateTimeFormat("en-US", {
+                    month: "short",
+                    day: "numeric",
+                    year: "numeric",
+                  }).format(new Date(new Date(t.created_at)))
+                : new Intl.DateTimeFormat("en-US", {
+                    month: "short",
+                    day: "numeric",
+                    year: "numeric",
+                  }).format(new Date(new Date())),
               lastUpdatedAt: t.last_updated_at
-                ? new Date(t.last_updated_at)
+                ? new Intl.DateTimeFormat("en-US", {
+                    month: "short",
+                    day: "numeric",
+                    year: "numeric",
+                  }).format(new Date(new Date(t.last_updated_at)))
                 : null,
               language: t.language,
               value: t.value,

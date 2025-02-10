@@ -40,11 +40,6 @@ export function SessionProvider({ children }: PropsWithChildren) {
   const signIn = async () => {
     console.log(process.env.NODE_ENV);
     try {
-      const redirectUrl =
-        process.env.NODE_ENV === "development"
-          ? "http://localhost:8081/" // This should match your Expo dev server port
-          : "https://app.translatesheet.co/";
-
       const { error } = await supabase.auth.signInWithOAuth({
         provider: "github",
         options: {

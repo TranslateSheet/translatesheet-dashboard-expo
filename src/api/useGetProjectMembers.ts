@@ -1,52 +1,75 @@
-import { useState, useEffect } from "react";
-import { useGlobalSearchParams } from "expo-router";
+import { useQuery } from "@tanstack/react-query";
 import { supabase } from "../../lib/supabase";
-import { Database } from "../../lib/supabase/database.types";
+import { useGlobalSearchParams } from "expo-router";
+// If you generated types from your DB, import them here
+// import { Database } from "../../lib/supabase/database.types";
 
-// Automatically infer the CombinedProjectMember type from the database
-export type CombinedProjectMember = Database["public"]["Views"]["combined_project_members"]["Row"];
+// Example TypeScript definitions (adjust for your schema)
+// type ProjectMemberRow = Database["public"]["Tables"]["project_members"]["Row"];
+// type ProfileRow = Database["public"]["Tables"]["profiles"]["Row"];
 
-const useGetProjectMembers = () => {
+/**
+ * Example shape of combined project_members + profile data
+ */
+export interface ProjectMemberProfile {
+  id: string; // project_members.id
+  role: string | null; // e.g. "owner" | "admin" | "editor"...
+  user_id: string; // The Supabase user ID
+  profile?: {
+    full_name: string | null;
+    avatar_url: string | null;
+    email: string | null;
+    // ... other fields from the "profiles" table
+  };
+}
+
+export function useGetProjectMembers() {
   const { projectId } = useGlobalSearchParams<{ projectId: string }>();
-  const [combinedMembers, setCombinedMembers] = useState<CombinedProjectMember[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  return useQuery<ProjectMemberProfile[]>({
+    queryKey: ["projectMembers", projectId],
+    queryFn: async () => {
+      if (!projectId) return [];
 
-  useEffect(() => {
-    if (!projectId) {
-      setError("Project ID is required.");
-      setCombinedMembers([]);
-      return;
-    }
+      // SELECT from "project_members" and JOIN with the "profiles" table
+      // Using Supabase's relationship syntax or an explicit join
+      const { data, error } = await supabase
+        .from("project_members")
+        .select(
+          `
+          id,
+          role,
+          user_id,
+          profiles (
+            full_name,
+            avatar_url,
+            email
+          )
+        `
+        )
+        .eq("project_id", projectId);
 
-    const fetchProjectMembers = async () => {
-      setLoading(true);
-      setError(null);
-
-      try {
-        // Fetch data from the view using inferred types
-        const { data, error } = await supabase
-          .from("combined_project_members")
-          .select("*")
-          .eq("project_id", projectId);
-
-        if (error) {
-          throw new Error(error.message);
-        }
-
-        setCombinedMembers(data || []);
-      } catch (err: any) {
-        setError(err.message || "An unknown error occurred.");
-        setCombinedMembers([]);
-      } finally {
-        setLoading(false);
+      if (error) {
+        console.error("Error fetching project members:", error);
+        throw new Error(error.message);
       }
-    };
 
-    fetchProjectMembers();
-  }, [projectId]);
+      // Transform the data if you want a cleaner shape
+      const members: ProjectMemberProfile[] =
+        data?.map((row: any) => ({
+          id: row.id,
+          role: row.role,
+          user_id: row.user_id,
+          profile: row.profiles
+            ? {
+                full_name: row.profiles.full_name,
+                avatar_url: row.profiles.avatar_url,
+                email: row.profiles.email,
+              }
+            : undefined,
+        })) || [];
 
-  return { combinedMembers, loading, error };
-};
-
-export default useGetProjectMembers;
+      return members;
+    },
+    enabled: !!projectId,
+  });
+}

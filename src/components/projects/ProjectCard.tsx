@@ -1,11 +1,9 @@
 import React from "react";
 import { Card, CardBody } from "@heroui/react";
-import { Link, useRouter } from "expo-router";
-import { Database } from "../../../lib/supabase/database.types";
+import { useRouter } from "expo-router";
+import { ProjectsRow } from "@/api/types";
 
-type Project = Database["public"]["Tables"]["projects"]["Row"];
-
-export function ProjectCard({ project }: { project: Project }) {
+export function ProjectCard({ project }: { project: ProjectsRow }) {
   const router = useRouter();
   return (
     <Card isPressable className={"border-small"} shadow="sm">

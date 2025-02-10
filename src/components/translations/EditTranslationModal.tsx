@@ -17,13 +17,8 @@ import {
   useDisclosure,
 } from "@heroui/react";
 import { Icon } from "@iconify/react";
-import { StyleSheet, TextInput, View } from "react-native";
-import { ThemedText } from "../ThemedText";
-import useCreateProject from "@/api/useCreateProject";
-import { useSession } from "@/providers/AuthContext";
 import { FlattenedTranslation } from "@/api/useGetTranslations";
 import { useUpdateTranslation } from "@/api/useUpdateTranslation";
-import { isLoading } from "expo-font";
 import CellValue from "./CellValue";
 
 export function EditTranslationModal({

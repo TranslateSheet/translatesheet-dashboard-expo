@@ -3,25 +3,24 @@ import React from "react";
 import { Card, CardBody, Button, CardFooter, Divider } from "@heroui/react";
 
 import { UserCell } from "./UserCell";
+import { useGetProjectMembers } from "@/api/useGetProjectMembers";
 
-import useGetProjectMembers, {
-  CombinedProjectMember,
-} from "@/api/useGetProjectMembers";
 
 export function ProjectMembers(props: CardProps) {
-  const { combinedMembers, loading, error } = useGetProjectMembers();
+  const { data: members, isLoading, error } = useGetProjectMembers();
 
-  console.log({ combinedMembers });
+  console.log(members)
 
-  if (loading) {
+
+  if (isLoading) {
     return <div>Loading project members...</div>;
   }
 
   if (error) {
-    return <div>Error: {error}</div>;
+    return <div>Error: {error.message}</div>;
   }
 
-  if (combinedMembers.length === 0) {
+  if (members?.length === 0) {
     return <div>No project members found.</div>;
   }
 
@@ -29,13 +28,13 @@ export function ProjectMembers(props: CardProps) {
     <Card className="w-full" {...props}>
       <CardBody>
         <div className="mt-2 flex flex-col gap-2">
-          {combinedMembers.map((member: CombinedProjectMember) => (
+          {members?.map((member) => (
             <React.Fragment key={member.id}>
               <UserCell
                 avatar={
-                  member.avatar_url || "https://i.pravatar.cc/150?u=default"
+                  member.profile?.avatar_url || "https://i.pravatar.cc/150?u=default"
                 }
-                name={member.full_name || "Unknown User"}
+                name={member.profile?.full_name || "Unknown User"}
                 permission={member.role || "Can view"}
               />
               <Divider />
