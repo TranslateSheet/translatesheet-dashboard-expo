@@ -4,12 +4,9 @@ import {
   ThemeProvider,
 } from "@react-navigation/native";
 import { useFonts } from "expo-font";
-import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
-import { useEffect } from "react";
 import "react-native-reanimated";
 import { Drawer } from "expo-router/drawer";
-// import { HeroUIProvider } from "@heroui/react";
 import { Text } from "react-native";
 
 import { useColorScheme } from "@/hooks/useColorScheme";
@@ -17,9 +14,8 @@ import { CustomDrawerContent } from "@/components/navigation/CustomDrawerContent
 import { useSession } from "@/providers/AuthContext";
 import { Redirect } from "expo-router";
 import { useIsDesktop } from "@/hooks/useIsDesktop";
+import useGetUserProjects from "@/api/useGetUserProjects";
 
-// Prevent the splash screen from auto-hiding before asset loading is complete.
-SplashScreen.preventAutoHideAsync();
 
 export default function ProjectLayout() {
   const colorScheme = useColorScheme();
@@ -29,11 +25,6 @@ export default function ProjectLayout() {
   });
   const { session, isLoading: isSessionLoading } = useSession();
 
-  useEffect(() => {
-    if (loaded) {
-      SplashScreen.hideAsync();
-    }
-  }, [loaded]);
 
   // You can keep the splash screen open, or render a loading screen like we do here.
   if (isSessionLoading || !loaded) {
