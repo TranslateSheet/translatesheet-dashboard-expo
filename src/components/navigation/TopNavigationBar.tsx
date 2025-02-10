@@ -42,17 +42,17 @@ export const TopNavigationBar = () => {
       {/* Right Menu */}
       <NavbarContent style={styles.rightContent}>
         {/* Theme change */}
-        <NavbarItem style={styles.navbarItem}>
+        {/* <NavbarItem style={styles.navbarItem}>
           <Button isIconOnly radius="full" variant="light">
             <Icon icon="solar:sun-linear" width={24} color="white" />
           </Button>
-        </NavbarItem>
+        </NavbarItem> */}
         {/* Settings */}
-        <NavbarItem style={styles.navbarItem}>
+        {/* <NavbarItem style={styles.navbarItem}>
           <Button isIconOnly radius="full" variant="light">
             <Icon icon="solar:settings-linear" width={24} color="white" />
           </Button>
-        </NavbarItem>
+        </NavbarItem> */}
         {/* User Menu */}
         <NavbarItem style={styles.userMenuItem}>
           <Dropdown placement="bottom-end">
@@ -65,7 +65,10 @@ export const TopNavigationBar = () => {
                   placement="bottom-right"
                   shape="circle"
                 >
-                  <Avatar size="sm" src={session?.user.user_metadata.avatar_url} />
+                  <Avatar
+                    size="sm"
+                    src={session?.user.user_metadata.avatar_url}
+                  />
                 </Badge>
               </Pressable>
             </DropdownTrigger>
@@ -73,18 +76,25 @@ export const TopNavigationBar = () => {
               <DropdownItem textValue="profile" key="profile">
                 <View style={styles.profileDropdownItem}>
                   <Text style={styles.dropdownLabelBold}>Signed in as</Text>
-                  <Text style={styles.dropdownLabelBold}>{session?.user.user_metadata.full_name}</Text>
+                  <Text style={styles.dropdownLabelBold}>
+                    {session?.user.user_metadata.full_name}
+                  </Text>
                 </View>
               </DropdownItem>
-              <DropdownItem textValue="My Settings" key="settings">My Settings</DropdownItem>
+              {/* <DropdownItem textValue="My Settings" key="settings">My Settings</DropdownItem>
               <DropdownItem textValue="Team Settings" key="team_settings">Team Settings</DropdownItem>
               <DropdownItem textValue="Analytics" key="analytics">Analytics</DropdownItem>
               <DropdownItem textValue="System" key="system">System</DropdownItem>
               <DropdownItem textValue="Configurations" key="configurations">Configurations</DropdownItem>
               <DropdownItem textValue="Help & Feedback" key="help_and_feedback">
                 Help & Feedback
-              </DropdownItem>
-              <DropdownItem textValue="Log Out" onPress={signOut} key="logout" color="danger">
+              </DropdownItem> */}
+              <DropdownItem
+                textValue="Log Out"
+                onPress={signOut}
+                key="logout"
+                color="danger"
+              >
                 Log Out
               </DropdownItem>
             </DropdownMenu>
