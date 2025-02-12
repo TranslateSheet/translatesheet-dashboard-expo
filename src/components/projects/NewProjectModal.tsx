@@ -16,9 +16,11 @@ import { StyleSheet, View } from "react-native";
 import { ThemedText } from "../ThemedText";
 import { useSession } from "@/providers/AuthContext";
 import apiFetch from "@/api/utils/apiFetch";
+import useGetUserProjects from "@/api/useGetUserProjects";
 
 export function NewProjectModal() {
   const { session } = useSession();
+  const { refetch: refetchUserProjects } = useGetUserProjects();
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
   const [projectName, setProjectName] = useState<string>("");
 
@@ -39,7 +41,7 @@ export function NewProjectModal() {
     });
 
     if (res) {
-      alert("Project created successfully!");
+      refetchUserProjects();
       onClose();
     }
   };

@@ -5,11 +5,11 @@ import useGetUserProjects from "@/api/useGetUserProjects";
 
 
 export function Projects() {
-  const { projects } = useGetUserProjects();
+  const projects = useGetUserProjects();
   return (
     <View style={styles.container}>
       <View style={styles.cardContainer}>
-        {projects?.map((project) => (
+        {projects?.data?.map((project) => (
           <View key={project.name} style={styles.cardWrapper}>
             <ProjectCard project={project} />
           </View>

@@ -1,59 +1,34 @@
-import { useState, useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { supabase } from "../../lib/supabase";
 import { useSession } from "@/providers/AuthContext";
 import { ProjectsRow } from "./types";
 
+const fetchUserProjects = async (userId: string) => {
+  const { data, error } = await supabase
+    .from("project_members")
+    .select(
+      `
+      projects (id, name, created_at, updated_at, primary_language)
+    `
+    )
+    .eq("user_id", userId);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return data?.map((entry) => entry.projects) || [];
+};
+
 const useGetUserProjects = () => {
-  const [projects, setProjects] = useState<ProjectsRow[] | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
   const { session } = useSession();
+  const userId = session?.user?.id;
 
-  useEffect(() => {
-    if (!session?.user) {
-      setProjects(null);
-      setError("User ID is required");
-      return;
-    }
-
-    const fetchProjects = async () => {
-      setLoading(true);
-      setError(null);
-
-      try {
-        const { data, error: supabaseError } = await supabase
-          .from("project_members")
-          .select(
-            `
-            projects (id, name, created_at, updated_at, primary_language)
-          `
-          )
-          .eq("user_id", session.user.id);
-
-        if (supabaseError) {
-          throw new Error(supabaseError.message);
-        }
-
-        if (!data || data.length === 0) {
-          setProjects([]);
-          setError("No projects found for the user.");
-          return;
-        }
-
-        // Extract the projects field directly
-        const projectList = data.map((entry) => entry.projects);
-        setProjects(projectList);
-      } catch (err: any) {
-        setError(err.message || "An unknown error occurred");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchProjects();
-  }, [session?.user]);
-
-  return { projects, loading, error };
+  return useQuery<ProjectsRow[], Error>({
+    queryKey: ["userProjects", userId],
+    queryFn: () => fetchUserProjects(userId!),
+    enabled: !!userId,
+  });
 };
 
 export default useGetUserProjects;

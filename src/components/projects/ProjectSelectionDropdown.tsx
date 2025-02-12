@@ -14,7 +14,11 @@ import useGetUserProjects from "@/api/useGetUserProjects";
 
 export function ProjectSelectionDropdown() {
   const { projectId } = useGlobalSearchParams();
-  const { projects, loading: projectsLoading, error } = useGetUserProjects();
+  const {
+    data: projects,
+    isLoading: projectsLoading,
+    error,
+  } = useGetUserProjects();
   const [selectedProject, setSelectedProject] = useState<string | null>();
   const router = useRouter();
   const { isOpen, onOpen } = useDisclosure();
@@ -67,7 +71,7 @@ export function ProjectSelectionDropdown() {
   if (error) {
     return (
       <View style={styles.errorContainer}>
-        <Text style={styles.errorText}>Error loading projects: {error}</Text>
+        <Text style={styles.errorText}>Error loading projects: {error.message}</Text>
       </View>
     );
   }
