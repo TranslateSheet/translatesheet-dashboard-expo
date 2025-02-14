@@ -11,7 +11,7 @@ export default function SignInScreen() {
   const { signIn, isLoading, session } = useSession();
 
   if (!isLoading && session) {
-    return <Redirect href="/" />;
+    return <Redirect href="/dashboard" />;
   }
 
   return (

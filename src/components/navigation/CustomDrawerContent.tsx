@@ -51,7 +51,7 @@ export const CustomDrawerContent = (props: DrawerContentComponentProps) => {
         {pathname.includes("project") && (
           <Pressable
             style={{ flexDirection: "row", gap: 4, paddingBottom: 12 }}
-            onPress={() => router.push("/(app)/(home)")}
+            onPress={() => router.push("/dashboard/(app)/(home)")}
           >
             <Icon icon="solar:arrow-left-linear" width={16} />
             <Text style={{ color: "#777", fontSize: 12 }}>Dashboard</Text>

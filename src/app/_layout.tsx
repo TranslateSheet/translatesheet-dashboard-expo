@@ -1,17 +1,11 @@
-import "../../global.css";
-
-import { SessionProvider } from "@/providers/AuthContext";
 import { Slot } from "expo-router";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-
-const queryClient = new QueryClient();
+import "../../global.css";
+import { HeroUIProvider } from "@heroui/react";
 
 export default function Root() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <SessionProvider>
-        <Slot />
-      </SessionProvider>
-    </QueryClientProvider>
+    <HeroUIProvider>
+      <Slot />
+    </HeroUIProvider>
   );
 }

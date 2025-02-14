@@ -8,6 +8,7 @@ import { useStorageState } from "@/hooks/useStorageState";
 
 import { supabase } from "../../lib/supabase";
 import { Session } from "@supabase/supabase-js";
+import { HeroUIProvider } from "@heroui/react";
 
 const AuthContext = createContext<{
   signIn: () => Promise<void>;
@@ -38,14 +39,14 @@ export function SessionProvider({ children }: PropsWithChildren) {
   );
 
   const signIn = async () => {
-    console.log(process.env.NODE_ENV);
     try {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: "github",
         options: {
           queryParams: {
             prompt: "login",
-          }
+          },
+          redirectTo: `${window.location.origin}/dashboard`,
         },
       });
 
@@ -78,15 +79,17 @@ export function SessionProvider({ children }: PropsWithChildren) {
   }, []);
 
   return (
-    <AuthContext.Provider
-      value={{
-        signIn,
-        signOut,
-        session,
-        isLoading,
-      }}
-    >
-      {children}
-    </AuthContext.Provider>
+    <HeroUIProvider>
+      <AuthContext.Provider
+        value={{
+          signIn,
+          signOut,
+          session,
+          isLoading,
+        }}
+      >
+        {children}
+      </AuthContext.Provider>
+    </HeroUIProvider>
   );
 }
