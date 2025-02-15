@@ -46,7 +46,7 @@ export function SessionProvider({ children }: PropsWithChildren) {
           queryParams: {
             prompt: "login",
           },
-          redirectTo: `${window.location.origin}/dashboard`,
+          redirectTo: `localhost:3000/dashboard`,
         },
       });
 
