@@ -1,4 +1,4 @@
-import { supabaseAdmin } from "../../../../../../lib/supabase";
+import { supabaseAdmin } from "../../../../../../../lib/supabase";
 import Drawer from "expo-router/drawer";
 import { useIsDesktop } from "@/hooks/useIsDesktop";
 import { CustomDrawerContent } from "@/components/navigation/CustomDrawerContent";
