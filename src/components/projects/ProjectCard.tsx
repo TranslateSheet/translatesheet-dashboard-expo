@@ -10,7 +10,7 @@ export function ProjectCard({ project }: { project: ProjectsRow }) {
       <CardBody
         onClick={() =>
           router.push({
-            pathname: "/project/[projectId]",
+            pathname: "/dashboard/(app)/(home)/project/[projectId]",
             params: { projectId: project.id },
           })
         }

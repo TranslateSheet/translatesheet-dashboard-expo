@@ -3,11 +3,7 @@ import React from "react";
 import LandingPage from "@/components/landing-page";
 
 const index = () => {
-  return (
-    <View style={{ backgroundColor: "black", flex: 1 }}>
-      <LandingPage />
-    </View>
-  );
+  return <LandingPage />;
 };
 
 export default index;

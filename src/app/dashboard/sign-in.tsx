@@ -3,19 +3,19 @@
 import React from "react";
 import { Button } from "@heroui/react";
 import { Icon } from "@iconify/react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, View, useWindowDimensions } from "react-native";
 import { useSession } from "@/providers/AuthContext";
 import { Redirect } from "expo-router";
 
 export default function SignInScreen() {
   const { signIn, isLoading, session } = useSession();
-
+  const { height: windowHeight } = useWindowDimensions();
   if (!isLoading && session) {
     return <Redirect href="/dashboard" />;
   }
 
   return (
-    <div style={styles.container}>
+    <View style={[styles.container, { minHeight: windowHeight }]}>
       <div style={styles.headerContainer}>
         {/*TODO: LOGO HERE */}
         {/* <AcmeIcon size={60} /> */}
@@ -36,7 +36,7 @@ export default function SignInScreen() {
           </Button>
         </div>
       </div>
-    </div>
+    </View>
   );
 }
 
@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
   },
   subText: {
     fontSize: 14,
-    color: "#666", 
+    color: "#666",
   },
   formContainer: {
     marginTop: 8,
