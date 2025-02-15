@@ -1,7 +1,6 @@
 "use client";
 
-import type {NavbarProps} from "@heroui/react";
-
+import type { NavbarProps } from "@heroui/react";
 import React from "react";
 import {
   Navbar,
@@ -14,136 +13,193 @@ import {
   Link,
   Button,
   Divider,
-  cn,
 } from "@heroui/react";
-import {Icon} from "@iconify/react";
+import { Icon } from "@iconify/react";
+import { AcmeIcon } from "./social";
+import { StyleSheet } from "react-native";
+import { useIsDesktop } from "@/hooks/useIsDesktop";
+import { useRouter } from "expo-router";
 
-import {AcmeIcon} from "./social";
+type MenuItem = { label: string; href: string };
 
-const menuItems = [
-  "About",
-  "Blog",
-  "Customers",
-  "Pricing",
-  "Enterprise",
-  "Changelog",
-  "Documentation",
-  "Contact Us",
+const menuItems: MenuItem[] = [
+  { label: "Docs", href: "https://docs.translatesheet.co/" },
 ];
 
 const BasicNavbar = React.forwardRef<HTMLElement, NavbarProps>(
-  ({classNames = {}, ...props}, ref) => {
+  ({ ...props }, ref) => {
     const [isMenuOpen, setIsMenuOpen] = React.useState(false);
-
+    const isDesktop = useIsDesktop();
+    const router = useRouter();
     return (
       <Navbar
         ref={ref}
         {...props}
-        classNames={{
-          base: cn("border-default-100 bg-transparent", {
-            "bg-default-200/50 dark:bg-default-100/50": isMenuOpen,
-          }),
-          wrapper: "w-full justify-center",
-          item: "hidden md:flex",
-          ...classNames,
-        }}
+        style={
+          isMenuOpen
+            ? { ...styles.navbar, ...styles.navbarOpen }
+            : styles.navbar
+        }
         height="60px"
+        maxWidth="full"
         isMenuOpen={isMenuOpen}
         onMenuOpenChange={setIsMenuOpen}
+        shouldHideOnScroll
+        isBordered
       >
-        {/* Left Content */}
         <NavbarBrand>
-          <div className="rounded-full bg-default-foreground text-background">
-            <AcmeIcon size={34} />
-          </div>
-          <span className="ml-2 text-small font-medium text-default-foreground">ACME</span>
+          <span style={styles.brandText}>TranslateSheet</span>
         </NavbarBrand>
+        {isDesktop ? (
+          <NavbarContent justify="center">
+            {menuItems.slice(0, 4).map((item, index) => (
+              <NavbarItem key={index}>
+                <Link style={styles.link} href={item.href} size="sm">
+                  {item.label}
+                </Link>
+              </NavbarItem>
+            ))}
+            <NavbarItem isActive>
+              <Button
+                style={styles.getStartedButton}
+                color="secondary"
+                endContent={<Icon icon="solar:alt-arrow-right-linear" />}
+                radius="md"
+                variant="flat"
+                onPress={() => router.push("/dashboard")}
+              >
+                Dashboard
+              </Button>
+            </NavbarItem>
+          </NavbarContent>
+        ) : (
+          <>
+            <NavbarContent style={styles.rightContent} justify="end">
+              <NavbarItem style={styles.buttonGroup}>
+                <Button
+                  style={styles.loginButton}
+                  radius="full"
+                  variant="light"
+                >
+                  Login
+                </Button>
+                <Button
+                  style={styles.getStartedButton}
+                  color="secondary"
+                  endContent={<Icon icon="solar:alt-arrow-right-linear" />}
+                  radius="full"
+                  variant="flat"
+                >
+                  Get Started
+                </Button>
+              </NavbarItem>
+            </NavbarContent>
 
-        {/* Center Content */}
-        <NavbarContent justify="center">
-          <NavbarItem isActive className="data-[active='true']:font-medium[date-active='true']">
-            <Link aria-current="page" className="text-default-foreground" href="#" size="sm">
-              Home
-            </Link>
-          </NavbarItem>
-          <NavbarItem>
-            <Link className="text-default-500" href="#" size="sm">
-              Features
-            </Link>
-          </NavbarItem>
-          <NavbarItem>
-            <Link className="text-default-500" href="#" size="sm">
-              Customers
-            </Link>
-          </NavbarItem>
-          <NavbarItem>
-            <Link className="text-default-500" href="#" size="sm">
-              About Us
-            </Link>
-          </NavbarItem>
-          <NavbarItem>
-            <Link className="text-default-500" href="#" size="sm">
-              Integrations
-            </Link>
-          </NavbarItem>
-        </NavbarContent>
-
-        {/* Right Content */}
-        <NavbarContent className="hidden md:flex" justify="end">
-          <NavbarItem className="ml-2 !flex gap-2">
-            <Button className="text-default-500" radius="full" variant="light">
-              Login
-            </Button>
-            <Button
-              className="bg-default-foreground font-medium text-background"
-              color="secondary"
-              endContent={<Icon icon="solar:alt-arrow-right-linear" />}
-              radius="full"
-              variant="flat"
-            >
-              Get Started
-            </Button>
-          </NavbarItem>
-        </NavbarContent>
-
-        <NavbarMenuToggle className="text-default-400 md:hidden" />
-
-        <NavbarMenu
-          className="top-[calc(var(--navbar-height)_-_1px)] max-h-fit bg-default-200/50 pb-6 pt-6 shadow-medium backdrop-blur-md backdrop-saturate-150 dark:bg-default-100/50"
-          motionProps={{
-            initial: {opacity: 0, y: -20},
-            animate: {opacity: 1, y: 0},
-            exit: {opacity: 0, y: -20},
-            transition: {
-              ease: "easeInOut",
-              duration: 0.2,
-            },
-          }}
-        >
-          <NavbarMenuItem>
-            <Button fullWidth as={Link} href="/#" variant="faded">
-              Sign In
-            </Button>
-          </NavbarMenuItem>
-          <NavbarMenuItem className="mb-4">
-            <Button fullWidth as={Link} className="bg-foreground text-background" href="/#">
-              Get Started
-            </Button>
-          </NavbarMenuItem>
-          {menuItems.map((item, index) => (
-            <NavbarMenuItem key={`${item}-${index}`}>
-              <Link className="mb-2 w-full text-default-500" href="#" size="md">
-                {item}
-              </Link>
-              {index < menuItems.length - 1 && <Divider className="opacity-50" />}
-            </NavbarMenuItem>
-          ))}
-        </NavbarMenu>
+            <NavbarMenuToggle style={styles.menuToggle} />
+            <NavbarMenu style={styles.menu}>
+              <NavbarMenuItem>
+                <Button fullWidth as={Link} href="/#" variant="faded">
+                  Sign In
+                </Button>
+              </NavbarMenuItem>
+              <NavbarMenuItem>
+                <Button
+                  fullWidth
+                  as={Link}
+                  style={styles.getStartedButton}
+                  href="/#"
+                >
+                  Get Started
+                </Button>
+              </NavbarMenuItem>
+              {menuItems.map((item, index) => (
+                <NavbarMenuItem key={index}>
+                  <Link style={styles.menuLink} href="#" size="md">
+                    {item}
+                  </Link>
+                  {index < menuItems.length - 1 && (
+                    <Divider style={styles.divider} />
+                  )}
+                </NavbarMenuItem>
+              ))}
+            </NavbarMenu>
+          </>
+        )}
       </Navbar>
     );
-  },
+  }
 );
 
 BasicNavbar.displayName = "BasicNavbar";
+
+const styles = StyleSheet.create({
+  navbar: {
+    backgroundColor: "transparent",
+  },
+  navbarOpen: {
+    backgroundColor: "rgba(240, 240, 240, 0.5)",
+  },
+  logoContainer: {
+    borderRadius: 50,
+    backgroundColor: "#000",
+    color: "#fff",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: 8,
+  },
+  brandText: {
+    marginLeft: 8,
+    fontSize: 22,
+    fontWeight: "500",
+    color: "#000",
+  },
+  link: {
+    color: "#666",
+    textDecorationLine: "none",
+  },
+  linkActive: {
+    color: "#000",
+    fontWeight: "bold",
+  },
+  rightContent: {
+    display: "none",
+  },
+  buttonGroup: {
+    flexDirection: "row",
+    gap: 8,
+  },
+  loginButton: {
+    color: "#666",
+    backgroundColor: "transparent",
+  },
+  getStartedButton: {
+    backgroundColor: "#000",
+    color: "#fff",
+    fontWeight: "500",
+  },
+  menuToggle: {
+    color: "#888",
+  },
+  menu: {
+    position: "absolute",
+    top: 60,
+    width: "100%",
+    backgroundColor: "rgba(240, 240, 240, 0.8)",
+    paddingBottom: 16,
+    paddingTop: 16,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.1,
+    backdropFilter: "blur(10px)",
+  },
+  menuLink: {
+    color: "#666",
+    marginBottom: 8,
+  },
+  divider: {
+    opacity: 0.5,
+  },
+});
 
 export default BasicNavbar;

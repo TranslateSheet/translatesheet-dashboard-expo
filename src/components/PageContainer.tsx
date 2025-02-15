@@ -18,8 +18,8 @@ const styles = StyleSheet.create({
   },
   contentWrapper: {
     flex: 1,
-
     width: "100%",
     backgroundColor: "#fff",
+    alignItems:"center"
   },
 });
