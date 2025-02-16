@@ -74,48 +74,25 @@ const BasicNavbar = React.forwardRef<HTMLElement, NavbarProps>(
           </NavbarContent>
         ) : (
           <>
-            <NavbarContent style={styles.rightContent} justify="end">
-              <NavbarItem style={styles.buttonGroup}>
-                <Button
-                  style={styles.loginButton}
-                  radius="full"
-                  variant="light"
-                >
-                  Login
-                </Button>
+            <NavbarMenuToggle style={styles.menuToggle} />
+            <NavbarMenu style={styles.menu}>
+              <NavbarMenuItem>
                 <Button
                   style={styles.getStartedButton}
                   color="secondary"
                   endContent={<Icon icon="solar:alt-arrow-right-linear" />}
-                  radius="full"
+                  radius="md"
                   variant="flat"
-                >
-                  Get Started
-                </Button>
-              </NavbarItem>
-            </NavbarContent>
-
-            <NavbarMenuToggle style={styles.menuToggle} />
-            <NavbarMenu style={styles.menu}>
-              <NavbarMenuItem>
-                <Button fullWidth as={Link} href="/#" variant="faded">
-                  Sign In
-                </Button>
-              </NavbarMenuItem>
-              <NavbarMenuItem>
-                <Button
                   fullWidth
-                  as={Link}
-                  style={styles.getStartedButton}
-                  href="/#"
+                  onPress={() => router.push("/dashboard")}
                 >
-                  Get Started
+                  Dashboard
                 </Button>
               </NavbarMenuItem>
               {menuItems.map((item, index) => (
                 <NavbarMenuItem key={index}>
-                  <Link style={styles.menuLink} href="#" size="md">
-                    {item}
+                  <Link style={styles.menuLink} href={item.href} size="md">
+                    {item.label}
                   </Link>
                   {index < menuItems.length - 1 && (
                     <Divider style={styles.divider} />

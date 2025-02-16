@@ -20,6 +20,7 @@ export default function HomeLayout() {
   const isDesktop = useIsDesktop();
   const [loaded] = useFonts({
     SpaceMono: require("@/assets/fonts/SpaceMono-Regular.ttf"),
+    Inter: require("@/assets/fonts/Urbanist-VariableFont_wght.ttf"),
   });
   const { session, isLoading: isSessionLoading } = useSession();
   const pathname = usePathname();

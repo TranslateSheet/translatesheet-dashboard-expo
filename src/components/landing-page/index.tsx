@@ -27,11 +27,19 @@ export default function LandingPage() {
       <Banner />
       <BasicNavbar />
       <PageContainer>
-        <View style={styles.contentContainer}>
+        <View
+          style={[
+            styles.contentContainer,
+            {
+              paddingTop: windowWidth > 1216 ? 48 : 0,
+              flexDirection: windowWidth > 1024 ? "row" : "column",
+            },
+          ]}
+        >
           <View
             style={[
               styles.leftWrap,
-              { maxWidth: windowWidth > 1216 ? "50%" : "100%" },
+              { maxWidth: windowWidth > 1216 ? "50%" : "70%" },
             ]}
           >
             <Button
@@ -98,9 +106,8 @@ export default function LandingPage() {
                     }}
                   >
                     Build multilingual apps with React and React Native.
-                    Automate <br />
-                    translation file generation and simplify localization from
-                    day one.
+                    Automate translation file generation and simplify
+                    localization from day one.
                   </m.p>
 
                   <m.div
@@ -151,7 +158,9 @@ export default function LandingPage() {
             </LazyMotion>
           </View>
           <View style={styles.rightWrap}>
-            <p>SECTION IN PROGRESS</p>
+            <View style={styles.aThing}>
+              <p>SECTION IN PROGRESS</p>
+            </View>
           </View>
         </View>
       </PageContainer>
@@ -163,23 +172,28 @@ const styles = StyleSheet.create({
   contentContainer: {
     width: "100%",
     justifyContent: "space-between",
-    flexDirection: "row",
-    alignItems: "center",
+    alignItems: "flex-start",
     maxWidth: 1200,
     flexWrap: "wrap",
+    gap: 62,
   },
   leftWrap: {
     flex: 1, // Allow it to take up available space
     flexShrink: 1,
     gap: 32,
-    paddingTop: 48,
   },
   rightWrap: {
     flex: 1, // Allow it to take available space
-    minWidth: 500, // Prevents wrapping too soon
-    maxWidth: 500,
     flexShrink: 1,
     height: 300,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  aThing: {
+    // minWidth: 500, // Prevents wrapping too soon
+    // maxWidth: 500,
+    height: 300,
+    width: 500,
     backgroundColor: "cyan",
     justifyContent: "center",
     alignItems: "center",
@@ -230,8 +244,8 @@ const styles = StyleSheet.create({
   heading: {
     fontFamily: "Inter",
     color: "black",
-    fontSize: 38, // Responsive font sizing
-    lineHeight: 1.6,
+    fontSize: 42, // Responsive font sizing
+    lineHeight: 1.5,
     letterSpacing: -1,
     fontWeight: "400",
   },
@@ -259,8 +273,7 @@ export function ResponsiveHeading() {
       style={{ textAlign: "left" }}
     >
       <div style={styles.heading}>
-        TranslateSheet helps you
-        <br />
+        TranslateSheet helps you{" "}
         <div style={{ display: "inline" }}>
           <p
             style={{
@@ -272,7 +285,7 @@ export function ResponsiveHeading() {
           >
             define
           </p>
-          ,{" "}
+          {" "}
           <p
             style={{
               textDecorationLine: "underline",
@@ -282,8 +295,8 @@ export function ResponsiveHeading() {
             }}
           >
             generate
-          </p>
-          , &{" "}
+          </p>{" "}
+          &{" "}
           <p
             style={{
               textDecorationLine: "underline",
@@ -294,8 +307,7 @@ export function ResponsiveHeading() {
           >
             manage
           </p>
-        </div>
-        <br />
+        </div>{" "}
         translations with a simple API
       </div>
     </m.div>
