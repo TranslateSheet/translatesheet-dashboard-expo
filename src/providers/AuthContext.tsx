@@ -40,7 +40,7 @@ export function SessionProvider({ children }: PropsWithChildren) {
   const signIn = async () => {
     try {
       const redirectUri = `${window.location.origin}/dashboard/auth-callback`;
-  
+
       const { error } = await supabase.auth.signInWithOAuth({
         provider: "github",
         options: {
@@ -48,36 +48,34 @@ export function SessionProvider({ children }: PropsWithChildren) {
           queryParams: { prompt: "login" },
         },
       });
-  
+
       if (error) throw error;
       console.log("Redirecting to GitHub...");
     } catch (error) {
       console.error("Error signing in with GitHub:", error);
     }
   };
-  
-  
+
   // Sign out and clear the session
   const signOut = () => {
     supabase.auth.signOut().then(() => setSession(null));
   };
 
   useEffect(() => {
-    console.log("Setting up auth listener...");
-  
     // Listen for auth changes and update session
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((event, session) => {
       console.log(`Auth state changed: ${event}`);
-  
+
       if (session) {
-        console.log("New session:", session);
         setSession(session);
       } else {
         console.log("No active session, user signed out.");
         setSession(null);
       }
     });
-  
+
     return () => {
       subscription?.unsubscribe?.();
     };
