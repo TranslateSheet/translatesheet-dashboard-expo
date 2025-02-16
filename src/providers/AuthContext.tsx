@@ -8,7 +8,6 @@ import { useStorageState } from "@/hooks/useStorageState";
 
 import { supabase } from "../../lib/supabase";
 import { Session } from "@supabase/supabase-js";
-import { HeroUIProvider } from "@heroui/react";
 
 const AuthContext = createContext<{
   signIn: () => Promise<void>;
@@ -40,56 +39,60 @@ export function SessionProvider({ children }: PropsWithChildren) {
 
   const signIn = async () => {
     try {
+      const redirectUri = `${window.location.origin}/dashboard/auth-callback`;
+  
       const { error } = await supabase.auth.signInWithOAuth({
         provider: "github",
         options: {
-          queryParams: {
-            prompt: "login",
-          },
-          redirectTo: `localhost:3000/dashboard`,
+          redirectTo: redirectUri,
+          queryParams: { prompt: "login" },
         },
       });
-
+  
       if (error) throw error;
       console.log("Redirecting to GitHub...");
     } catch (error) {
       console.error("Error signing in with GitHub:", error);
     }
   };
-
+  
+  
   // Sign out and clear the session
   const signOut = () => {
     supabase.auth.signOut().then(() => setSession(null));
   };
 
   useEffect(() => {
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((event, session) => {
-      if (event === "SIGNED_IN") {
-        setSession(session); // Store the full session object
-      } else if (event === "SIGNED_OUT") {
+    console.log("Setting up auth listener...");
+  
+    // Listen for auth changes and update session
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      console.log(`Auth state changed: ${event}`);
+  
+      if (session) {
+        console.log("New session:", session);
+        setSession(session);
+      } else {
+        console.log("No active session, user signed out.");
         setSession(null);
       }
     });
-
+  
     return () => {
       subscription?.unsubscribe?.();
     };
   }, []);
 
   return (
-    <HeroUIProvider>
-      <AuthContext.Provider
-        value={{
-          signIn,
-          signOut,
-          session,
-          isLoading,
-        }}
-      >
-        {children}
-      </AuthContext.Provider>
-    </HeroUIProvider>
+    <AuthContext.Provider
+      value={{
+        signIn,
+        signOut,
+        session,
+        isLoading,
+      }}
+    >
+      {children}
+    </AuthContext.Provider>
   );
 }

@@ -5,6 +5,7 @@
   "scripts": {
     "start": "expo start",
     "start-prod": "npx serve dist",
+    "build-prod": "npx expo export --platform web",
     "reset-project": "node ./scripts/reset-project.js",
     "android": "expo start --android",
     "ios": "expo start --ios",
