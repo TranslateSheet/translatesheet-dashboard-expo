@@ -1,9 +1,6 @@
 import { supabase } from "../../../lib/supabase";
 
-const BASE_URL =
-  process.env.NODE_ENV === "development"
-    ? "http://localhost:3001/"
-    : "https://api.translatesheet.co/";
+const BASE_URL = "https://api.translatesheet.co/";
 
 const apiFetch = async (
   // TODO: endpoints should be strictly typed

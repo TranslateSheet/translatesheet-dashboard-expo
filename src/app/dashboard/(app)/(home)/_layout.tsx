@@ -4,9 +4,6 @@ import {
   ThemeProvider,
 } from "@react-navigation/native";
 import { useFonts } from "expo-font";
-import * as SplashScreen from "expo-splash-screen";
-import { StatusBar } from "expo-status-bar";
-import { useEffect } from "react";
 import "react-native-reanimated";
 import { Drawer } from "expo-router/drawer";
 import { Text } from "react-native";
@@ -14,7 +11,7 @@ import { Text } from "react-native";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import { CustomDrawerContent } from "@/components/navigation/CustomDrawerContent";
 import { useSession } from "@/providers/AuthContext";
-import { Redirect, useGlobalSearchParams, usePathname } from "expo-router";
+import { Redirect, usePathname } from "expo-router";
 import { useIsDesktop } from "@/hooks/useIsDesktop";
 import { TopNavigationBar } from "@/components/navigation/TopNavigationBar";
 
@@ -27,11 +24,6 @@ export default function HomeLayout() {
   const { session, isLoading: isSessionLoading } = useSession();
   const pathname = usePathname();
 
-  useEffect(() => {
-    if (loaded) {
-      SplashScreen.hideAsync();
-    }
-  }, [loaded]);
 
   // You can keep the splash screen open, or render a loading screen like we do here.
   if (isSessionLoading || !loaded) {

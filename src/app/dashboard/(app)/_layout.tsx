@@ -8,7 +8,7 @@ import "react-native-reanimated";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import { Slot } from "expo-router";
 
-export default function RootLayout() {
+export default function AppLayout() {
   const colorScheme = useColorScheme();
 
   return (
