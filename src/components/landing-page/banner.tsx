@@ -10,7 +10,7 @@ export default function Banner() {
       <p className="text-small text-primary-foreground">
         TranslateSheet now in beta 🎉
       </p>
-      <Button
+      {/* <Button
         as={Link}
         className="group relative h-5 overflow-hidden bg-primary-foreground text-small font-medium text-primary"
         color="default"
@@ -25,7 +25,7 @@ export default function Banner() {
         radius="sm"
       >
         Learn more
-      </Button>
+      </Button> */}
       <div className="flex flex-1 justify-end">
         <Button isIconOnly aria-label="Close Banner" className="-m-1" size="sm" variant="light">
           <Icon aria-hidden="true" className="text-primary-foreground" icon="lucide:x" width={20} />

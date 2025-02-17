@@ -4,167 +4,192 @@ import { Icon } from "@iconify/react";
 import {
   ScrollView,
   StyleSheet,
-  Text,
   View,
   useWindowDimensions,
 } from "react-native";
 import { AnimatePresence, LazyMotion, domAnimation, m } from "framer-motion";
 
 import BasicNavbar from "./basic-navbar";
-import FadeInImage from "./fade-in-image";
-import AppScreenshotSkewed from "./app-screenshot-skewed";
 import Banner from "./banner";
-import { PageContainer } from "../PageContainer";
 import { useRouter } from "expo-router";
 import { useIsDesktop } from "@/hooks/useIsDesktop";
+import TerminalSim from "./terminal-sim";
 
 export default function LandingPage() {
   const { height: windowHeight, width: windowWidth } = useWindowDimensions();
   const isDesktop = useIsDesktop();
   const router = useRouter();
   return (
-    <>
+    <ScrollView
+      contentContainerStyle={{
+        alignItems: "center",
+      }}
+    >
       <Banner />
       <BasicNavbar />
-      <PageContainer>
+      <View
+        style={[
+          styles.contentContainer,
+          {
+            flexDirection: windowWidth > 1216 ? "row" : "column",
+            paddingTop: windowWidth > 1216 ? 100 : 42,
+            paddingLeft: windowWidth > 1216 ? 48 : 28,
+            paddingRight: windowWidth > 1216 ? 48 : 28,
+            gap: windowWidth > 1216 ? 100 : 0,
+          },
+        ]}
+      >
         <View
           style={[
-            styles.contentContainer,
+            styles.leftWrap,
             {
-              paddingTop: windowWidth > 1216 ? 48 : 0,
-              flexDirection: windowWidth > 1024 ? "row" : "column",
+              // flex:1,
+              maxWidth: windowWidth > 1216 ? "50%" : "100%",
             },
           ]}
         >
-          <View
-            style={[
-              styles.leftWrap,
-              { maxWidth: windowWidth > 1216 ? "50%" : "70%" },
-            ]}
+          <Button
+            style={styles.headingButton}
+            endContent={
+              <Icon
+                style={styles.icon}
+                icon="solar:arrow-right-linear"
+                width={20}
+              />
+            }
+            size="sm"
+            radius="full"
+            variant="bordered"
           >
-            <Button
-              style={styles.headingButton}
-              endContent={
-                <Icon
-                  style={styles.icon}
-                  icon="solar:arrow-right-linear"
-                  width={20}
-                />
-              }
-              radius="full"
-              variant="bordered"
+            Learn what's new!
+          </Button>
+          <LazyMotion features={domAnimation}>
+            <m.div
+              animate="kick"
+              className="flex flex-col gap-6"
+              exit="auto"
+              initial="auto"
+              transition={{
+                duration: 0.25,
+                ease: "easeInOut",
+              }}
+              variants={{
+                auto: { width: "auto" },
+                kick: { width: "auto" },
+              }}
             >
-              Learn what's new!
-            </Button>
+              <AnimatePresence mode="wait">
+                <m.div
+                  animate={{ filter: "blur(0px)", opacity: 1, x: 0 }}
+                  className="text-start text-[clamp(40px,10vw,44px)] font-bold leading-[1.2] tracking-tighter sm:text-[64px]"
+                  initial={{
+                    filter: "blur(16px)",
+                    opacity: 0,
+                    x: 15 + 1 * 2,
+                  }}
+                  transition={{
+                    bounce: 0,
+                    delay: 0.01 * 10,
+                    duration: 0.8 + 0.1 * 8,
+                    type: "spring",
+                  }}
+                >
+                  <ResponsiveHeading />
+                </m.div>
+
+                <m.p
+                  animate={{ filter: "blur(0px)", opacity: 1, x: 0 }}
+                  style={
+                    windowWidth > 1024
+                      ? styles.subHeadingText
+                      : styles.subHeadingTextMobile
+                  }
+                  initial={{
+                    filter: "blur(16px)",
+                    opacity: 0,
+                    x: 15 + 1 * 3,
+                  }}
+                  transition={{
+                    bounce: 0,
+                    delay: 0.01 * 30,
+                    duration: 0.8 + 0.1 * 9,
+                    type: "spring",
+                  }}
+                >
+                  Build multilingual apps with React and React Native. Automate
+                  translation file generation and simplify localization from day
+                  one.
+                </m.p>
+
+                <m.div
+                  animate={{ filter: "blur(0px)", opacity: 1, x: 0 }}
+                  className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-6"
+                  initial={{
+                    filter: "blur(16px)",
+                    opacity: 0,
+                    x: 15 + 1 * 4,
+                  }}
+                  transition={{
+                    bounce: 0,
+                    delay: 0.01 * 50,
+                    duration: 0.8 + 0.1 * 10,
+                    type: "spring",
+                  }}
+                  style={{ paddingTop: 48, flexDirection: "row" }}
+                >
+                  <Button
+                    className="h-14 w-[163px] bg-default-foreground px-[16px] py-[10px] text-small font-medium leading-5 text-background"
+                    radius="md"
+                    onPress={() => router.push("/dashboard")}
+                  >
+                    Get Started
+                  </Button>
+                  <Button
+                    className="h-14 w-[163px] border-3 border-default-200 px-[16px] py-[10px] text-small font-medium leading-5"
+                    endContent={
+                      <span className="pointer-events-none flex h-[22px] w-[22px] items-center justify-center rounded-full bg-default-100">
+                        <Icon
+                          className="text-default-500 [&>path]:stroke-[1.5]"
+                          icon="solar:arrow-right-linear"
+                          width={16}
+                        />
+                      </span>
+                    }
+                    radius="md"
+                    variant="bordered"
+                    onPress={() =>
+                      router.push("https://docs.translatesheet.co")
+                    }
+                  >
+                    Read the Docs
+                  </Button>
+                </m.div>
+              </AnimatePresence>
+            </m.div>
+          </LazyMotion>
+        </View>
+        {windowWidth > 1216 && (
+          <View style={styles.rightWrap}>
             <LazyMotion features={domAnimation}>
-              <m.div
-                animate="kick"
-                className="flex flex-col gap-6"
-                exit="auto"
-                initial="auto"
-                transition={{
-                  duration: 0.25,
-                  ease: "easeInOut",
-                }}
-                variants={{
-                  auto: { width: "auto" },
-                  kick: { width: "auto" },
-                }}
-              >
-                <AnimatePresence mode="wait">
-                  <m.div
-                    animate={{ filter: "blur(0px)", opacity: 1, x: 0 }}
-                    className="text-start text-[clamp(40px,10vw,44px)] font-bold leading-[1.2] tracking-tighter sm:text-[64px]"
-                    initial={{
-                      filter: "blur(16px)",
-                      opacity: 0,
-                      x: 15 + 1 * 2,
-                    }}
-                    transition={{
-                      bounce: 0,
-                      delay: 0.01 * 10,
-                      duration: 0.8 + 0.1 * 8,
-                      type: "spring",
-                    }}
-                  >
-                    <ResponsiveHeading />
-                  </m.div>
-
-                  <m.p
-                    animate={{ filter: "blur(0px)", opacity: 1, x: 0 }}
-                    style={styles.subHeadingText}
-                    initial={{
-                      filter: "blur(16px)",
-                      opacity: 0,
-                      x: 15 + 1 * 3,
-                    }}
-                    transition={{
-                      bounce: 0,
-                      delay: 0.01 * 30,
-                      duration: 0.8 + 0.1 * 9,
-                      type: "spring",
-                    }}
-                  >
-                    Build multilingual apps with React and React Native.
-                    Automate translation file generation and simplify
-                    localization from day one.
-                  </m.p>
-
-                  <m.div
-                    animate={{ filter: "blur(0px)", opacity: 1, x: 0 }}
-                    className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-6"
-                    initial={{
-                      filter: "blur(16px)",
-                      opacity: 0,
-                      x: 15 + 1 * 4,
-                    }}
-                    transition={{
-                      bounce: 0,
-                      delay: 0.01 * 50,
-                      duration: 0.8 + 0.1 * 10,
-                      type: "spring",
-                    }}
-                    style={{ paddingTop: 48 }}
-                  >
-                    <Button
-                      className="h-14 w-[163px] bg-default-foreground px-[16px] py-[10px] text-small font-medium leading-5 text-background"
-                      radius="md"
-                      onPress={() => router.push("/dashboard")}
-                    >
-                      Get Started
-                    </Button>
-                    <Button
-                      className="h-14 w-[163px] border-3 border-default-200 px-[16px] py-[10px] text-small font-medium leading-5"
-                      endContent={
-                        <span className="pointer-events-none flex h-[22px] w-[22px] items-center justify-center rounded-full bg-default-100">
-                          <Icon
-                            className="text-default-500 [&>path]:stroke-[1.5]"
-                            icon="solar:arrow-right-linear"
-                            width={16}
-                          />
-                        </span>
-                      }
-                      radius="md"
-                      variant="bordered"
-                      onPress={() =>
-                        router.push("https://docs.translatesheet.co")
-                      }
-                    >
-                      Read the Docs
-                    </Button>
-                  </m.div>
-                </AnimatePresence>
-              </m.div>
+              <AnimatePresence mode="wait">
+                <m.div
+                  animate={{ filter: "blur(0px)", opacity: 1, y: 0 }}
+                  initial={{ filter: "blur(16px)", opacity: 0, y: 30 }}
+                  transition={{
+                    type: "spring",
+                    stiffness: 100,
+                    damping: 15,
+                    duration: 0.8,
+                  }}
+                >
+                  <TerminalSim />
+                </m.div>
+              </AnimatePresence>
             </LazyMotion>
           </View>
-          <View style={styles.rightWrap}>
-            <View style={styles.aThing}>
-              <p>SECTION IN PROGRESS</p>
-            </View>
-          </View>
-        </View>
-      </PageContainer>
-    </>
+        )}
+      </View>
+    </ScrollView>
   );
 }
 
@@ -172,29 +197,17 @@ const styles = StyleSheet.create({
   contentContainer: {
     width: "100%",
     justifyContent: "space-between",
-    alignItems: "flex-start",
+    alignItems: "center",
     maxWidth: 1200,
     flexWrap: "wrap",
-    gap: 62,
   },
   leftWrap: {
-    flex: 1, // Allow it to take up available space
     flexShrink: 1,
     gap: 32,
+    alignSelf: "flex-start",
   },
   rightWrap: {
-    flex: 1, // Allow it to take available space
-    flexShrink: 1,
-    height: 300,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  aThing: {
-    // minWidth: 500, // Prevents wrapping too soon
-    // maxWidth: 500,
-    height: 300,
-    width: 500,
-    backgroundColor: "cyan",
+    flex: 1,
     justifyContent: "center",
     alignItems: "center",
   },
@@ -216,7 +229,6 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
   headingButton: {
-    height: 36, // Equivalent to `h-9`
     borderWidth: 1, // Equivalent to `border-1`
     borderColor: "#008DDF", // Approximate Tailwind `border-default-100`
     backgroundColor: "#dbf4ff", // Approximate Tailwind `bg-default-50`
@@ -244,22 +256,39 @@ const styles = StyleSheet.create({
   heading: {
     fontFamily: "Inter",
     color: "black",
-    fontSize: 42, // Responsive font sizing
     lineHeight: 1.5,
     letterSpacing: -1,
     fontWeight: "400",
+    maxWidth: 570,
+    fontSize: 37,
+  },
+  headingMobile: {
+    fontFamily: "Inter",
+    color: "black",
+    lineHeight: 1.5,
+    letterSpacing: -1,
+    fontWeight: "400",
+    maxWidth: 400,
+    fontSize: 28,
   },
   subHeadingText: {
     textAlign: "left", // Equivalent to `text-start`
     fontWeight: "400", // Equivalent to `font-normal`
     color: "#575757", // Approximate Tailwind `text-default-500`
     fontSize: 18, // Approximate Tailwind `text-base`
-    // width:  466, // Equivalent to `sm:w-[466px]`
-    // fontSize: isSmallScreen ? 16 : 18, // Equivalent to `sm:text-[18px]`
+    maxWidth: 570,
+  },
+  subHeadingTextMobile: {
+    textAlign: "left", // Equivalent to `text-start`
+    fontWeight: "400", // Equivalent to `font-normal`
+    color: "#575757", // Approximate Tailwind `text-default-500`
+    fontSize: 18, // Approximate Tailwind `text-base`
+    maxWidth: 400,
   },
 });
 
 export function ResponsiveHeading() {
+  const { width: windowWidth } = useWindowDimensions();
   return (
     <m.div
       animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
@@ -272,7 +301,13 @@ export function ResponsiveHeading() {
       }}
       style={{ textAlign: "left" }}
     >
-      <div style={styles.heading}>
+      <div
+        style={
+          windowWidth > 660
+            ? { ...styles.heading }
+            : { ...styles.headingMobile }
+        }
+      >
         TranslateSheet helps you{" "}
         <div style={{ display: "inline" }}>
           <p
@@ -284,8 +319,7 @@ export function ResponsiveHeading() {
             }}
           >
             define
-          </p>
-          {" "}
+          </p>{" "}
           <p
             style={{
               textDecorationLine: "underline",

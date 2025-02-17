@@ -18,16 +18,12 @@ import { TopNavigationBar } from "@/components/navigation/TopNavigationBar";
 export default function HomeLayout() {
   const colorScheme = useColorScheme();
   const isDesktop = useIsDesktop();
-  const [loaded] = useFonts({
-    SpaceMono: require("@/assets/fonts/SpaceMono-Regular.ttf"),
-    Inter: require("@/assets/fonts/Urbanist-VariableFont_wght.ttf"),
-  });
   const { session, isLoading: isSessionLoading } = useSession();
   const pathname = usePathname();
 
 
   // You can keep the splash screen open, or render a loading screen like we do here.
-  if (isSessionLoading || !loaded) {
+  if (isSessionLoading) {
     return <Text>Loading...</Text>;
   }
 

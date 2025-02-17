@@ -10,6 +10,7 @@ export function PageContainer({ children }: { children: ReactNode }) {
   const { height: windowHeight, width: windowWidth } = useWindowDimensions();
   return (
     <ScrollView
+      style={{ flex: 1 }}
       contentContainerStyle={[
         styles.container,
         { padding: windowWidth > 1216 ? 48 : 28 },
@@ -22,12 +23,11 @@ export function PageContainer({ children }: { children: ReactNode }) {
 
 const styles = StyleSheet.create({
   container: {
-    minHeight: "100%",
+    flexGrow: 1,
     alignItems: "center",
     backgroundColor: "#fff",
   },
   contentWrapper: {
-    flex: 1,
     width: "100%",
     backgroundColor: "#fff",
     alignItems: "center",
