@@ -259,7 +259,7 @@ const styles = StyleSheet.create({
     lineHeight: 1.5,
     letterSpacing: -1,
     fontWeight: "400",
-    maxWidth: 570,
+    maxWidth: 450,
     fontSize: 37,
   },
   headingMobile: {
@@ -268,7 +268,7 @@ const styles = StyleSheet.create({
     lineHeight: 1.5,
     letterSpacing: -1,
     fontWeight: "400",
-    maxWidth: 400,
+    maxWidth: 360,
     fontSize: 28,
   },
   subHeadingText: {
