@@ -2,9 +2,10 @@
 
 import React, { useState } from "react";
 import i18n from "i18next";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, ScrollView } from "react-native";
 import { Button } from "@heroui/react";
 import { AnimatePresence, m, LazyMotion, domAnimation } from "framer-motion";
+import { Icon } from "@iconify/react";
 
 const RTL_LANGUAGES = ["ar", "he", "fa"];
 
@@ -48,47 +49,87 @@ const LanguageOptions = ({
 
   return (
     <View style={styles.container}>
-      <LazyMotion features={domAnimation}>
-        <AnimatePresence mode="popLayout">
-          {locales.map((locale) => {
-            const isEnabled = enabledLanguages.includes(locale.languageCode);
+      {/* <ScrollView
+        showsHorizontalScrollIndicator={false}
+        style={{ maxWidth: 450 }}
+        horizontal
+      > */}
+        <LazyMotion features={domAnimation}>
+          <AnimatePresence mode="popLayout">
+            {locales.map((locale) => {
+              const isEnabled = enabledLanguages.includes(locale.languageCode);
 
-            return (
-              <m.div
-                key={locale.languageTag}
-                initial={{ opacity: 0, y: 10, filter: "blur(8px)" }}
-                animate={
-                  isEnabled ? { opacity: 1, y: 0, filter: "blur(0px)" } : {}
-                }
-                exit={{ opacity: 0, y: -10, filter: "blur(8px)" }}
-                transition={{
-                  type: "spring",
-                  stiffness: 100,
-                  damping: 15,
-                  duration: 0.5,
-                }}
-                style={{ display: "inline-block", margin: "8px" }}
-              >
-                <Button
-                  size="sm"
-                  radius="full"
-                  onPress={() => handleLanguageChange(locale.languageTag)}
-                  disabled={!isEnabled}
-                  style={
-                    locale === selectedLocale
-                      ? styles.selected
-                      : isEnabled
-                      ? styles.languageButton
-                      : styles.disabledButton
+              return (
+                <m.div
+                  key={locale.languageTag}
+                  initial={{ opacity: 0, y: 10, filter: "blur(8px)" }}
+                  animate={
+                    isEnabled ? { opacity: 1, y: 0, filter: "blur(0px)" } : {}
                   }
+                  exit={{ opacity: 0, y: -10, filter: "blur(8px)" }}
+                  transition={{
+                    type: "spring",
+                    stiffness: 100,
+                    damping: 15,
+                    duration: 0.5,
+                  }}
+                  style={{
+                    display: "inline-block",
+                    marginBottom: 8,
+                    marginTop: 8,
+                    marginRight: 8,
+                  }}
                 >
-                  {locale.flag} {locale.languageCode}
-                </Button>
-              </m.div>
-            );
-          })}
+                  <Button
+                    size="sm"
+                    radius="full"
+                    onPress={() => handleLanguageChange(locale.languageTag)}
+                    disabled={!isEnabled}
+                    style={
+                      locale === selectedLocale
+                        ? styles.selected
+                        : isEnabled
+                        ? styles.languageButton
+                        : styles.disabledButton
+                    }
+                  >
+                    {locale.flag} {locale.languageCode}
+                  </Button>
+                </m.div>
+              );
+            })}
+          </AnimatePresence>
+        </LazyMotion>
+      {/* </ScrollView> */}
+      {/* <LazyMotion features={domAnimation}>
+        <AnimatePresence mode="popLayout">
+          <m.div
+            // key={locale.languageTag}
+            initial={{ opacity: 0, y: 10, filter: "blur(8px)" }}
+            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+            exit={{ opacity: 0, y: -10, filter: "blur(8px)" }}
+            transition={{
+              type: "spring",
+              stiffness: 100,
+              damping: 15,
+              duration: 0.5,
+            }}
+            style={{ display: "inline-block", margin: "8px" }}
+          >
+            <Button
+              size="sm"
+              radius="full"
+              onPress={() => {}}
+              isIconOnly
+              // disabled={!isEnabled}
+              style={styles.addButton}
+            >
+              +
+            </Button>
+          </m.div>
+          );
         </AnimatePresence>
-      </LazyMotion>
+      </LazyMotion> */}
     </View>
   );
 };
@@ -96,13 +137,12 @@ const LanguageOptions = ({
 const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "center",
-    alignItems: "center",
-    width: "100%",
-    paddingBottom: 16,
-    paddingRight: 8,
-    paddingLeft: 8,
+    // flexWrap: "wrap",
+    // TODO: remove
+    justifyContent: "space-evenly",
+    marginBottom: 6,
+    // paddingRight: 8,
+    // paddingLeft: 8,
   },
   languageButton: {
     borderWidth: 1,
@@ -113,7 +153,15 @@ const styles = StyleSheet.create({
     fontWeight: "400",
     lineHeight: 20,
     color: "#2C9A66",
-    maxWidth: 200,
+  },
+  addButton: {
+    borderWidth: 1,
+    borderColor: "#2C9A66",
+    backgroundColor: "#E6F6EB",
+    fontSize: 14,
+    fontWeight: "400",
+    lineHeight: 20,
+    color: "#2C9A66",
   },
   selected: {
     borderWidth: 1, // Equivalent to border-1

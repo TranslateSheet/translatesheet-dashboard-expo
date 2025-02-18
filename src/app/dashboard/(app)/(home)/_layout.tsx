@@ -3,7 +3,6 @@ import {
   DefaultTheme,
   ThemeProvider,
 } from "@react-navigation/native";
-import { useFonts } from "expo-font";
 import "react-native-reanimated";
 import { Drawer } from "expo-router/drawer";
 import { Text } from "react-native";

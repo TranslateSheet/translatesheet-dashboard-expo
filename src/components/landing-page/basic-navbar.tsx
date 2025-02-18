@@ -135,9 +135,10 @@ const styles = StyleSheet.create({
     padding: 8,
   },
   brandText: {
+    fontFamily: "Urbanist",
     marginLeft: 8,
     fontSize: 22,
-    fontWeight: "500",
+    fontWeight: "600",
     color: "#000",
   },
   link: {

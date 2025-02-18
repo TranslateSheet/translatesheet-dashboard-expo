@@ -215,6 +215,7 @@ const styles = StyleSheet.create({
     alignSelf: "flex-start",
   },
   rightWrap: {
+    
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
@@ -267,7 +268,7 @@ const styles = StyleSheet.create({
     lineHeight: 1.5,
     letterSpacing: -1,
     fontWeight: "400",
-    maxWidth: 450,
+    maxWidth: 500,
     fontSize: 37,
   },
   headingMobile: {
@@ -280,13 +281,14 @@ const styles = StyleSheet.create({
     fontSize: 28,
   },
   subHeadingText: {
+    fontFamily: "Inter",
     textAlign: "left", // Equivalent to `text-start`
-    fontWeight: "400", // Equivalent to `font-normal`
     color: "#575757", // Approximate Tailwind `text-default-500`
     fontSize: 18, // Approximate Tailwind `text-base`
     maxWidth: 570,
   },
   subHeadingTextMobile: {
+    fontFamily: "Inter",
     textAlign: "left", // Equivalent to `text-start`
     fontWeight: "400", // Equivalent to `font-normal`
     color: "#575757", // Approximate Tailwind `text-default-500`

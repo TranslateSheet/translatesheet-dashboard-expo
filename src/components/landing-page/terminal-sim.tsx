@@ -1,12 +1,20 @@
 import React, { useEffect, useRef, useState } from "react";
-import TranslateSheet from "translate-sheet";
 
-const TerminalSim: React.FC<{ onFileGenerated: (langCode: string) => void }> = ({
-  onFileGenerated,
-}) => {
+const TerminalSim: React.FC<{
+  onFileGenerated: (langCode: string) => void;
+}> = ({ onFileGenerated }) => {
   const terminalRef = useRef<HTMLDivElement>(null);
   const terminalInstance = useRef<any>(null);
   const [loaded, setLoaded] = useState(false);
+  const [cols, setCols] = useState(80); // Default columns
+
+  // Function to calculate terminal width dynamically
+  const calculateCols = () => {
+    const screenWidth = window.innerWidth;
+    if (screenWidth < 400) return 10; // Small screens
+    if (screenWidth < 768) return 50; // Tablets
+    return 80; // Desktops
+  };
 
   useEffect(() => {
     if (!terminalRef.current) return;
@@ -17,7 +25,7 @@ const TerminalSim: React.FC<{ onFileGenerated: (langCode: string) => void }> = (
       const terminal = new Terminal({
         cursorBlink: true,
         rows: 10,
-        cols: 80,
+        cols: calculateCols(),
         lineHeight: 1.2,
         theme: {
           background: "#272822", // Monokai dark background
@@ -43,7 +51,7 @@ const TerminalSim: React.FC<{ onFileGenerated: (langCode: string) => void }> = (
         },
       });
 
-      terminal.open(terminalRef.current);
+      terminal.open(terminalRef.current!);
       terminalInstance.current = terminal;
 
       simulateTerminal(terminal);
@@ -54,6 +62,20 @@ const TerminalSim: React.FC<{ onFileGenerated: (langCode: string) => void }> = (
         terminal.dispose();
       };
     });
+
+    const handleResize = () => {
+      const newCols = calculateCols();
+      setCols(newCols);
+      if (terminalInstance.current) {
+        terminalInstance.current.resize(newCols, 10);
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
   }, []);
 
   const simulateTerminal = (terminal: any) => {
@@ -66,7 +88,10 @@ const TerminalSim: React.FC<{ onFileGenerated: (langCode: string) => void }> = (
       { text: "\x1b[34m🌎  Created arabic file: ar.ts\x1b[0m", lang: "ar" },
       { text: "\x1b[34m🌎  Created russian file: ru.ts\x1b[0m", lang: "ru" },
       { text: "\x1b[34m🌎  Created mandarin file: zh.ts\x1b[0m", lang: "zh" },
-      { text: "\x1b[32m✅  Success! (6) Translations generated successfully!\x1b[0m", lang: null },
+      {
+        text: "\x1b[32m✅  Success! (6) Translations generated successfully!\x1b[0m",
+        lang: null,
+      },
     ];
 
     let commandIndex = 0;
@@ -83,7 +108,10 @@ const TerminalSim: React.FC<{ onFileGenerated: (langCode: string) => void }> = (
     }, 50);
   };
 
-  const simulateOutput = (terminal: any, output: { text: string; lang: string | null }[]) => {
+  const simulateOutput = (
+    terminal: any,
+    output: { text: string; lang: string | null }[]
+  ) => {
     let outputIndex = 0;
 
     const outputInterval = setInterval(() => {

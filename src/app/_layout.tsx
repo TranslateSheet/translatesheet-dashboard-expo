@@ -10,7 +10,7 @@ export default function Root() {
   const { height: windowHeight } = useWindowDimensions();
   const [loaded] = useFonts({
     SpaceMono: require("@/assets/fonts/SpaceMono-Regular.ttf"),
-    Inter: require("@/assets/fonts/Urbanist-VariableFont_wght.ttf"),
+    Urbanist: require("@/assets/fonts/Urbanist-VariableFont_wght.ttf"),
   });
 
   useEffect(() => {
