@@ -66,7 +66,7 @@ const TerminalSim: React.FC<{ onFileGenerated: (langCode: string) => void }> = (
       { text: "\x1b[34m🌎  Created arabic file: ar.ts\x1b[0m", lang: "ar" },
       { text: "\x1b[34m🌎  Created russian file: ru.ts\x1b[0m", lang: "ru" },
       { text: "\x1b[34m🌎  Created mandarin file: zh.ts\x1b[0m", lang: "zh" },
-      { text: "\x1b[32m✅  Translation keys generated successfully!\x1b[0m", lang: null },
+      { text: "\x1b[32m✅  Success! (6) Translations generated successfully!\x1b[0m", lang: null },
     ];
 
     let commandIndex = 0;

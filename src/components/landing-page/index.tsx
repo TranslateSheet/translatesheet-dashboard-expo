@@ -175,7 +175,7 @@ export default function LandingPage() {
             </m.div>
           </LazyMotion>
         </View>
-        {windowWidth > 1216 && (
+
           <View style={styles.rightWrap}>
             <LazyMotion features={domAnimation}>
               <AnimatePresence mode="wait">
@@ -195,7 +195,7 @@ export default function LandingPage() {
               </AnimatePresence>
             </LazyMotion>
           </View>
-        )}
+
       </View>
     </ScrollView>
   );
