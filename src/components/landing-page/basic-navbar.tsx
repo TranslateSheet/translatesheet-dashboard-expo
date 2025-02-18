@@ -15,22 +15,26 @@ import {
   Divider,
 } from "@heroui/react";
 import { Icon } from "@iconify/react";
-import { AcmeIcon } from "./social";
+import TranslateSheet from "translate-sheet";
 import { StyleSheet } from "react-native";
 import { useIsDesktop } from "@/hooks/useIsDesktop";
 import { useRouter } from "expo-router";
 
 type MenuItem = { label: string; href: string };
 
-const menuItems: MenuItem[] = [
-  { label: "Docs", href: "https://docs.translatesheet.co/" },
-];
-
 const BasicNavbar = React.forwardRef<HTMLElement, NavbarProps>(
   ({ ...props }, ref) => {
     const [isMenuOpen, setIsMenuOpen] = React.useState(false);
     const isDesktop = useIsDesktop();
     const router = useRouter();
+
+    const menuItems: MenuItem[] = [
+      {
+        label: translations.docs,
+        href: "https://docs.translatesheet.co/",
+      },
+    ];
+
     return (
       <Navbar
         ref={ref}
@@ -68,7 +72,7 @@ const BasicNavbar = React.forwardRef<HTMLElement, NavbarProps>(
                 variant="flat"
                 onPress={() => router.push("/dashboard")}
               >
-                Dashboard
+                {translations.dashboard}
               </Button>
             </NavbarItem>
           </NavbarContent>
@@ -86,7 +90,7 @@ const BasicNavbar = React.forwardRef<HTMLElement, NavbarProps>(
                   fullWidth
                   onPress={() => router.push("/dashboard")}
                 >
-                  Dashboard
+                  {translations.dashboard}
                 </Button>
               </NavbarMenuItem>
               {menuItems.map((item, index) => (
@@ -108,6 +112,11 @@ const BasicNavbar = React.forwardRef<HTMLElement, NavbarProps>(
 );
 
 BasicNavbar.displayName = "BasicNavbar";
+
+const translations = TranslateSheet.create("BasicNavbar", {
+  dashboard: "Dashboard",
+  docs: "Docs",
+});
 
 const styles = StyleSheet.create({
   navbar: {

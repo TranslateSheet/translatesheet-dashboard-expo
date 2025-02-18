@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "@heroui/react";
 import { Icon } from "@iconify/react";
 import {
@@ -14,11 +14,20 @@ import Banner from "./banner";
 import { useRouter } from "expo-router";
 import { useIsDesktop } from "@/hooks/useIsDesktop";
 import TerminalSim from "./terminal-sim";
+import TranslateSheet from "translate-sheet";
+import LanguageOptions from "./language-options";
 
 export default function LandingPage() {
+  const [enabledLanguages, setEnabledLanguages] = useState<string[]>([]);
+
   const { height: windowHeight, width: windowWidth } = useWindowDimensions();
   const isDesktop = useIsDesktop();
   const router = useRouter();
+
+  const handleFileGenerated = (lang: string) => {
+    setEnabledLanguages((prev) => [...prev, lang]);
+  };
+
   return (
     <ScrollView
       contentContainerStyle={{
@@ -61,7 +70,7 @@ export default function LandingPage() {
             radius="full"
             variant="bordered"
           >
-            Learn what's new!
+            {translations.ctaButtonLabel}
           </Button>
           <LazyMotion features={domAnimation}>
             <m.div
@@ -116,9 +125,7 @@ export default function LandingPage() {
                     type: "spring",
                   }}
                 >
-                  Build multilingual apps with React and React Native. Automate
-                  translation file generation and simplify localization from day
-                  one.
+                  {translations.subHeading}
                 </m.p>
 
                 <m.div
@@ -142,7 +149,7 @@ export default function LandingPage() {
                     radius="md"
                     onPress={() => router.push("/dashboard")}
                   >
-                    Get Started
+                    {translations.getStarted}
                   </Button>
                   <Button
                     className="h-14 w-[163px] border-3 border-default-200 px-[16px] py-[10px] text-small font-medium leading-5"
@@ -161,7 +168,7 @@ export default function LandingPage() {
                       router.push("https://docs.translatesheet.co")
                     }
                   >
-                    Read the Docs
+                    {translations.readTheDocs}
                   </Button>
                 </m.div>
               </AnimatePresence>
@@ -182,7 +189,8 @@ export default function LandingPage() {
                     duration: 0.8,
                   }}
                 >
-                  <TerminalSim />
+                  <LanguageOptions enabledLanguages={enabledLanguages} />
+                  <TerminalSim onFileGenerated={handleFileGenerated} />
                 </m.div>
               </AnimatePresence>
             </LazyMotion>
@@ -308,7 +316,7 @@ export function ResponsiveHeading() {
             : { ...styles.headingMobile }
         }
       >
-        TranslateSheet helps you{" "}
+        {translations.translateSheetHelpsYou}{" "}
         <div style={{ display: "inline" }}>
           <p
             style={{
@@ -318,7 +326,7 @@ export function ResponsiveHeading() {
               display: "inline",
             }}
           >
-            define
+            {translations.define}
           </p>{" "}
           <p
             style={{
@@ -328,7 +336,7 @@ export function ResponsiveHeading() {
               display: "inline",
             }}
           >
-            generate
+            {translations.generate}
           </p>{" "}
           &{" "}
           <p
@@ -339,11 +347,24 @@ export function ResponsiveHeading() {
               display: "inline",
             }}
           >
-            manage
+            {translations.manage}
           </p>
         </div>{" "}
-        translations with a simple API
+        {translations.simpleAPI}
       </div>
     </m.div>
   );
 }
+
+const translations = TranslateSheet.create("ResponsiveHeading", {
+  translateSheetHelpsYou: "TranslateSheet helps you",
+  define: "define",
+  generate: "generate",
+  manage: "manage",
+  simpleAPI: "translations with a simple API",
+  ctaButtonLabel: "Learn what's new!",
+  subHeading:
+    "Build multilingual apps with React and React Native. Automate translation file generation and simplify localization from day one.",
+  getStarted: "Get Started",
+  readTheDocs: "Read the Docs",
+});

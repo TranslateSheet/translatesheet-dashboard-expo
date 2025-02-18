@@ -1,6 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
+import TranslateSheet from "translate-sheet";
 
-const TerminalSim: React.FC = () => {
+const TerminalSim: React.FC<{ onFileGenerated: (langCode: string) => void }> = ({
+  onFileGenerated,
+}) => {
   const terminalRef = useRef<HTMLDivElement>(null);
   const terminalInstance = useRef<any>(null);
   const [loaded, setLoaded] = useState(false);
@@ -15,7 +18,7 @@ const TerminalSim: React.FC = () => {
         cursorBlink: true,
         rows: 10,
         cols: 80,
-        lineHeight:1.2,
+        lineHeight: 1.2,
         theme: {
           background: "#272822", // Monokai dark background
           foreground: "#F8F8F2", // Default text color
@@ -56,14 +59,14 @@ const TerminalSim: React.FC = () => {
   const simulateTerminal = (terminal: any) => {
     const command = "\x1b[34m$ bun translate-sheet generate\x1b[0m"; // Blue text for command
     const output = [
-      "\x1b[33m⏳  Generating translation keys...\x1b[0m", // Yellow
-      "\x1b[34m🌎  Created english file: en.ts\x1b[0m", // Cyan
-      "\x1b[34m🌎  Created spanish file: es.ts\x1b[0m",
-      "\x1b[34m🌎  Created japanese file: ja.ts\x1b[0m",
-      "\x1b[34m🌎  Created arabic file: ar.ts\x1b[0m",
-      "\x1b[34m🌎  Created russian file: ru.ts\x1b[0m",
-      "\x1b[34m🌎  Created mandarin file: zh.ts\x1b[0m",
-      "\x1b[32m✅  Translation keys generated successfully!\x1b[0m", // Green
+      { text: `\x1b[33m⏳  Generating translation keys...\x1b[0m`, lang: null },
+      { text: "\x1b[34m🌎  Created english file: en.ts\x1b[0m", lang: "en" },
+      { text: "\x1b[34m🌎  Created spanish file: es.ts\x1b[0m", lang: "es" },
+      { text: "\x1b[34m🌎  Created japanese file: ja.ts\x1b[0m", lang: "ja" },
+      { text: "\x1b[34m🌎  Created arabic file: ar.ts\x1b[0m", lang: "ar" },
+      { text: "\x1b[34m🌎  Created russian file: ru.ts\x1b[0m", lang: "ru" },
+      { text: "\x1b[34m🌎  Created mandarin file: zh.ts\x1b[0m", lang: "zh" },
+      { text: "\x1b[32m✅  Translation keys generated successfully!\x1b[0m", lang: null },
     ];
 
     let commandIndex = 0;
@@ -80,12 +83,17 @@ const TerminalSim: React.FC = () => {
     }, 50);
   };
 
-  const simulateOutput = (terminal: any, output: string[]) => {
+  const simulateOutput = (terminal: any, output: { text: string; lang: string | null }[]) => {
     let outputIndex = 0;
 
     const outputInterval = setInterval(() => {
       if (outputIndex < output.length) {
-        terminal.writeln(output[outputIndex]);
+        const { text, lang } = output[outputIndex];
+        terminal.writeln(text);
+
+        // Notify parent component when a language file is created
+        if (lang) onFileGenerated(lang);
+
         outputIndex++;
       } else {
         clearInterval(outputInterval);
