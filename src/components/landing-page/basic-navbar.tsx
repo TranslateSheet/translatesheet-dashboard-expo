@@ -159,11 +159,13 @@ const styles = StyleSheet.create({
   loginButton: {
     color: "#666",
     backgroundColor: "transparent",
+    fontFamily: "Inter",
   },
   getStartedButton: {
     backgroundColor: "#000",
     color: "#fff",
     fontWeight: "500",
+    fontFamily: "Inter",
   },
   menuToggle: {
     color: "#888",

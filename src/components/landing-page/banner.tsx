@@ -6,7 +6,10 @@ import TranslateSheet from "translate-sheet";
 export default function Banner() {
   return (
     <div className="flex w-full items-center gap-x-3 border-b-1 border-divider bg-primary px-6 py-2 sm:px-3.5 sm:before:flex-1">
-      <p className="text-small text-primary-foreground">
+      <p
+        style={{ fontFamily: "Inter" }}
+        className="text-small text-primary-foreground"
+      >
         {translations.heading}🎉
       </p>
       <div className="flex flex-1 justify-end">

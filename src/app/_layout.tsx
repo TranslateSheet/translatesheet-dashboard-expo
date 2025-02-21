@@ -9,6 +9,7 @@ import { initI18n } from "@/i18n/initI18n";
 export default function Root() {
   const { height: windowHeight } = useWindowDimensions();
   const [loaded] = useFonts({
+    Inter: require("@/assets/fonts/Inter.ttf"),
     SpaceMono: require("@/assets/fonts/SpaceMono-Regular.ttf"),
     Urbanist: require("@/assets/fonts/Urbanist-VariableFont_wght.ttf"),
   });

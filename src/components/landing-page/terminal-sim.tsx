@@ -25,7 +25,7 @@ const TerminalSim: React.FC<{
       const terminal = new Terminal({
         cursorBlink: true,
         rows: 10,
-        cols: calculateCols(),
+        cols: 80,
         lineHeight: 1.2,
         theme: {
           background: "#272822", // Monokai dark background

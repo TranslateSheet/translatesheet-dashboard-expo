@@ -40,11 +40,11 @@ export default function LandingPage() {
         style={[
           styles.contentContainer,
           {
-            flexDirection: windowWidth > 1216 ? "row" : "column",
+            flexDirection: windowWidth > 1024 ? "row" : "column",
             paddingTop: windowWidth > 1216 ? 100 : 42,
             paddingLeft: windowWidth > 1216 ? 48 : 28,
             paddingRight: windowWidth > 1216 ? 48 : 28,
-            gap: windowWidth > 1216 ? 100 : 0,
+            gap: windowWidth > 1216 ? 100 : 60,
           },
         ]}
       >
@@ -176,26 +176,29 @@ export default function LandingPage() {
           </LazyMotion>
         </View>
 
-          <View style={styles.rightWrap}>
-            <LazyMotion features={domAnimation}>
-              <AnimatePresence mode="wait">
-                <m.div
-                  animate={{ filter: "blur(0px)", opacity: 1, y: 0 }}
-                  initial={{ filter: "blur(16px)", opacity: 0, y: 30 }}
-                  transition={{
-                    type: "spring",
-                    stiffness: 100,
-                    damping: 15,
-                    duration: 0.8,
-                  }}
-                >
-                  <LanguageOptions enabledLanguages={enabledLanguages} />
-                  <TerminalSim onFileGenerated={handleFileGenerated} />
-                </m.div>
-              </AnimatePresence>
-            </LazyMotion>
-          </View>
-
+        <View style={styles.rightWrap}>
+          <LazyMotion features={domAnimation}>
+            <AnimatePresence mode="wait">
+              <m.div
+                animate={{ filter: "blur(0px)", opacity: 1, y: 0 }}
+                initial={{ filter: "blur(16px)", opacity: 0, y: 30 }}
+                transition={{
+                  type: "spring",
+                  stiffness: 100,
+                  damping: 15,
+                  duration: 0.8,
+                }}
+              >
+                {windowWidth > 1024 && (
+                  <>
+                    <LanguageOptions enabledLanguages={enabledLanguages} />
+                    <TerminalSim onFileGenerated={handleFileGenerated} />
+                  </>
+                )}
+              </m.div>
+            </AnimatePresence>
+          </LazyMotion>
+        </View>
       </View>
     </ScrollView>
   );
@@ -208,6 +211,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     maxWidth: 1200,
     flexWrap: "wrap",
+    paddingBottom: 20,
   },
   leftWrap: {
     flexShrink: 1,
@@ -215,7 +219,6 @@ const styles = StyleSheet.create({
     alignSelf: "flex-start",
   },
   rightWrap: {
-    
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
@@ -238,6 +241,7 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
   headingButton: {
+    fontFamily: "Inter",
     borderWidth: 1, // Equivalent to `border-1`
     borderColor: "#008DDF", // Approximate Tailwind `border-default-100`
     backgroundColor: "#dbf4ff", // Approximate Tailwind `bg-default-50`
