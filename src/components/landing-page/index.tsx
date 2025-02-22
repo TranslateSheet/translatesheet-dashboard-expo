@@ -69,6 +69,7 @@ export default function LandingPage() {
             size="sm"
             radius="full"
             variant="bordered"
+            href="https://x.com/bran_aust/status/1886818436346478625"
           >
             {translations.ctaButtonLabel}
           </Button>
