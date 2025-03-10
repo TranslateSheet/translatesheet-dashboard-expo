@@ -58,6 +58,7 @@ export default function LandingPage() {
           ]}
         >
           <Button
+            as="a"
             style={styles.headingButton}
             endContent={
               <Icon
@@ -70,6 +71,7 @@ export default function LandingPage() {
             radius="full"
             variant="bordered"
             href="https://x.com/bran_aust/status/1886818436346478625"
+            target="_blank"
           >
             {translations.ctaButtonLabel}
           </Button>
