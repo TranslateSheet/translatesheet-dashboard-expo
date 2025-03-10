@@ -14,6 +14,7 @@ import {
   Modal,
   ModalContent,
   Spacer,
+  Tooltip,
   useDisclosure,
 } from "@heroui/react";
 import { Icon } from "@iconify/react";
@@ -45,8 +46,31 @@ export function EditTranslationModal({
   return (
     <>
       <Button onPress={onOpen} isIconOnly size="sm" variant="light">
-        <Icon className="h-4 w-4" icon="solar:pen-2-linear" />
+        <Tooltip
+          delay={800}
+          showArrow
+          placement="top-end"
+          content={
+            <div className="px-1 py-2">
+              <div className="text-small">
+                {translation.isPrimary
+                  ? "view more information"
+                  : "view and edit"}
+              </div>
+            </div>
+          }
+        >
+          <Icon
+            className="h-4 w-4"
+            icon={
+              translation.isPrimary
+                ? "solar:info-circle-linear"
+                : "solar:pen-2-linear"
+            }
+          />
+        </Tooltip>
       </Button>
+
       <Modal
         isOpen={isOpen}
         onClose={onClose}
@@ -64,13 +88,42 @@ export function EditTranslationModal({
                   </p>
                 </div>
                 {/* Update button is disabled unless the text has changed */}
-                <Button
-                  color="primary"
-                  onPress={handleUpdateTranslation}
-                  disabled={!isChanged || isPending}
-                >
-                  Update
-                </Button>
+                {translation.isPrimary ? (
+                  <Tooltip
+                    delay={300}
+                    showArrow
+                    placement="top-end"
+                    content={
+                      <div className="px-1 py-2">
+                        <div
+                          style={{ fontWeight: 600 }}
+                          className="text-small pb-5"
+                        >
+                          Primary language translations cannot be edited in the
+                          dashboard
+                        </div>
+                        <div className="text-small">
+                          You can update the primary language translations in
+                          the codebase,
+                        </div>
+                        <div className="text-small">
+                          and run the `translate-sheet push` command to sync
+                          your changes
+                        </div>
+                      </div>
+                    }
+                  >
+                    <Icon className="h-4 w-4" icon="solar:info-circle-linear" />
+                  </Tooltip>
+                ) : (
+                  <Button
+                    color="primary"
+                    onPress={handleUpdateTranslation}
+                    disabled={!isChanged || isPending}
+                  >
+                    Update
+                  </Button>
+                )}
               </CardHeader>
               <Divider />
               <CardBody className="space-y-4">
@@ -79,22 +132,25 @@ export function EditTranslationModal({
                   label="Primary language value"
                   value={translation.originalValue}
                 />
-                <Spacer y={2} />
-                <CellValue
-                  isPrimary
-                  label="Translation value"
-                  value={
-                    <Input
-                      isRequired
-                      //   label="Translation Value"
-                      name="translationValue"
-                      value={translationValue}
-                      size="lg"
-                      onValueChange={setTranslationValue}
+                {!translation.isPrimary && (
+                  <>
+                    <Spacer y={2} />
+                    <CellValue
+                      isPrimary
+                      label="Translation value"
+                      value={
+                        <Input
+                          isRequired
+                          //   label="Translation Value"
+                          name="translationValue"
+                          value={translationValue}
+                          size="lg"
+                          onValueChange={setTranslationValue}
+                        />
+                      }
                     />
-                  }
-                />
-
+                  </>
+                )}
                 <Divider />
                 <Accordion>
                   <AccordionItem

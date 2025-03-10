@@ -5,12 +5,10 @@ import { Card, CardBody, Button, CardFooter, Divider } from "@heroui/react";
 import { UserCell } from "./UserCell";
 import { useGetProjectMembers } from "@/api/useGetProjectMembers";
 
-
 export function ProjectMembers(props: CardProps) {
   const { data: members, isLoading, error } = useGetProjectMembers();
 
-  console.log(members)
-
+  console.log(members);
 
   if (isLoading) {
     return <div>Loading project members...</div>;
@@ -32,24 +30,30 @@ export function ProjectMembers(props: CardProps) {
             <React.Fragment key={member.id}>
               <UserCell
                 avatar={
-                  member.profile?.avatar_url || "https://i.pravatar.cc/150?u=default"
+                  member.profile?.avatar_url ||
+                  "https://static.vecteezy.com/system/resources/previews/008/442/086/non_2x/illustration-of-human-icon-user-symbol-icon-modern-design-on-blank-background-free-vector.jpg"
                 }
-                name={member.profile?.full_name || "Unknown User"}
-                permission={member.role || "Can view"}
+                name={
+                  member.profile?.full_name ||
+                  member.profile?.email ||
+                  "unknown user"
+                }
+                permission={member.role || "viewer"}
+                invitationPending={!member.user_id}
               />
-              <Divider />
+              {members.length > 1 && <Divider />}
             </React.Fragment>
           ))}
         </div>
       </CardBody>
-      <CardFooter className="justify-end gap-2">
+      {/* <CardFooter className="justify-end gap-2">
         <Button size="sm" variant="flat">
           Copy Link
         </Button>
         <Button size="sm" variant="flat">
           Get Embed Code
         </Button>
-      </CardFooter>
+      </CardFooter> */}
     </Card>
   );
 }

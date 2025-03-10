@@ -1,25 +1,16 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "../../lib/supabase";
 import { useGlobalSearchParams } from "expo-router";
-// If you generated types from your DB, import them here
-// import { Database } from "../../lib/supabase/database.types";
 
-// Example TypeScript definitions (adjust for your schema)
-// type ProjectMemberRow = Database["public"]["Tables"]["project_members"]["Row"];
-// type ProfileRow = Database["public"]["Tables"]["profiles"]["Row"];
-
-/**
- * Example shape of combined project_members + profile data
- */
 export interface ProjectMemberProfile {
   id: string; // project_members.id
   role: string | null; // e.g. "owner" | "admin" | "editor"...
-  user_id: string; // The Supabase user ID
+  user_id: string | null; // The Supabase user ID (nullable if not yet registered)
+  invited_email?: string | null; // Email used for the invitation
   profile?: {
     full_name: string | null;
     avatar_url: string | null;
     email: string | null;
-    // ... other fields from the "profiles" table
   };
 }
 
@@ -30,8 +21,7 @@ export function useGetProjectMembers() {
     queryFn: async () => {
       if (!projectId) return [];
 
-      // SELECT from "project_members" and JOIN with the "profiles" table
-      // Using Supabase's relationship syntax or an explicit join
+      // Fetch from project_members joining profiles and including invited_email
       const { data, error } = await supabase
         .from("project_members")
         .select(
@@ -39,6 +29,7 @@ export function useGetProjectMembers() {
           id,
           role,
           user_id,
+          invited_email,
           profiles (
             full_name,
             avatar_url,
@@ -53,18 +44,21 @@ export function useGetProjectMembers() {
         throw new Error(error.message);
       }
 
-      // Transform the data if you want a cleaner shape
+      // Transform the data so that invited members (with no profile) still show an email
       const members: ProjectMemberProfile[] =
         data?.map((row: any) => ({
           id: row.id,
           role: row.role,
           user_id: row.user_id,
+          invited_email: row.invited_email,
           profile: row.profiles
             ? {
                 full_name: row.profiles.full_name,
                 avatar_url: row.profiles.avatar_url,
                 email: row.profiles.email,
               }
+            : row.invited_email
+            ? { email: row.invited_email, full_name: null, avatar_url: null }
             : undefined,
         })) || [];
 

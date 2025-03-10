@@ -1,10 +1,13 @@
 import { supabase } from "../../../lib/supabase";
 
-const BASE_URL = "https://api.translatesheet.co/";
+const BASE_URL = "http://localhost:3001/";
+type AvailableEndpoints =
+  | "api-keys/get-project-api-keys"
+  | "projects/create"
+  | "project-members/create";
 
 const apiFetch = async (
-  // TODO: endpoints should be strictly typed
-  endpoint: string, // The endpoint after the base URL (e.g., "api-key/create")
+  endpoint: AvailableEndpoints,
   options: {
     method?: "GET" | "POST" | "PUT" | "DELETE";
     body?: Record<string, any>;

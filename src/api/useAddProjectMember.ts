@@ -1,18 +1,21 @@
 import { useState } from "react";
-import { supabase } from "../../lib/supabase";
-import { ProjectMemberInsert, ProjectMemberRole } from "./types";
 import { useGlobalSearchParams } from "expo-router";
-
+import { useQueryClient } from "@tanstack/react-query";
+import { ProjectMemberInsert, ProjectMemberRole } from "./types";
+import apiFetch from "./utils/apiFetch";
 
 const useAddProjectMember = () => {
   const { projectId } = useGlobalSearchParams<{ projectId: string }>();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const queryClient = useQueryClient();
 
   const addProjectMember = async ({
     projectMemberRole,
+    projectMemberEmail,
   }: {
     projectMemberRole: ProjectMemberRole;
+    projectMemberEmail: string;
   }) => {
     setLoading(true);
     setError(null);
@@ -24,25 +27,23 @@ const useAddProjectMember = () => {
       }
 
       const projectMemberToInsert: ProjectMemberInsert = {
-        created_at: Date.now().toString(),
         project_id: projectId,
         role: projectMemberRole,
-        // because we can invite users who dont yet have an account.
-        user_id: "TODO:"
-      }
+        invited_email: projectMemberEmail,
+      };
 
-      // Insert the new project member into Supabase
-      const { data, error: supabaseError } = await supabase
-        .from("project_members")
-        .insert(projectMemberToInsert)
-        .select("id, user_id, project_id, role")
-        .single();
+      const res = await apiFetch("project-members/create", {
+        method: "POST",
+        body: projectMemberToInsert,
+      });
+      console.log(res);
 
-      if (supabaseError) {
-        throw new Error(supabaseError.message);
-      }
+      // Invalidate the projectMembers query to trigger a refetch
+      queryClient.invalidateQueries({
+        queryKey: ["projectMembers", projectId],
+      });
 
-      return data;
+      return res;
     } catch (err: any) {
       setError(err.message || "An unknown error occurred");
       return null;

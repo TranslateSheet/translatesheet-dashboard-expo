@@ -16,6 +16,7 @@ export interface FlattenedTranslation {
   namespace: string;
   // Additional custom field
   originalValue?: string;
+  isPrimary: boolean;
 }
 
 export const useGetTranslations = ({ projectId }: { projectId: string }) => {
@@ -86,9 +87,6 @@ export const useGetTranslations = ({ projectId }: { projectId: string }) => {
         });
       }
 
-      {
-      }
-
       // 4) Flatten everything into your custom FlattenedTranslation
       const flattened: FlattenedTranslation[] = translationKeysData.flatMap(
         (keyItem) => {
@@ -121,6 +119,7 @@ export const useGetTranslations = ({ projectId }: { projectId: string }) => {
               key: keyItem.key_name,
               namespace: keyItem.namespace,
               originalValue: primaryLanguageMap.get(keyItem.id),
+              isPrimary: projectData?.primary_language === t.language,
             };
           });
         }

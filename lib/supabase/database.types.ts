@@ -93,26 +93,29 @@ export type Database = {
         Row: {
           created_at: string | null
           id: string
+          invited_email: string | null
           project_id: string
           role: string | null
           updated_at: string | null
-          user_id: string
+          user_id: string | null
         }
         Insert: {
           created_at?: string | null
           id?: string
+          invited_email?: string | null
           project_id: string
           role?: string | null
           updated_at?: string | null
-          user_id: string
+          user_id?: string | null
         }
         Update: {
           created_at?: string | null
           id?: string
+          invited_email?: string | null
           project_id?: string
           role?: string | null
           updated_at?: string | null
-          user_id?: string
+          user_id?: string | null
         }
         Relationships: [
           {
@@ -120,6 +123,20 @@ export type Database = {
             columns: ["project_id"]
             isOneToOne: false
             referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "project_members_user_id_fkey1"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "combined_project_members"
+            referencedColumns: ["profile_id"]
+          },
+          {
+            foreignKeyName: "project_members_user_id_fkey1"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
         ]
@@ -270,6 +287,20 @@ export type Database = {
             columns: ["project_id"]
             isOneToOne: false
             referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "project_members_user_id_fkey1"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "combined_project_members"
+            referencedColumns: ["profile_id"]
+          },
+          {
+            foreignKeyName: "project_members_user_id_fkey1"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
         ]

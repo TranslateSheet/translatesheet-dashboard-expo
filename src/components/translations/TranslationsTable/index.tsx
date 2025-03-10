@@ -195,7 +195,7 @@ export function TranslationsTable() {
           return (
             <Chip
               className="uppercase"
-              color={cellValue === "en" ? "success" : "default"}
+              color={translation.isPrimary ? "success" : "default"}
               size="sm"
               variant="flat"
             >
@@ -259,9 +259,9 @@ export function TranslationsTable() {
           return (
             <div className="flex items-center justify-end gap-2">
               <EditTranslationModal translation={translation} />
-              <Button isIconOnly size="sm" variant="light">
+              {/* <Button isIconOnly size="sm" variant="light">
                 <Icon className="h-4 w-4" icon="solar:trash-bin-trash-linear" />
-              </Button>
+              </Button> */}
             </div>
           );
         default:

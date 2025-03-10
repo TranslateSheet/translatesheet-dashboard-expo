@@ -1,8 +1,6 @@
-// https://www.heroui.pro/components/application/cards
-
 import type { Selection } from "@heroui/react";
 
-import React from "react";
+import React, { useState } from "react";
 import {
   Card,
   Button,
@@ -22,22 +20,37 @@ import {
 import { Icon } from "@iconify/react";
 import { StyleSheet } from "react-native";
 import useAddProjectMember from "@/api/useAddProjectMember";
+import { ProjectMemberRole } from "@/api/types";
 
 export function NewProjectMemberModal() {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
   const { addProjectMember } = useAddProjectMember();
-  const [selectedKeys, setSelectedKeys] = React.useState<Selection>(
-    new Set(["can-view"])
-  );
 
-  const permissionLabels: Record<string, string> = {
-    "can-view": "Can View",
-    "can-edit": "Can Edit",
+  const [selectedRole, setSelectedRole] = useState<ProjectMemberRole>("editor");
+  const [email, setEmail] = useState<string>("");
+
+  // Only include valid options
+  const roleOptions: ProjectMemberRole[] = [
+    "owner",
+    "admin",
+    "editor",
+    "viewer",
+  ];
+
+  // Wrap the state setter to extract the first selected key
+  const handleSelectionChange = (keys: Selection) => {
+    const selected = Array.from(keys as Set<string>)[0];
+    if (selected) {
+      setSelectedRole(selected as ProjectMemberRole);
+    }
   };
 
   const handleAddNewMember = async () => {
-    // TODO: role needs to be conditional
-    await addProjectMember({ projectMemberRole: "owner" });
+    await addProjectMember({
+      projectMemberRole: selectedRole,
+      projectMemberEmail: email,
+    });
+    onClose()
   };
 
   return (
@@ -69,10 +82,11 @@ export function NewProjectMemberModal() {
                   <Form
                     className="w-full flex-row flex-nowrap items-end"
                     validationBehavior="native"
-                    // onSubmit={handleSubmit}
                   >
                     <Input
                       isRequired
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
                       endContent={
                         <Dropdown>
                           <DropdownTrigger>
@@ -86,32 +100,30 @@ export function NewProjectMemberModal() {
                               size="sm"
                               variant="light"
                             >
-                              {Array.from(selectedKeys)
-                                .map((key) => permissionLabels[key])
-                                .join(", ")}
+                              {selectedRole}
                             </Button>
                           </DropdownTrigger>
                           <DropdownMenu
-                            selectedKeys={selectedKeys}
+                            selectedKeys={new Set([selectedRole])}
                             selectionMode="single"
-                            onSelectionChange={setSelectedKeys}
+                            onSelectionChange={handleSelectionChange}
                           >
-                            <DropdownItem key="can-view">Can view</DropdownItem>
-                            <DropdownItem key="can-edit">Can edit</DropdownItem>
+                            {roleOptions.map((role) => (
+                              <DropdownItem key={role}>{role}</DropdownItem>
+                            ))}
                           </DropdownMenu>
                         </Dropdown>
                       }
                       label="Email Address"
                       labelPlacement="outside"
                       name="email"
-                      placeholder="Email comma separated"
+                      placeholder="Enter email"
                       type="email"
                     />
                     <Button
                       onPress={handleAddNewMember}
                       color="primary"
                       size="md"
-                      type="submit"
                     >
                       Invite
                     </Button>
@@ -137,7 +149,7 @@ const styles = StyleSheet.create({
   description: {
     marginBottom: 16,
     fontSize: 14,
-    color: "#4B5563", // equivalent to text-gray-600
+    color: "#4B5563",
   },
   cancelButton: {
     marginRight: 8,

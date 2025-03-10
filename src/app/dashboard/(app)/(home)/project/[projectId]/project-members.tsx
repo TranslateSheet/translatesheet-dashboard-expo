@@ -11,7 +11,7 @@ const ProjectMembersScreen = () => {
       <PageHeader
         heading="Project Members"
         subHeading="Manage your project members"
-        // headerRight={<NewProjectMemberModal />}
+        headerRight={<NewProjectMemberModal />}
       />
       <Spacer y={4} />
       <ProjectMembers />
