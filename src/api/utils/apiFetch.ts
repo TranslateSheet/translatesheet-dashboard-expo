@@ -1,6 +1,6 @@
 import { supabase } from "../../../lib/supabase";
 
-const BASE_URL = "http://localhost:3001/";
+const BASE_URL = "https://api.translatesheet.co/";
 type AvailableEndpoints =
   | "api-keys/get-project-api-keys"
   | "projects/create"
