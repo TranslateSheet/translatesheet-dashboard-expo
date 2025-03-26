@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button } from "@heroui/react";
+import { Button, Spacer } from "@heroui/react";
 import { Icon } from "@iconify/react";
 import {
   ScrollView,
@@ -16,6 +16,8 @@ import { useIsDesktop } from "@/hooks/useIsDesktop";
 import TerminalSim from "./terminal-sim";
 import TranslateSheet from "translate-sheet";
 import LanguageOptions from "./language-options";
+import { PricingPlans } from "../billing/PricingPlans";
+import { ThemedText } from "../ThemedText";
 
 export default function LandingPage() {
   const [enabledLanguages, setEnabledLanguages] = useState<string[]>([]);
@@ -148,14 +150,14 @@ export default function LandingPage() {
                   style={{ paddingTop: 48, flexDirection: "row" }}
                 >
                   <Button
-                    className="h-14 w-[163px] bg-default-foreground px-[16px] py-[10px] text-small font-medium leading-5 text-background"
+                    className="h-14 min-w-[163px] bg-default-foreground px-[16px] py-[10px] text-small font-medium leading-5 text-background"
                     radius="md"
                     onPress={() => router.push("/dashboard")}
                   >
                     {translations.getStarted}
                   </Button>
                   <Button
-                    className="h-14 w-[163px] border-3 border-default-200 px-[16px] py-[10px] text-small font-medium leading-5"
+                    className="h-14 min-w-[163px] border-3 border-default-200 px-[16px] py-[10px] text-small font-medium leading-5"
                     endContent={
                       <span className="pointer-events-none flex h-[22px] w-[22px] items-center justify-center rounded-full bg-default-100">
                         <Icon
@@ -202,6 +204,13 @@ export default function LandingPage() {
             </AnimatePresence>
           </LazyMotion>
         </View>
+        <View style={{ paddingVertical: 80, alignItems: "center", width: "100%" }}>
+          <ThemedText type="subtitle">
+            No surprise fees or contracts. Get started for free, and scale when
+            you need.
+          </ThemedText>
+          <PricingPlans isLanding />
+        </View>
       </View>
     </ScrollView>
   );
@@ -237,23 +246,18 @@ const styles = StyleSheet.create({
     transform: [{ scale: 1.5 }], // Equivalent to `scale-150`
     userSelect: "none", // Equivalent to `select-none`
   },
-  backgroundImage: {
-    width: "100%",
-    height: "100%",
-    zIndex: -10,
-    position: "absolute",
-  },
   headingButton: {
     fontFamily: "Inter",
     borderWidth: 1, // Equivalent to `border-1`
     borderColor: "#008DDF", // Approximate Tailwind `border-default-100`
     backgroundColor: "#dbf4ff", // Approximate Tailwind `bg-default-50`
-    paddingHorizontal: 18, // Equivalent to `px-[18px]`
+    paddingHorizontal: 28, // Equivalent to `px-[18px]`
     fontSize: 14, // Approximate Tailwind `text-small`
     fontWeight: "400", // Equivalent to `font-normal`
     lineHeight: 20, // Approximate Tailwind `leading-5`
     color: "#008DDF", // Approximate Tailwind `text-default-500`
-    maxWidth: 200, // Equivalent to `max-w-[200px]`
+    minWidth: 220,
+    maxWidth: 240,
   },
   icon: {
     flex: 1, // Equivalent to `flex-none`

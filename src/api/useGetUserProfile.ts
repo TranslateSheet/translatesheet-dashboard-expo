@@ -1,19 +1,20 @@
 import { useEffect, useState } from "react";
 import { supabase } from "../../lib/supabase";
 import { UserProfileRow } from "./types";
+import { useSession } from "@/providers/AuthContext";
 
 const useGetUserProfile = () => {
-  const { user } = useAuth();
+  const { session } = useSession();
   const [userProfile, setUserProfile] = useState<UserProfileRow | null>(null);
 
   useEffect(() => {
     const getUserProfile = async () => {
-      if (!user) return;
+      if (!session) return;
 
       const { data, error } = await supabase
         .from("profiles")
         .select("*")
-        .eq("id", user?.id)
+        .eq("id", session.user?.id)
         .single();
 
       if (error) {
@@ -22,12 +23,9 @@ const useGetUserProfile = () => {
       setUserProfile(data);
     };
     getUserProfile();
-  }, [user]);
+  }, [session]);
 
   return userProfile;
 };
 
 export default useGetUserProfile;
-function useAuth(): { user: any } {
-  throw new Error("Function not implemented.");
-}
