@@ -19,6 +19,8 @@ import LanguageOptions from "./language-options";
 import { PricingPlans } from "../billing/PricingPlans";
 import { ThemedText } from "../ThemedText";
 import IDEExamples from "./IDEExamples";
+import SpotlightCard from "./spotlight-card";
+import features from "./features";
 
 export default function LandingPage() {
   const [enabledLanguages, setEnabledLanguages] = useState<string[]>([]);
@@ -46,7 +48,7 @@ export default function LandingPage() {
       <View style={styles.contentContainer}>
         <View
           style={{
-            height: windowHeight,
+            height: windowWidth > 1024 ? windowHeight - 170 : "auto",
           }}
         >
           <View
@@ -214,6 +216,19 @@ export default function LandingPage() {
             </View>
           </View>
         </View>
+
+        <div
+          className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-3 px-[24px]"
+          style={styles.featuresContainer}
+        >
+          {features.map((feature, index) => (
+            <SpotlightCard
+              title={feature.title}
+              description={feature.description}
+            />
+          ))}
+        </div>
+
         {windowWidth > 1024 && <IDEExamples />}
         {__DEV__ && (
           <View
@@ -231,7 +246,6 @@ const styles = StyleSheet.create({
   contentContainer: {
     width: "100%",
     justifyContent: "space-between",
-    alignItems: "center",
     maxWidth: 1200,
     flexWrap: "wrap",
     paddingBottom: 20,
@@ -317,6 +331,11 @@ const styles = StyleSheet.create({
     color: "#575757", // Approximate Tailwind `text-default-500`
     fontSize: 18, // Approximate Tailwind `text-base`
     maxWidth: 400,
+  },
+  featuresContainer: {
+    flexDirection: "row",
+    gap: 24,
+    paddingBottom: 160,
   },
 });
 
