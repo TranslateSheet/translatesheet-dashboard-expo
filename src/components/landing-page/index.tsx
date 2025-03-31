@@ -214,7 +214,7 @@ export default function LandingPage() {
             </View>
           </View>
         </View>
-        <IDEExamples />
+        {windowWidth > 1024 && <IDEExamples />}
         {__DEV__ && (
           <View
             style={{ paddingVertical: 80, alignItems: "center", width: "100%" }}
