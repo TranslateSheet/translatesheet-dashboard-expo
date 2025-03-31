@@ -19,6 +19,8 @@ import {
 import { FrequencyEnum, TiersEnum } from "./types";
 import { frequencies, tiers } from "./PricingTiers";
 import useSubscriptionStatus from "@/api/useSubscriptionStatus";
+import TranslateSheet, { useLanguageChange } from "translate-sheet";
+import { ThemedText } from "../ThemedText";
 
 export function PricingPlans({ isLanding }: { isLanding?: boolean }) {
   const [selectedFrequency, setSelectedFrequency] = React.useState(
@@ -35,6 +37,15 @@ export function PricingPlans({ isLanding }: { isLanding?: boolean }) {
 
   return (
     <div className="flex w-full flex-col items-center">
+      {isLanding && (
+        <ThemedText
+          style={{ fontFamily: "Inter" }}
+          darkColor="#000"
+          type="subtitle"
+        >
+          {translations.heading}
+        </ThemedText>
+      )}
       <Spacer y={8} />
       <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-2">
         {tiers.map((tier) => (
@@ -48,7 +59,7 @@ export function PricingPlans({ isLanding }: { isLanding?: boolean }) {
                 color="primary"
                 variant="flat"
               >
-                Current plan
+                {translations.currentPlan}
               </Chip>
             ) : null}
             <CardHeader className="flex flex-col items-start gap-2 pb-6">
@@ -99,9 +110,9 @@ export function PricingPlans({ isLanding }: { isLanding?: boolean }) {
           <Spacer y={12} />
           <div className="flex py-2">
             <p className="text-default-400">
-              Are you an open source developer?&nbsp;
+              {translations.openSourceDev}&nbsp;
               <Link color="foreground" href="#" underline="always">
-                Get a discount
+                {translations.discount}
               </Link>
             </p>
           </div>
@@ -110,3 +121,11 @@ export function PricingPlans({ isLanding }: { isLanding?: boolean }) {
     </div>
   );
 }
+
+const translations = TranslateSheet.create("PricingPlans", {
+  heading:
+    "No surprise fees or contracts. Get started for free, and scale when you need.",
+  currentPlan: "Current plan",
+  openSourceDev: "Are you an open source developer?",
+  discount: "Get a discount",
+});
