@@ -1,8 +1,38 @@
 // https://www.heroui.pro/components/marketing/pricing
 
+import TranslateSheet from "translate-sheet";
 import type { Frequency, Tier } from "./types";
 
 import { FrequencyEnum, TiersEnum } from "./types";
+
+const translations = TranslateSheet.create("PricingTiers", {
+  hobby: {
+    title: "Hobby",
+    price: "Free",
+    description: "For starters and hobbyists that want to try out.",
+    features: {
+      projects: "1 project",
+      members: "1 project member seat",
+      keys: "250 hosted translated keys",
+      languages: "2 translated languages",
+      support: "Email support",
+    },
+    buttonText: "Continue with Free",
+  },
+  professional: {
+    title: "Professional",
+    price: "$9 per month",
+    description: "For small teams that have less that 10 members.",
+    features: {
+      projects: "10 projects",
+      members: "Unlimited project member seats",
+      keys: "Unlimited hosted translated keys",
+      languages: "Unlimited translated languages",
+      support: "Help center access",
+    },
+    buttonText: "Get started",
+  },
+});
 
 export const frequencies: Array<Frequency> = [
   { key: FrequencyEnum.Yearly, label: "Pay Yearly", priceSuffix: "per year" },
@@ -16,63 +46,59 @@ export const frequencies: Array<Frequency> = [
 export const tiers: Array<Tier> = [
   {
     key: TiersEnum.Free,
-    title: "Free",
-    price: "Free",
+    title: translations.hobby.title,
+    price: translations.hobby.price,
     href: "#",
     featured: false,
     mostPopular: false,
-    description: "For starters and hobbyists that want to try out.",
+    description: translations.hobby.description,
     features: [
-      "10 users included",
-      "2 GB of storage",
-      "Help center access",
-      "Email support",
+      translations.hobby.features.projects,
+      translations.hobby.features.members,
+      translations.hobby.features.keys,
+      translations.hobby.features.languages,
+      translations.hobby.features.support,
     ],
-    buttonText: "Continue with Free",
+    buttonText: translations.hobby.buttonText,
     buttonColor: "default",
     buttonVariant: "flat",
   },
   {
     key: TiersEnum.Pro,
-    title: "Pro",
-    description: "For small teams that have less that 10 members.",
+    title: translations.professional.title,
+    description: translations.professional.description,
     href: "#",
     mostPopular: true,
-    price: {
-      yearly: "$72",
-      quarterly: "$24",
-    },
+    price: translations.professional.price,
+    priceSuffix: "/mo",
     featured: false,
     features: [
-      "20 users included",
-      "10 GB of storage",
-      "Help center access",
-      "Priority email support",
+      translations.professional.features.projects,
+      translations.professional.features.members,
+      translations.professional.features.keys,
+      translations.professional.features.languages,
+      translations.professional.features.support,
     ],
-    buttonText: "Get started",
+    buttonText: translations.professional.buttonText,
     buttonColor: "primary",
     buttonVariant: "solid",
   },
-  {
-    key: TiersEnum.Team,
-    title: "Team",
-    href: "#",
-    featured: true,
-    mostPopular: false,
-    description: "For large teams that have more than 10 members.",
-    price: {
-      yearly: "$90",
-      quarterly: "$120",
-    },
-    priceSuffix: "per user",
-    features: [
-      "50 users included",
-      "30 GB of storage",
-      "Help center access",
-      "Phone & email support",
-    ],
-    buttonText: "Contact us",
-    buttonColor: "default",
-    buttonVariant: "flat",
-  },
+  // {
+  //   key: TiersEnum.Enterprise,
+  //   title: "Team",
+  //   href: "#",
+  //   featured: true,
+  //   mostPopular: false,
+  //   description: "For large teams that have more than 10 members.",
+  //   price: "Contact for pricing details",
+  //   features: [
+  //     "Unlimited projects",
+  //     "Unlimited storage",
+  //     "Unlimited project member seats",
+  //     "Phone & email support",
+  //   ],
+  //   buttonText: "Contact",
+  //   buttonColor: "default",
+  //   buttonVariant: "flat",
+  // },
 ];

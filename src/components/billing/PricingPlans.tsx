@@ -16,13 +16,18 @@ import {
   Tabs,
 } from "@heroui/react";
 
-import { FrequencyEnum } from "./types";
+import { FrequencyEnum, TiersEnum } from "./types";
 import { frequencies, tiers } from "./PricingTiers";
+import useSubscriptionStatus from "@/api/useSubscriptionStatus";
+import TranslateSheet, { useLanguageChange } from "translate-sheet";
+import { ThemedText } from "../ThemedText";
 
-export function PricingPlans() {
+export function PricingPlans({ isLanding }: { isLanding?: boolean }) {
   const [selectedFrequency, setSelectedFrequency] = React.useState(
     frequencies[0]
   );
+
+  const { isActive, subscriptionStatus, loading } = useSubscriptionStatus();
 
   const onFrequencyChange = (selectedKey: React.Key) => {
     const frequencyIndex = frequencies.findIndex((f) => f.key === selectedKey);
@@ -32,43 +37,20 @@ export function PricingPlans() {
 
   return (
     <div className="flex w-full flex-col items-center">
-      <div className="flex max-w-xl flex-col text-center">
-        <h2 className="font-medium text-primary">Pricing</h2>
-        <h1 className="text-4xl font-medium tracking-tight">
-          Get unlimited access.
-        </h1>
-        <Spacer y={4} />
-        <h2 className="text-large text-default-500">
-          Discover the ideal plan, beginning at under $2 per week.
-        </h2>
-      </div>
+      {isLanding && (
+        <ThemedText
+          style={{ fontFamily: "Inter" }}
+          darkColor="#000"
+          type="subtitle"
+        >
+          {translations.heading}
+        </ThemedText>
+      )}
       <Spacer y={8} />
-      <Tabs
-        classNames={{
-          tab: "data-[hover-unselected=true]:opacity-90",
-        }}
-        radius="full"
-        size="lg"
-        onSelectionChange={onFrequencyChange}
-      >
-        <Tab
-          key={FrequencyEnum.Yearly}
-          aria-label="Pay Yearly"
-          className="pr-1.5"
-          title={
-            <div className="flex items-center gap-2">
-              <p>Pay Yearly</p>
-              <Chip color="primary">Save 25%</Chip>
-            </div>
-          }
-        />
-        <Tab key={FrequencyEnum.Quarterly} title="Pay Quarterly" />
-      </Tabs>
-      <Spacer y={12} />
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-2">
         {tiers.map((tier) => (
           <Card key={tier.key} className="relative p-3" shadow="md">
-            {tier.mostPopular ? (
+            {tier.key === TiersEnum.Pro && isActive ? (
               <Chip
                 classNames={{
                   base: "absolute top-4 right-4",
@@ -77,7 +59,7 @@ export function PricingPlans() {
                 color="primary"
                 variant="flat"
               >
-                Most Popular
+                {translations.currentPlan}
               </Chip>
             ) : null}
             <CardHeader className="flex flex-col items-start gap-2 pb-6">
@@ -87,7 +69,7 @@ export function PricingPlans() {
             <Divider />
             <CardBody className="gap-8">
               <p className="flex items-baseline gap-1 pt-2">
-                <span className="inline bg-gradient-to-br from-foreground to-foreground-600 bg-clip-text text-4xl font-semibold leading-7 tracking-tight text-transparent">
+                <span className="text-large inline bg-gradient-to-br from-foreground to-foreground-600 bg-clip-text text-4xl font-semibold leading-7 tracking-tight text-transparent">
                   {typeof tier.price === "string"
                     ? tier.price
                     : tier.price[selectedFrequency.key]}
@@ -114,7 +96,7 @@ export function PricingPlans() {
                 fullWidth
                 as={Link}
                 color={tier.buttonColor}
-                href={tier.href}
+                href={isLanding ? "/dashboard" : tier.href}
                 variant={tier.buttonVariant}
               >
                 {tier.buttonText}
@@ -123,15 +105,27 @@ export function PricingPlans() {
           </Card>
         ))}
       </div>
-      <Spacer y={12} />
-      <div className="flex py-2">
-        <p className="text-default-400">
-          Are you an open source developer?&nbsp;
-          <Link color="foreground" href="#" underline="always">
-            Get a discount
-          </Link>
-        </p>
-      </div>
+      {!isLanding && (
+        <>
+          <Spacer y={12} />
+          <div className="flex py-2">
+            <p className="text-default-400">
+              {translations.openSourceDev}&nbsp;
+              <Link color="foreground" href="#" underline="always">
+                {translations.discount}
+              </Link>
+            </p>
+          </div>
+        </>
+      )}
     </div>
   );
 }
+
+const translations = TranslateSheet.create("PricingPlans", {
+  heading:
+    "No surprise fees or contracts. Get started for free, and scale when you need.",
+  currentPlan: "Current plan",
+  openSourceDev: "Are you an open source developer?",
+  discount: "Get a discount",
+});

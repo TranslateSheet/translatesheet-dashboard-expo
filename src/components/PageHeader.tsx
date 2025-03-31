@@ -3,21 +3,27 @@
 import React, { ReactNode } from "react";
 import { ThemedText } from "./ThemedText";
 import { View } from "react-native";
+import { Link } from "expo-router";
 
 export function PageHeader({
   heading,
   subHeading,
   headerRight,
+  navBackPage,
 }: {
   heading: string;
-  subHeading: string;
+  subHeading?: string;
   headerRight?: ReactNode;
+  navBackPage?: string;
 }) {
   return (
     <View style={styles.header}>
+      <View>
+      {/* <Link href={navBackPage} lightColor="#777777">go back</Link> */}
       <View style={styles.textContainer}>
         <ThemedText type="title">{heading}</ThemedText>
         <ThemedText lightColor="#777777">{subHeading}</ThemedText>
+      </View>
       </View>
       {headerRight && headerRight}
     </View>

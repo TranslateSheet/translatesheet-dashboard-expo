@@ -4,7 +4,8 @@ import { supabase } from "../../lib/supabase";
 
 const useSubscriptionStatus = () => {
   const { session } = useSession();
-  const [status, setStatus] = useState<string | null>(null);
+  const [isActive, setIsActive] = useState<boolean>(false);
+  const [subscriptionStatus, setSubscriptionStatus] = useState<string>("");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -20,7 +21,15 @@ const useSubscriptionStatus = () => {
       if (error) {
         console.error("Error fetching subscription status:", error);
       } else {
-        setStatus(data.subscription_status);
+        const { subscription_status, current_period_end } = data;
+        const currentDate = new Date();
+        const periodEndDate = new Date(current_period_end ?? "");
+
+        const active =
+          subscription_status === "active" ||
+          (subscription_status === "canceled" && periodEndDate >= currentDate);
+        setIsActive(active);
+        setSubscriptionStatus(subscription_status);
       }
       setLoading(false);
     };
@@ -28,7 +37,7 @@ const useSubscriptionStatus = () => {
     fetchStatus();
   }, [session?.user]);
 
-  return { status, loading };
+  return { isActive, subscriptionStatus, loading };
 };
 
 export default useSubscriptionStatus;

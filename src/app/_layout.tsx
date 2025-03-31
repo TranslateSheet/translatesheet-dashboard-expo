@@ -1,7 +1,7 @@
 import { Slot } from "expo-router";
 import "../../global.css";
-import { HeroUIProvider, Spinner } from "@heroui/react";
-import { View, useWindowDimensions } from "react-native";
+import { Spinner } from "@heroui/react";
+import { useWindowDimensions } from "react-native";
 import { useFonts } from "expo-font";
 import { useEffect } from "react";
 import { initI18n } from "@/i18n/initI18n";
