@@ -215,12 +215,13 @@ export default function LandingPage() {
           </View>
         </View>
         <IDEExamples />
-        <View
-          style={{ paddingVertical: 80, alignItems: "center", width: "100%" }}
-        >
-      
-          <PricingPlans isLanding />
-        </View>
+        {__DEV__ && (
+          <View
+            style={{ paddingVertical: 80, alignItems: "center", width: "100%" }}
+          >
+            <PricingPlans isLanding />
+          </View>
+        )}
       </View>
     </ScrollView>
   );

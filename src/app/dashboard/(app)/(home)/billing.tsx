@@ -3,6 +3,7 @@ import { PageHeader } from "@/components/PageHeader";
 import { PageContainer } from "@/components/PageContainer";
 import { Spacer } from "@heroui/react";
 import { PricingPlans } from "@/components/billing/PricingPlans";
+import { Text } from "react-native";
 
 export default function UpdatePlanScreen() {
   return (
@@ -12,7 +13,13 @@ export default function UpdatePlanScreen() {
         subHeading="View and update your current plan and billing information"
       />
       <Spacer y={4} />
-      <PricingPlans />
+      {__DEV__ ? (
+        <PricingPlans />
+      ) : (
+        <Text>
+          Enjoy TranslateSheet for free while it's currently in beta 😁
+        </Text>
+      )}
     </PageContainer>
   );
 }
