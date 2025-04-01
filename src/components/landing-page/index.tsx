@@ -229,17 +229,15 @@ export default function LandingPage() {
         </div>
 
         {windowWidth > 640 && <IDEExamples />}
-        {__DEV__ && (
-          <View
-            style={{
-              paddingVertical: windowWidth > 1024 ? 80 : 0,
-              alignItems: "center",
-              width: "100%",
-            }}
-          >
-            <PricingPlans isLanding />
-          </View>
-        )}
+        <View
+          style={{
+            paddingVertical: windowWidth > 1024 ? 80 : 0,
+            alignItems: "center",
+            width: "100%",
+          }}
+        >
+          <PricingPlans isLanding />
+        </View>
       </View>
     </ScrollView>
   );
