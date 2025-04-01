@@ -1,7 +1,7 @@
 import type { CardProps } from "@heroui/react";
 
 import React from "react";
-import { Card, CardBody } from "@heroui/react";
+import { Card, CardBody, CardFooter, CardHeader } from "@heroui/react";
 import {
   m,
   useMotionValue,
@@ -9,21 +9,22 @@ import {
   LazyMotion,
   useMotionTemplate,
 } from "framer-motion";
+import { Feature } from "./features";
+import { ThemedText } from "../ThemedText";
+import { StyleSheet, useWindowDimensions } from "react-native";
+import { Image } from "@heroui/react";
 
 interface SpotlightCardProps extends CardProps {
   title: string;
   description: string;
 }
 
-export default function Component({
-  title,
-  description,
-  ...props
-}: SpotlightCardProps) {
+export default function Component({ title, titleColor, description }: Feature) {
   let mouseX = useMotionValue(0);
   let mouseY = useMotionValue(0);
 
   const cardRef = React.useRef<HTMLDivElement>(null);
+  const { width: windowWidth } = useWindowDimensions();
 
   function onMouseMove({
     clientX,
@@ -39,7 +40,6 @@ export default function Component({
 
   return (
     <Card
-      {...props}
       ref={cardRef}
       className="group relative w-full bg-content1 shadow-medium"
       radius="lg"
@@ -52,7 +52,7 @@ export default function Component({
             background: useMotionTemplate`
             radial-gradient(
               450px circle at ${mouseX}px ${mouseY}px,
-              rgba(14, 165, 233, 0.15),
+              ${titleColor}25,
               transparent 80%
             )
           `,
@@ -61,10 +61,35 @@ export default function Component({
       </LazyMotion>
       <CardBody className="px-6 py-8">
         <div className="flex flex-col gap-3">
-          <p className="text-xl font-medium text-foreground">{title}</p>
-          <p className="text-small text-default-500">{description}</p>
+          <p
+            // style={{ color: titleColor }}
+            className="text-xl font-medium text-foreground"
+          >
+            {title}
+          </p>
+          <p style={styles.subHeadingText}>{description}</p>
         </div>
       </CardBody>
+      <CardFooter className="relative h-60 p-0">
+        <Image
+          removeWrapper
+          alt="Acme Planner"
+          className="h-full object-cover"
+          src="https://nextuipro.nyc3.cdn.digitaloceanspaces.com/components-images/calendar.png"
+          style={{
+            WebkitMaskImage: "linear-gradient(to bottom, #000 70%, transparent 100%)",
+          }}
+        />
+      </CardFooter>
     </Card>
   );
 }
+
+const styles = StyleSheet.create({
+  subHeadingText: {
+    fontFamily: "Inter",
+    textAlign: "left", // Equivalent to `text-start`
+    color: "#575757", // Approximate Tailwind `text-default-500`
+    fontSize: 16, // Approximate Tailwind `text-base`
+  },
+});

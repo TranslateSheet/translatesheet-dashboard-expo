@@ -21,6 +21,7 @@ import { frequencies, tiers } from "./PricingTiers";
 import useSubscriptionStatus from "@/api/useSubscriptionStatus";
 import TranslateSheet, { useLanguageChange } from "translate-sheet";
 import { ThemedText } from "../ThemedText";
+import { View } from "react-native";
 
 export function PricingPlans({ isLanding }: { isLanding?: boolean }) {
   const [selectedFrequency, setSelectedFrequency] = React.useState(
@@ -36,7 +37,10 @@ export function PricingPlans({ isLanding }: { isLanding?: boolean }) {
   };
 
   return (
-    <div className="flex w-full flex-col items-center">
+    <View
+      style={{ paddingHorizontal: 18 }}
+      className="flex w-full flex-col items-center"
+    >
       {isLanding && (
         <ThemedText
           style={{ fontFamily: "Inter" }}
@@ -118,7 +122,7 @@ export function PricingPlans({ isLanding }: { isLanding?: boolean }) {
           </div>
         </>
       )}
-    </div>
+    </View>
   );
 }
 

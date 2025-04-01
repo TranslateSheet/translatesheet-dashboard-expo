@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Spacer } from "@heroui/react";
+import { Button } from "@heroui/react";
 import { Icon } from "@iconify/react";
 import {
   ScrollView,
@@ -12,12 +12,10 @@ import { AnimatePresence, LazyMotion, domAnimation, m } from "framer-motion";
 import BasicNavbar from "./basic-navbar";
 import Banner from "./banner";
 import { useRouter } from "expo-router";
-import { useIsDesktop } from "@/hooks/useIsDesktop";
 import TerminalSim from "./terminal-sim";
 import TranslateSheet, { useLanguageChange } from "translate-sheet";
 import LanguageOptions from "./language-options";
 import { PricingPlans } from "../billing/PricingPlans";
-import { ThemedText } from "../ThemedText";
 import IDEExamples from "./IDEExamples";
 import SpotlightCard from "./spotlight-card";
 import features from "./features";
@@ -26,7 +24,6 @@ export default function LandingPage() {
   const [enabledLanguages, setEnabledLanguages] = useState<string[]>([]);
 
   const { height: windowHeight, width: windowWidth } = useWindowDimensions();
-  const isDesktop = useIsDesktop();
   const router = useRouter();
 
   useLanguageChange();
@@ -221,15 +218,16 @@ export default function LandingPage() {
           className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-3 px-[24px]"
           style={styles.featuresContainer}
         >
-          {features.map((feature, index) => (
+          {features.map((feature) => (
             <SpotlightCard
               title={feature.title}
+              titleColor={feature.titleColor}
               description={feature.description}
             />
           ))}
         </div>
 
-        {windowWidth > 1024 && <IDEExamples />}
+        {windowWidth > 640 && <IDEExamples />}
         {__DEV__ && (
           <View
             style={{ paddingVertical: 80, alignItems: "center", width: "100%" }}
