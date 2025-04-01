@@ -21,7 +21,7 @@ import { frequencies, tiers } from "./PricingTiers";
 import useSubscriptionStatus from "@/api/useSubscriptionStatus";
 import TranslateSheet, { useLanguageChange } from "translate-sheet";
 import { ThemedText } from "../ThemedText";
-import { View } from "react-native";
+import { StyleSheet, Text, View, useWindowDimensions } from "react-native";
 
 export function PricingPlans({ isLanding }: { isLanding?: boolean }) {
   const [selectedFrequency, setSelectedFrequency] = React.useState(
@@ -29,6 +29,7 @@ export function PricingPlans({ isLanding }: { isLanding?: boolean }) {
   );
 
   const { isActive, subscriptionStatus, loading } = useSubscriptionStatus();
+  const { width: windowWidth } = useWindowDimensions();
 
   const onFrequencyChange = (selectedKey: React.Key) => {
     const frequencyIndex = frequencies.findIndex((f) => f.key === selectedKey);
@@ -38,17 +39,23 @@ export function PricingPlans({ isLanding }: { isLanding?: boolean }) {
 
   return (
     <View
-      style={{ paddingHorizontal: 18 }}
+      style={{ paddingHorizontal: 24 }}
       className="flex w-full flex-col items-center"
     >
       {isLanding && (
-        <ThemedText
-          style={{ fontFamily: "Inter" }}
-          darkColor="#000"
-          type="subtitle"
-        >
-          {translations.heading}
-        </ThemedText>
+        <View style={{ alignItems: "center" }}>
+          <p style={windowWidth > 1024 ? styles.heading : styles.headingMobile}>
+            {translations.heading}
+          </p>
+          <Text
+            style={[
+              styles.subHeadingText,
+              { fontWeight: "400"},
+            ]}
+          >
+            {translations.subHeading}
+          </Text>
+        </View>
       )}
       <Spacer y={8} />
       <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-2">
@@ -127,9 +134,34 @@ export function PricingPlans({ isLanding }: { isLanding?: boolean }) {
 }
 
 const translations = TranslateSheet.create("PricingPlans", {
-  heading:
+  heading: "Simple pricing, designed to scale",
+  subHeading:
     "No surprise fees or contracts. Get started for free, and scale when you need.",
   currentPlan: "Current plan",
   openSourceDev: "Are you an open source developer?",
   discount: "Get a discount",
+});
+
+const styles = StyleSheet.create({
+  heading: {
+    fontFamily: "Inter",
+    color: "black",
+    letterSpacing: -1,
+    fontWeight: "400",
+    fontSize: 37,
+    marginBottom: 8,
+  },
+  headingMobile: {
+    fontFamily: "Inter",
+    color: "black",
+    letterSpacing: -1,
+    fontWeight: "400",
+    fontSize: 28,
+  },
+  subHeadingText: {
+    fontFamily: "Inter",
+    textAlign: "center", // Equivalent to `text-start`
+    color: "#575757", // Approximate Tailwind `text-default-500`
+    fontSize: 18, // Approximate Tailwind `text-base`
+  },
 });

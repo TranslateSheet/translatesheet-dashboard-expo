@@ -223,6 +223,7 @@ export default function LandingPage() {
               title={feature.title}
               titleColor={feature.titleColor}
               description={feature.description}
+              image={feature.image}
             />
           ))}
         </div>
@@ -230,7 +231,11 @@ export default function LandingPage() {
         {windowWidth > 640 && <IDEExamples />}
         {__DEV__ && (
           <View
-            style={{ paddingVertical: 80, alignItems: "center", width: "100%" }}
+            style={{
+              paddingVertical: windowWidth > 1024 ? 80 : 0,
+              alignItems: "center",
+              width: "100%",
+            }}
           >
             <PricingPlans isLanding />
           </View>

@@ -19,7 +19,12 @@ interface SpotlightCardProps extends CardProps {
   description: string;
 }
 
-export default function Component({ title, titleColor, description }: Feature) {
+export default function Component({
+  title,
+  titleColor,
+  description,
+  image,
+}: Feature) {
   let mouseX = useMotionValue(0);
   let mouseY = useMotionValue(0);
 
@@ -70,17 +75,20 @@ export default function Component({ title, titleColor, description }: Feature) {
           <p style={styles.subHeadingText}>{description}</p>
         </div>
       </CardBody>
-      <CardFooter className="relative h-60 p-0">
+      {/* <CardFooter className="relative h-60 p-0">
         <Image
           removeWrapper
           alt="Acme Planner"
-          className="h-full object-cover"
-          src="https://nextuipro.nyc3.cdn.digitaloceanspaces.com/components-images/calendar.png"
+          className="h-full object-contain"
+          src={image}
           style={{
-            WebkitMaskImage: "linear-gradient(to bottom, #000 70%, transparent 100%)",
+            WebkitMaskImage:
+              "linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%)",
+            maskImage:
+              "linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%)", // for non-webkit browsers
           }}
         />
-      </CardFooter>
+      </CardFooter> */}
     </Card>
   );
 }

@@ -105,7 +105,6 @@ const styles = StyleSheet.create({
     textAlign: "center", // Equivalent to `text-start`
     color: "#575757", // Approximate Tailwind `text-default-500`
     fontSize: 18, // Approximate Tailwind `text-base`
-    // maxWidth: 570,
   },
   textWrapper: {
     marginBottom: 16,
