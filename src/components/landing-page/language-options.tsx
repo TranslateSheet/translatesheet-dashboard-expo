@@ -3,9 +3,8 @@
 import React, { useState } from "react";
 import i18n from "i18next";
 import { View, StyleSheet, ScrollView } from "react-native";
-import { Button } from "@heroui/react";
+import { Button, Dropdown } from "@heroui/react";
 import { AnimatePresence, m, LazyMotion, domAnimation } from "framer-motion";
-import { Icon } from "@iconify/react";
 
 const RTL_LANGUAGES = ["ar", "he", "fa"];
 
@@ -49,11 +48,11 @@ const LanguageOptions = ({
 
   return (
     <View style={styles.container}>
-      {/* <ScrollView
+      <ScrollView
         showsHorizontalScrollIndicator={false}
         style={{ maxWidth: 450 }}
         horizontal
-      > */}
+      >
         <LazyMotion features={domAnimation}>
           <AnimatePresence mode="popLayout">
             {locales.map((locale) => {
@@ -77,7 +76,7 @@ const LanguageOptions = ({
                     display: "inline-block",
                     marginBottom: 8,
                     marginTop: 8,
-                    marginRight: 8,
+                    marginRight: 12,
                   }}
                 >
                   <Button
@@ -100,8 +99,8 @@ const LanguageOptions = ({
             })}
           </AnimatePresence>
         </LazyMotion>
-      {/* </ScrollView> */}
-      {/* <LazyMotion features={domAnimation}>
+      </ScrollView>
+      <LazyMotion features={domAnimation}>
         <AnimatePresence mode="popLayout">
           <m.div
             // key={locale.languageTag}
@@ -114,7 +113,7 @@ const LanguageOptions = ({
               damping: 15,
               duration: 0.5,
             }}
-            style={{ display: "inline-block", margin: "8px" }}
+            style={{ display: "inline-block", marginTop: "8px", marginLeft: "8px" }}
           >
             <Button
               size="sm"
@@ -129,7 +128,7 @@ const LanguageOptions = ({
           </m.div>
           );
         </AnimatePresence>
-      </LazyMotion> */}
+      </LazyMotion>
     </View>
   );
 };
@@ -137,12 +136,10 @@ const LanguageOptions = ({
 const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
-    // flexWrap: "wrap",
+    flexWrap: "wrap",
     // TODO: remove
-    justifyContent: "space-evenly",
+    // justifyContent: "space-evenly",
     marginBottom: 6,
-    // paddingRight: 8,
-    // paddingLeft: 8,
   },
   languageButton: {
     borderWidth: 1,
