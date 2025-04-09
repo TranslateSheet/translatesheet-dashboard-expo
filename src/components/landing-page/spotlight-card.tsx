@@ -46,7 +46,7 @@ export default function Component({
   return (
     <Card
       ref={cardRef}
-      className="group relative w-full bg-content1 shadow-medium"
+      className="group relative w-full bg-content1 shadow-medium overflow-hidden"
       radius="lg"
       onMouseMove={onMouseMove}
     >
