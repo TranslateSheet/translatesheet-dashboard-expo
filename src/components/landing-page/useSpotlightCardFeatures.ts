@@ -4,7 +4,28 @@ export type Feature = {
   title: string;
   description: string;
   titleColor: string;
-  image: string;
+};
+
+const useSpotlightCardFeatures = () => {
+  const features: Feature[] = [
+    {
+      title: `🧱 ${translations.title1}`,
+      description: translations.description1,
+      titleColor: "#008DDF",
+    },
+    {
+      title: `⚡ ${translations.title2}`,
+      description: translations.description2,
+      titleColor: "#EF5E01",
+    },
+    {
+      title: `🛠️ ${translations.title3}`,
+      description: translations.description3,
+      titleColor: "#2C9A66",
+    },
+  ];
+
+  return features;
 };
 
 const translations = TranslateSheet.create("features", {
@@ -19,26 +40,4 @@ const translations = TranslateSheet.create("features", {
     "Manage all your app's text in one place with the TranslateSheet Dashboard. Hire translators, review changes, and sync directly to your repo with GitHub integration.",
 });
 
-const features: Feature[] = [
-  {
-    title: `🧱 ${translations.title1}`,
-    description: translations.description1,
-    titleColor: "#008DDF",
-  },
-  {
-    title: `⚡ ${translations.title2}`,
-    description: translations.description2,
-    titleColor: "#EF5E01",
-    image:
-      "https://mxexigmyqfmvezgpmfrq.supabase.co/storage/v1/object/public/dashboard//carbon%20(17).png",
-  },
-  {
-    title: `🛠️ ${translations.title3}`,
-    description: translations.description3,
-    titleColor: "#2C9A66",
-    image:
-      "https://mxexigmyqfmvezgpmfrq.supabase.co/storage/v1/object/public/dashboard//Screenshot%202025-04-01%20at%207.34.20%20AM.png",
-  },
-];
-
-export default features;
+export default useSpotlightCardFeatures;

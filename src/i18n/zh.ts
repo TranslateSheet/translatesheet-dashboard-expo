@@ -6,26 +6,34 @@ import { Translations } from "./translations.types";
   
   const zh: Translations = {
   ResponsiveHeading: {
-    translateSheetHelpsYou: "TranslateSheet 帮助您",
+    translateSheetHelpsYou: "TranslateSheet帮助您",
     define: "定义",
     generate: "生成",
     manage: "管理",
-    simpleAPI: "使用简单的 API 进行翻译",
+    simpleAPI: "使用简单的API进行翻译",
     ctaButtonLabel: "了解新内容！",
-    subHeading: "使用 React 和 React Native 构建多语言应用。自动化翻译文件生成，简化从第一天开始的本地化。",
+    subHeading: "使用React和React Native构建多语言应用程序。从一开始就自动化翻译文件生成并简化本地化。",
     getStarted: "开始",
     readTheDocs: "阅读文档",
+  },
+  features: {
+    title1: "定义",
+    description1: "在使用的地方精确定义应用程序的文本。TranslateSheet让您使用简单的、类型安全的对象将翻译与组件合并在一起。不再在文件之间跳转或猜测存在哪些键。",
+    title2: "生成",
+    description2: "运行单个命令，TranslateSheet将自动生成您项目中的每个键的翻译 - 即使是插值的键。使用AI提供的翻译或集成您自己的团队。",
+    title3: "管理",
+    description3: "使用TranslateSheet仪表板在一个地方管理应用程序的所有文本。雇用翻译人员，审查更改，并通过GitHub集成直接同步到您的存储库。",
   },
   BasicNavbar: {
     dashboard: "仪表板",
     docs: "文档",
   },
   Banner: {
-    heading: "TranslateSheet 现在处于测试阶段",
+    heading: "TranslateSheet现在处于测试版",
   },
   IDEExamples: {
-    heading: "试一试吧！",
-    subHeading: "只需一个配置文件，您就可以开始在项目中使用 TranslateSheet 了！",
+    heading: "试用一下！",
+    subHeading: "通过一个配置文件，您就可以开始在项目中使用TranslateSheet了！",
   },
   PricingTiers: {
     hobby: {
@@ -33,22 +41,22 @@ import { Translations } from "./translations.types";
       price: "免费",
       description: "适用于想要尝试的初学者和业余爱好者。",
       features: {
-        projects: "1 个项目",
-        members: "1 个项目成员席位",
-        keys: "250 个托管的翻译键",
-        languages: "2 种翻译语言",
+        projects: "1个项目",
+        members: "1个项目成员席位",
+        keys: "250个托管翻译键",
+        languages: "2种翻译语言",
         support: "电子邮件支持",
       },
       buttonText: "继续免费使用",
     },
     professional: {
       title: "专业版",
-      price: "$9 每月",
-      description: "适用于拥有不到 10 名成员的小团队。",
+      price: "每月9美元",
+      description: "适用于有不到10名成员的小团队。",
       features: {
-        projects: "10 个项目",
+        projects: "10个项目",
         members: "无限项目成员席位",
-        keys: "无限托管的翻译键",
+        keys: "无限托管翻译键",
         languages: "无限翻译语言",
         support: "访问帮助中心",
       },
@@ -56,10 +64,11 @@ import { Translations } from "./translations.types";
     },
   },
   PricingPlans: {
-    heading: "没有隐藏费用或合同。免费开始，根据需要扩展。",
+    heading: "简单的定价，旨在扩展",
+    subHeading: "没有意外费用或合同。免费开始，并在需要时扩展。",
     currentPlan: "当前计划",
-    openSourceDev: "您是开源开发者吗？",
-    discount: "获得折扣",
+    openSourceDev: "您是开源开发人员吗？",
+    discount: "获取折扣",
   },
 };
 export default zh;

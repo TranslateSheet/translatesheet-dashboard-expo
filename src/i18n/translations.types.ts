@@ -3,6 +3,14 @@
 // Run translate-sheet generate-types to regenerate this file.
 
 export type Translations = {
+  features: {
+    title1: string;
+    description1: string;
+    title2: string;
+    description2: string;
+    title3: string;
+    description3: string;
+  };
   ResponsiveHeading: {
     translateSheetHelpsYou: string;
     define: string;
@@ -55,6 +63,7 @@ export type Translations = {
   };
   PricingPlans: {
     heading: string;
+    subHeading: string;
     currentPlan: string;
     openSourceDev: string;
     discount: string;

@@ -1,7 +1,5 @@
-import type { CardProps } from "@heroui/react";
-
 import React from "react";
-import { Card, CardBody, CardFooter, CardHeader } from "@heroui/react";
+import { Card, CardBody } from "@heroui/react";
 import {
   m,
   useMotionValue,
@@ -9,22 +7,10 @@ import {
   LazyMotion,
   useMotionTemplate,
 } from "framer-motion";
-import { Feature } from "./features";
-import { ThemedText } from "../ThemedText";
+import { Feature } from "./useSpotlightCardFeatures";
 import { StyleSheet, useWindowDimensions } from "react-native";
-import { Image } from "@heroui/react";
 
-interface SpotlightCardProps extends CardProps {
-  title: string;
-  description: string;
-}
-
-export default function Component({
-  title,
-  titleColor,
-  description,
-  image,
-}: Feature) {
+const SpotlightCard = ({ title, titleColor, description }: Feature) => {
   let mouseX = useMotionValue(0);
   let mouseY = useMotionValue(0);
 
@@ -91,7 +77,7 @@ export default function Component({
       </CardFooter> */}
     </Card>
   );
-}
+};
 
 const styles = StyleSheet.create({
   subHeadingText: {
@@ -101,3 +87,5 @@ const styles = StyleSheet.create({
     fontSize: 16, // Approximate Tailwind `text-base`
   },
 });
+
+export default SpotlightCard;

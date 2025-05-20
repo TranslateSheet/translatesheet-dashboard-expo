@@ -18,13 +18,15 @@ import LanguageOptions from "./language-options";
 import { PricingPlans } from "../billing/PricingPlans";
 import IDEExamples from "./IDEExamples";
 import SpotlightCard from "./spotlight-card";
-import features from "./features";
+import features from "./useSpotlightCardFeatures";
+import useSpotlightCardFeatures from "./useSpotlightCardFeatures";
 
 export default function LandingPage() {
   const [enabledLanguages, setEnabledLanguages] = useState<string[]>([]);
 
   const { height: windowHeight, width: windowWidth } = useWindowDimensions();
   const router = useRouter();
+  const features = useSpotlightCardFeatures()
 
   useLanguageChange();
 
@@ -45,7 +47,8 @@ export default function LandingPage() {
       <View style={styles.contentContainer}>
         <View
           style={{
-            height: windowWidth > 1024 ? windowHeight - 170 : "auto",
+            minHeight: windowWidth > 1024 ? windowHeight - 170 : "auto",
+            paddingBottom: windowWidth > 1024 ? 100 : 0,
           }}
         >
           <View
@@ -223,7 +226,6 @@ export default function LandingPage() {
               title={feature.title}
               titleColor={feature.titleColor}
               description={feature.description}
-              image={feature.image}
             />
           ))}
         </div>

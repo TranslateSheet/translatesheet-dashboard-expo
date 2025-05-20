@@ -11,10 +11,18 @@ import { Translations } from "./translations.types";
     generate: "gerar",
     manage: "gerenciar",
     simpleAPI: "traduções com uma API simples",
-    ctaButtonLabel: "Saiba o que há de novo!",
-    subHeading: "Construa aplicativos multilíngues com React e React Native. Automatize a geração de arquivos de tradução e simplifique a localização desde o início.",
+    ctaButtonLabel: "Descubra o que há de novo!",
+    subHeading: "Construa aplicativos multilíngues com React e React Native. Automatize a geração de arquivos de tradução e simplifique a localização desde o primeiro dia.",
     getStarted: "Começar",
-    readTheDocs: "Leia a documentação",
+    readTheDocs: "Leia a Documentação",
+  },
+  features: {
+    title1: "Definir",
+    description1: "Defina o texto do seu aplicativo exatamente onde é usado. O TranslateSheet permite que você co-loque traduções com seus componentes usando objetos simples e seguros por tipo. Sem mais pular entre arquivos ou adivinhar quais chaves existem.",
+    title2: "Gerar",
+    description2: "Execute um único comando e o TranslateSheet irá gerar automaticamente traduções para cada chave em seu projeto - mesmo as interpoladas. Use traduções com inteligência artificial ou integre sua própria equipe.",
+    title3: "Gerenciar",
+    description3: "Gerencie todo o texto do seu aplicativo em um só lugar com o Painel do TranslateSheet. Contrate tradutores, revise alterações e sincronize diretamente com seu repositório com integração ao GitHub.",
   },
   BasicNavbar: {
     dashboard: "Painel",
@@ -31,15 +39,15 @@ import { Translations } from "./translations.types";
     hobby: {
       title: "Hobby",
       price: "Grátis",
-      description: "Para iniciantes e entusiastas que querem experimentar.",
+      description: "Para iniciantes e entusiastas que desejam experimentar.",
       features: {
         projects: "1 projeto",
         members: "1 assento de membro do projeto",
         keys: "250 chaves traduzidas hospedadas",
         languages: "2 idiomas traduzidos",
-        support: "Suporte por e-mail",
+        support: "Suporte por email",
       },
-      buttonText: "Continuar com Grátis",
+      buttonText: "Continuar com Gratuito",
     },
     professional: {
       title: "Profissional",
@@ -47,7 +55,7 @@ import { Translations } from "./translations.types";
       description: "Para pequenas equipes com menos de 10 membros.",
       features: {
         projects: "10 projetos",
-        members: "Assentos ilimitados de membros do projeto",
+        members: "Assentos de membro do projeto ilimitados",
         keys: "Chaves traduzidas hospedadas ilimitadas",
         languages: "Idiomas traduzidos ilimitados",
         support: "Acesso ao centro de ajuda",
@@ -56,10 +64,11 @@ import { Translations } from "./translations.types";
     },
   },
   PricingPlans: {
-    heading: "Sem surpresas com taxas ou contratos. Comece de graça e aumente quando precisar.",
+    heading: "Preços simples, projetados para escalar",
+    subHeading: "Sem taxas surpresa ou contratos. Comece de graça e escale quando precisar.",
     currentPlan: "Plano atual",
     openSourceDev: "Você é um desenvolvedor de código aberto?",
-    discount: "Obtenha um desconto",
+    discount: "Obter um desconto",
   },
 };
 export default pt;

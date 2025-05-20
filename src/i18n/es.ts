@@ -3,18 +3,30 @@
 // Make changes in the TranslateSheet dashboard.
 
 import { Translations } from "./translations.types";
-  
-  const es: Translations = {
+
+const es: Translations = {
   ResponsiveHeading: {
     translateSheetHelpsYou: "TranslateSheet te ayuda",
     define: "definir",
     generate: "generar",
     manage: "administrar",
     simpleAPI: "traducciones con una API simple",
-    ctaButtonLabel: "¡Descubre las novedades!",
-    subHeading: "Construye aplicaciones multilingües con React y React Native. Automatiza la generación de archivos de traducción y simplifica la localización desde el primer día.",
+    ctaButtonLabel: "¡Aprende qué hay de nuevo!",
+    subHeading:
+      "Construye aplicaciones multilingües con React y React Native. Automatiza la generación de archivos de traducción y simplifica la localización desde el primer día.",
     getStarted: "Empezar",
-    readTheDocs: "Leer la documentación",
+    readTheDocs: "Lee la documentación",
+  },
+  features: {
+    title1: "Definir",
+    description1:
+      "Define el texto de tu aplicación exactamente donde se utiliza. TranslateSheet te permite colocar las traducciones junto con tus componentes mediante objetos simples y seguros. No más saltos entre archivos o adivinanzas sobre qué claves existen.",
+    title2: "Generar",
+    description2:
+      "Ejecuta un solo comando y TranslateSheet generará automáticamente las traducciones para cada clave en tu proyecto, incluso las interpoladas. Utiliza traducciones con inteligencia artificial o integra a tu propio equipo.",
+    title3: "Administrar",
+    description3:
+      "Administra todo el texto de tu aplicación en un solo lugar con el panel de TranslateSheet. Contrata traductores, revisa los cambios y sincroniza directamente con tu repositorio mediante la integración con GitHub.",
   },
   BasicNavbar: {
     dashboard: "Tablero",
@@ -25,13 +37,14 @@ import { Translations } from "./translations.types";
   },
   IDEExamples: {
     heading: "¡Pruébalo!",
-    subHeading: "¡Con un solo archivo de configuración, estás listo para empezar a usar TranslateSheet en tu proyecto!",
+    subHeading:
+      "Con un solo archivo de configuración, ¡estás listo para comenzar a usar TranslateSheet en tu proyecto!",
   },
   PricingTiers: {
     hobby: {
-      title: "Hobby",
+      title: "Afición",
       price: "Gratis",
-      description: "Para principiantes y aficionados que quieran probar.",
+      description: "Para principiantes y aficionados que quieren probar.",
       features: {
         projects: "1 proyecto",
         members: "1 asiento de miembro del proyecto",
@@ -43,8 +56,8 @@ import { Translations } from "./translations.types";
     },
     professional: {
       title: "Profesional",
-      price: "$9 al mes",
-      description: "Para equipos pequeños que tienen menos de 10 miembros.",
+      price: "$9 por mes",
+      description: "Para equipos pequeños con menos de 10 miembros.",
       features: {
         projects: "10 proyectos",
         members: "Asientos de miembro del proyecto ilimitados",
@@ -56,7 +69,9 @@ import { Translations } from "./translations.types";
     },
   },
   PricingPlans: {
-    heading: "Sin sorpresas en tarifas ni contratos. Empieza gratis y escala cuando lo necesites.",
+    heading: "Precios simples, diseñados para escalar",
+    subHeading:
+      "Sin tarifas sorpresa ni contratos. Comienza de forma gratuita y escala cuando lo necesites.",
     currentPlan: "Plan actual",
     openSourceDev: "¿Eres un desarrollador de código abierto?",
     discount: "Obtén un descuento",

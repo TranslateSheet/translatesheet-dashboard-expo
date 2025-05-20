@@ -16,14 +16,16 @@ import {
   Tabs,
 } from "@heroui/react";
 
-import { FrequencyEnum, TiersEnum } from "./types";
-import { frequencies, tiers } from "./PricingTiers";
+import { TiersEnum } from "./types";
+
 import useSubscriptionStatus from "@/api/useSubscriptionStatus";
-import TranslateSheet, { useLanguageChange } from "translate-sheet";
-import { ThemedText } from "../ThemedText";
+import TranslateSheet from "translate-sheet";
 import { StyleSheet, Text, View, useWindowDimensions } from "react-native";
+import usePricingTiers from "./usePricingTiers";
 
 export function PricingPlans({ isLanding }: { isLanding?: boolean }) {
+  const { tiers, frequencies } = usePricingTiers();
+
   const [selectedFrequency, setSelectedFrequency] = React.useState(
     frequencies[0]
   );
@@ -47,12 +49,7 @@ export function PricingPlans({ isLanding }: { isLanding?: boolean }) {
           <p style={windowWidth > 1024 ? styles.heading : styles.headingMobile}>
             {translations.heading}
           </p>
-          <Text
-            style={[
-              styles.subHeadingText,
-              { fontWeight: "400"},
-            ]}
-          >
+          <Text style={[styles.subHeadingText, { fontWeight: "400" }]}>
             {translations.subHeading}
           </Text>
         </View>

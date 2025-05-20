@@ -1,10 +1,10 @@
 
+import ar from "./ar";
 import es from "./es";
 import ja from "./ja";
+import pt from "./pt";
 import ru from "./ru";
 import zh from "./zh";
-import pt from "./pt";
-import ar from "./ar";
 
 const resources = {
   "en": { language: "isPrimary" },

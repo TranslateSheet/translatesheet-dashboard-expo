@@ -6,36 +6,44 @@ import { Translations } from "./translations.types";
   
   const ja: Translations = {
   ResponsiveHeading: {
-    translateSheetHelpsYou: "TranslateSheet helps you",
-    define: "定義する",
-    generate: "生成する",
-    manage: "管理する",
-    simpleAPI: "シンプルなAPIを使用して翻訳する",
-    ctaButtonLabel: "新着情報を学ぶ！",
-    subHeading: "ReactとReact Nativeで多言語アプリを構築します。翻訳ファイルの生成を自動化し、初日からローカライズを簡素化します。",
+    translateSheetHelpsYou: "TranslateSheetが助けてくれます",
+    define: "定義",
+    generate: "生成",
+    manage: "管理",
+    simpleAPI: "シンプルなAPIを使用した翻訳",
+    ctaButtonLabel: "新機能を学ぶ！",
+    subHeading: "ReactとReact Nativeで多言語アプリを構築します。翻訳ファイルの生成を自動化し、初日からローカライゼーションを簡素化します。",
     getStarted: "はじめる",
     readTheDocs: "ドキュメントを読む",
+  },
+  features: {
+    title1: "定義",
+    description1: "アプリのテキストを使用されている場所で正確に定義します。TranslateSheetを使用すると、シンプルで型安全なオブジェクトを使用してコンポーネントと翻訳を共存させることができます。もうファイル間を移動したり、どのキーが存在するか推測する必要はありません。",
+    title2: "生成",
+    description2: "単一のコマンドを実行すると、TranslateSheetがプロジェクト全体のすべてのキーの翻訳を自動生成します。AIパワードの翻訳を使用するか、独自のチームを統合できます。",
+    title3: "管理",
+    description3: "TranslateSheetダッシュボードでアプリのすべてのテキストを1か所で管理します。翻訳者を雇用し、変更をレビューし、GitHub統合でリポジトリに直接同期します。",
   },
   BasicNavbar: {
     dashboard: "ダッシュボード",
     docs: "ドキュメント",
   },
   Banner: {
-    heading: "TranslateSheetは現在ベータ版です",
+    heading: "TranslateSheetは今ベータ版です",
   },
   IDEExamples: {
-    heading: "試してみてください！",
-    subHeading: "単一の設定ファイルで、プロジェクトでTranslateSheetを使用する準備が整います！",
+    heading: "使ってみてください！",
+    subHeading: "1つの設定ファイルで、プロジェクトでTranslateSheetを使用する準備が整います！",
   },
   PricingTiers: {
     hobby: {
       title: "趣味",
       price: "無料",
-      description: "始めてみたい初心者や趣味のある人向け",
+      description: "始めてみたいスターターや趣味の人向け",
       features: {
         projects: "1つのプロジェクト",
         members: "1つのプロジェクトメンバーシート",
-        keys: "250のホストされた翻訳キー",
+        keys: "250個のホストされた翻訳キー",
         languages: "2つの翻訳言語",
         support: "メールサポート",
       },
@@ -44,9 +52,9 @@ import { Translations } from "./translations.types";
     professional: {
       title: "プロフェッショナル",
       price: "月額$9",
-      description: "10人未満の小さなチーム向け",
+      description: "10人未満の小規模チーム向け",
       features: {
-        projects: "10のプロジェクト",
+        projects: "10個のプロジェクト",
         members: "無制限のプロジェクトメンバーシート",
         keys: "無制限のホストされた翻訳キー",
         languages: "無制限の翻訳言語",
@@ -56,7 +64,8 @@ import { Translations } from "./translations.types";
     },
   },
   PricingPlans: {
-    heading: "予期せぬ料金や契約はありません。無料で開始し、必要に応じてスケールしてください。",
+    heading: "スケーリングに適したシンプルな価格設定",
+    subHeading: "驚きの料金や契約はありません。無料で始めて、必要に応じてスケールアップします。",
     currentPlan: "現在のプラン",
     openSourceDev: "オープンソース開発者ですか？",
     discount: "割引を受ける",
