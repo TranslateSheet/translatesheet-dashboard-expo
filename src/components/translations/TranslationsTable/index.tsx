@@ -146,11 +146,11 @@ export function TranslationsTable() {
         let second = b[col];
 
         if (col === "createdAt" || col === "lastUpdatedAt") {
-          first = first ? new Date(first).getTime() : 0;
-          second = second ? new Date(second).getTime() : 0;
+          first = first ? new Date(first as string).getTime() : 0;
+          second = second ? new Date(second as string).getTime() : 0;
         }
 
-        const cmp = first < second ? -1 : first > second ? 1 : 0;
+        const cmp = first! < second! ? -1 : first! > second! ? 1 : 0;
 
         return sortDescriptor.direction === "descending" ? -cmp : cmp;
       }
@@ -199,7 +199,7 @@ export function TranslationsTable() {
               size="sm"
               variant="flat"
             >
-              {getFlagEmoji(cellValue)} {cellValue}
+              {getFlagEmoji(cellValue as string)} {cellValue}
             </Chip>
           );
         case "confidenceScore":
@@ -208,10 +208,12 @@ export function TranslationsTable() {
               <div
                 className={cn("h-2 w-2 rounded-full", {
                   "bg-blue-500": cellValue === null || cellValue === undefined, // Primary language case
-                  "bg-success": cellValue !== null && cellValue >= 9, // Ensure it’s a valid score
+                  "bg-success": cellValue !== null && Number(cellValue) >= 9, // Ensure it’s a valid score
                   "bg-warning":
-                    cellValue !== null && cellValue >= 7 && cellValue < 9,
-                  "bg-danger": cellValue !== null && cellValue < 7,
+                    cellValue !== null &&
+                    Number(cellValue) >= 7 &&
+                    Number(cellValue) < 9,
+                  "bg-danger": cellValue !== null && Number(cellValue) < 7,
                 })}
               />
               <span>{cellValue ?? "-"}</span>

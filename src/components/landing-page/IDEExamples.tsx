@@ -3,7 +3,7 @@ import sdk from "@stackblitz/sdk";
 import { StyleSheet, View, Text } from "react-native";
 import { Button } from "@heroui/react";
 import { Image } from "expo-image";
-import ExpoLogo from "@/assets/images/expo-logo.png";
+import ExpoLogo from "@/assets/images/expo-logo.png"
 import NextLogo from "@/assets/images/next.svg";
 import TranslateSheet from "translate-sheet";
 // import VueLogo from "@/assets/images/vuejs.png";
@@ -75,7 +75,7 @@ const IDEExamples = () => {
             ideToShow === "next" ? styles.selectedButton : styles.languageButton
           }
         >
-          <Image source={NextLogo} style={styles.image} contentFit="contain" />
+          <Image source={NextLogo as unknown as number} style={styles.image} contentFit="contain" />
         </Button>
       </View>
       <View id="IDEContainer" />

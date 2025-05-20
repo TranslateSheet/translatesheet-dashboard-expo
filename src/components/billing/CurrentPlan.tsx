@@ -30,7 +30,7 @@ const CurrentPlan = () => {
             For small teams and early-stage startups.
             <Link
               style={{ color: "#016fee" }}
-              href="/dashboard/billing/update-plan"
+              href="/"
             >
               Plan Benefits →
             </Link>
@@ -39,7 +39,7 @@ const CurrentPlan = () => {
             <Text>Subscription cancelled</Text>
           )}
         </View>
-        <Link href="/dashboard/billing/update-plan">
+        <Link href="/">
           <View style={styles.updatePlanWrap}>
             <Icon icon="solar:pen-broken" />
             Update Plan
