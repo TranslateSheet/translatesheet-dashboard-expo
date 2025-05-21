@@ -6,14 +6,13 @@ import { Image } from "expo-image";
 import ExpoLogo from "@/assets/images/expo-logo.png"
 import NextLogo from "@/assets/images/next.svg";
 import TranslateSheet from "translate-sheet";
-// import VueLogo from "@/assets/images/vuejs.png";
 
 type IDEInfo = { key: string; openFile: string };
 
-const vueIDEInfo: IDEInfo = {
-  key: "vitejs-vite-vjnhrzki",
-  openFile: "src/App.vue",
-};
+// const vueIDEInfo: IDEInfo = {
+//   key: "vitejs-vite-vjnhrzki",
+//   openFile: "src/App.vue",
+// };
 const nextIDEInfo: IDEInfo = {
   key: 'stackblitz-starters-inixmsbj',
   openFile: "app/page.tsx",
@@ -57,16 +56,6 @@ const IDEExamples = () => {
         >
           <Image style={styles.image} source={ExpoLogo} contentFit="contain" />
         </Button>
-        {/* <Button
-          size="sm"
-          radius="full"
-          onPress={() => setIdeToShow("vue")}
-          style={
-            ideToShow === "vue" ? styles.selectedButton : styles.languageButton
-          }
-        >
-          <Image style={styles.image} source={VueLogo} contentFit="contain" />
-        </Button> */}
         <Button
           size="sm"
           radius="full"

@@ -20,7 +20,6 @@ export default function HomeLayout() {
   const { session, isLoading: isSessionLoading } = useSession();
   const pathname = usePathname();
 
-
   // You can keep the splash screen open, or render a loading screen like we do here.
   if (isSessionLoading) {
     return <Text>Loading...</Text>;
