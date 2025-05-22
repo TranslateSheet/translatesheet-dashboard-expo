@@ -4,8 +4,9 @@
   "version": "1.0.0",
   "scripts": {
     "start": "expo start",
-    "start-prod": "npx serve dist",
     "build-prod": "npx expo export --platform web",
+    "start-prod": "npx serve dist",
+    "deploy-prod": "eas deploy --prod",
     "web": "expo start --web",
     "test": "jest --watchAll",
     "lint": "expo lint",
