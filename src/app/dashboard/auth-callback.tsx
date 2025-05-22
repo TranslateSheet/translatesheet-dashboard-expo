@@ -11,27 +11,21 @@ export default function AuthCallback() {
     const handleAuthRedirect = async () => {
       console.log("Processing auth callback...");
 
-      // Extract parameters from URL hash
       const url = new URL(window.location.href);
-      const hashParams = new URLSearchParams(url.hash.substring(1));
+      const code = url.searchParams.get("code");
 
-      const accessToken = hashParams.get("access_token");
-      const refreshToken = hashParams.get("refresh_token");
-
-      if (!accessToken) {
-        console.error("No access token found in URL!");
+      if (!code) {
+        console.error("No code found in URL!");
         return router.push("/dashboard/sign-in");
       }
 
-      // 🔥 Manually set the Supabase session
-      const { data, error } = await supabase.auth.setSession({
-        access_token: accessToken,
-        refresh_token: refreshToken ?? "", // May be null
-      });
+      const { data, error } = await supabase.auth.exchangeCodeForSession(code);
 
       if (error) {
-        console.error("Error setting session:", error);
+        console.error("Error exchanging code for session:", error);
+        router.push("/dashboard/sign-in");
       } else {
+        console.log("Session established", data);
         router.push("/dashboard");
       }
     };
@@ -39,7 +33,6 @@ export default function AuthCallback() {
     handleAuthRedirect();
   }, []);
 
-  // TODO: Add a loading spinner
   return (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
       <Spinner color="primary" label="Loading" labelColor="primary" />
